@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2.3
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch6: gtk+-2.4.1-lib64.patch
 Patch7: gtk+-2.4.4.treeview-typeahead.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=150601
 Patch8: gtk+-2.2.4-bmploop.patch
+Patch9: gtk-filechooser-search.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -35,7 +36,7 @@ BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
-BuildPrereq: /usr/bin/automake-1.9
+BuildPrereq: /usr/bin/automake-1.7
 # needed for running aclocal
 BuildPrereq: gtk-doc
 
@@ -88,6 +89,7 @@ docs for the GTK+ widget toolkit.
 %patch6 -p1 -b .lib64
 %patch7 -p1 -b .treeview-typeahead
 %patch8 -p1 -b .bmploop
+%patch9 -p0 -b .search
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -97,8 +99,8 @@ done
 libtoolize --force
 
 # Patch3 modifies Makefile.am
-aclocal-1.9
-automake-1.9
+aclocal-1.7
+automake-1.7
 
 if test -x /usr/bin/autoconf-2.53; then
   autoconf-2.53
@@ -258,8 +260,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.7-2.3
-- Bump and rebuild for FC3
+* Tue Aug 24 2004 Jonathan Blandford <jrb@redhat.com> 2.4.7-2.3
+- patch to make '/' do the search popup
 
 * Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.7-2.2
 - Fix problem with infinite loop on bad BMP data (#130450, 

@@ -25,11 +25,14 @@ Patch3: gtk+-2.3.2-themename.patch
 # Mark assembly files as noexec-stack
 Patch5: gtk+-2.2.2-noexecstack.patch
 Patch6: gtk+-2.4.1-lib64.patch
+# Backports of various GTK+ HEAD features
 Patch7: gtk+-2.4.4.treeview-typeahead.patch
 Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
-Patch12: gtk+-2.4.9-expander.patch
+Patch12: gtk+-2.4.9-backspace.patch
+# Fix expander drawing. The fix will be in GTK+ 2.4.10
+Patch13: gtk+-2.4.9-expander.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -94,7 +97,8 @@ docs for the GTK+ widget toolkit.
 %patch9 -p0 -b .search
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
-%patch12 -p1 -b .expander
+%patch12 -p1 -b .backspace
+%patch13 -p1 -b .expander
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -265,6 +269,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Sep 10 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-7
+- backport support for PangoLogAttr.backspace_deletes_character
+
 * Tue Sep  7 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-6
 - fix expander drawing (#131676)
 

@@ -14,15 +14,17 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
+Source1: update-scripts.tar.gz
 
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch3: gtk+-2.3.2-themename.patch
 # Mark assembly files as noexec-stack
 Patch5: gtk+-2.2.2-noexecstack.patch
+Patch6: gtk+-2.4.1-lib64.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -76,8 +78,11 @@ docs for the GTK+ widget toolkit.
 %prep
 %setup -q -n gtk+-%{version}
 
+(cd .. && tar xzf %{SOURCE1})
+
 %patch3 -p1 -b .themename
 %patch5 -p1 -b .noexecstack
+%patch6 -p1 -b .lib64
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -112,6 +117,29 @@ make ## %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 
+# Deriving /etc/gtk-2.0/$host location
+# NOTE: Duplicated below
+#
+# autoconf changes linux to linux-gnu
+case "%{_host}" in
+  *linux) host="%{_host}-gnu"
+  ;;
+  *) host="%{_host}"
+  ;;
+esac
+
+# autoconf uses powerpc not ppc
+host=`echo $host | sed "s/^ppc/powerpc/"`
+
+# Make sure that the host value that is passed to the compile 
+# is the same as the host that we're using in the spec file
+#
+compile_host=`grep 'host_triplet =' gtk/Makefile | sed "s/.* = //"`
+
+if test "x$compile_host" != "x$host" ; then
+  echo 1>&2 "Host mismatch: compile='$compile_host', spec file='$host'" && exit 1
+fi
+
 %makeinstall RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 %find_lang gtk20
@@ -136,39 +164,65 @@ for dir in examples/* ; do
     fi
 done
 
-# Install the demo programs
-cd tests
-../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_bindir}
-../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_bindir}
+# We need to have separate 32-bit and 64-bit binaries
+# for places where we have two copies of the GTK+ package installed.
+# (we might have x86_64 and i686 packages on the same system, for example.)
+case "$host" in
+  alpha*|ia64*|ppc64*|s390x*|x86_64*)
+   mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
+   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-64
+   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource-64
+   mv $RPM_BUILD_ROOT%{_bindir}/gtk-demo $RPM_BUILD_ROOT%{_bindir}/gtk-demo-64
+   ;;
+  *)
+   mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-32
+   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-32
+   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource-32
+   mv $RPM_BUILD_ROOT%{_bindir}/gtk-demo $RPM_BUILD_ROOT%{_bindir}/gtk-demo-32
+   ;;
+esac
+
+#
+# Install wrappers for the query binaries
+#
+cp ../update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
+cp ../update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
+
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
+touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
+touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
+
+#
+# We need the substitution of $host so we use an external
+# file list
+#
+echo %dir %{_sysconfdir}/gtk-2.0/$host >> all.lang
+echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> all.lang
+echo %ghost %{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders >> all.lang
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-umask 022
-%{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
-%{_bindir}/gdk-pixbuf-query-loaders > %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
+/usr/bin/update-gdk-pixbuf-loaders %{_host}
+/usr/bin/update-gtk-immodules %{_host}
 
 %postun
 /sbin/ldconfig
-if [ $1 = 0 ] ; then
-	/bin/rm -f %{_sysconfdir}/gtk-2.0/gtk.immodules
-	/bin/rm -f %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
-fi
 
 %files -f all.lang
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README
-%{_bindir}/testtext
-%{_bindir}/testgtk
-%{_bindir}/gtk-demo
-%{_bindir}/gdk-pixbuf-query-loaders
-%{_bindir}/gtk-query-immodules-2.0
+%{_bindir}/gtk-demo*
+%{_bindir}/gdk-pixbuf-query-loaders*
+%{_bindir}/gtk-query-immodules-2.0*
+%{_bindir}/update-gdk-pixbuf-loaders
+%{_bindir}/update-gtk-immodules
 %{_libdir}/libgtk-x11-2.0.so.*
 %{_libdir}/libgdk-x11-2.0.so.*
 %{_libdir}/libgdk_pixbuf-2.0.so.*
@@ -191,13 +245,19 @@ fi
 %{_mandir}/man1/*
 %{_includedir}/*
 %{_datadir}/aclocal/*
-%{_bindir}/gdk-pixbuf-csource
+%{_bindir}/gdk-pixbuf-csource*
 %{_libdir}/pkgconfig/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jun 23 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.1-3
+- Don't install testgtk and testtext
+- Rename binaries to -32/-64 (#124478)
+- Move arch-dependent config files to /etc/gtk-2.0/$host (#124482)
+- Add wrappers for updating the arch-dependent config files
+
 * Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 

@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2.3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -26,6 +26,8 @@ Patch3: gtk+-2.3.2-themename.patch
 Patch5: gtk+-2.2.2-noexecstack.patch
 Patch6: gtk+-2.4.1-lib64.patch
 Patch7: gtk+-2.4.4.treeview-typeahead.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=150601
+Patch8: gtk+-2.2.4-bmploop.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -85,6 +87,7 @@ docs for the GTK+ widget toolkit.
 %patch5 -p1 -b .noexecstack
 %patch6 -p1 -b .lib64
 %patch7 -p1 -b .treeview-typeahead
+%patch8 -p1 -b .bmploop
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -255,6 +258,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.7-2.3
+- Bump and rebuild for FC3
+
+* Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.7-2.2
+- Fix problem with infinite loop on bad BMP data (#130450, 
+  test BMP from Chris Evans, fix from Manish Singh)
+
 * Sat Aug 14 2004 Matthias Clasen <mclasen@redhat.com> 2.4.7-1
 - update to 2.4.7
 

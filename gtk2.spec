@@ -31,6 +31,8 @@ Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
 Patch12: gtk+-2.4.9-backspace.patch
+# Fix for pa.po will be in 2.4.14
+Patch13: gtk+-2.4.13-papo.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -96,6 +98,7 @@ docs for the GTK+ widget toolkit.
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
 %patch12 -p1 -b .backspace
+%patch13 -p0 -b .papo
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -263,6 +266,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Oct 20 2004 Matthias Clasen <mclasen@redhat.com> 
+- Fix the translation of default:LTR in pa.po  (#136431)
+
 * Tue Oct 12 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.13-1
 - Upgrade to 2.4.13
 

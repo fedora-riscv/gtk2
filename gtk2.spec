@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.13
+%define base_version 2.4.14
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 13
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -33,8 +33,6 @@ Patch11: gtk+-2.4.9-treeview-activate.patch
 # Backport from HEAD (plus fixes from 
 # http://bugzilla.gnome.org/show_bug.cgi?id=155952)
 Patch12: gtk+-2.4.9-backspace.patch
-# Fix for pa.po will be in 2.4.14
-Patch13: gtk+-2.4.13-papo.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -100,7 +98,6 @@ docs for the GTK+ widget toolkit.
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
 %patch12 -p1 -b .backspace
-%patch13 -p0 -b .papo
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -268,6 +265,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Dec 06 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.14-1
+- Upgrade to 2.4.14
+- Remove the no longer needed pa.po patch
+- Adjust gtk+-2.4.7-update-counter.patch
+
 * Wed Dec 01 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.13-13
 - Revert an accidental ABI change.  (#151450)
 

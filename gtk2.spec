@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.9
+%define base_version 2.4.10
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 9
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -31,10 +31,6 @@ Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
 Patch12: gtk+-2.4.9-backspace.patch
-# Fix expander drawing. The fix will be in GTK+ 2.4.10
-Patch13: gtk+-2.4.9-expander.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=130711
-Patch14: gtk+-2.2.4-loaders.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -100,8 +96,6 @@ docs for the GTK+ widget toolkit.
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
 %patch12 -p1 -b .backspace
-%patch13 -p1 -b .expander
-%patch14 -p1 -b .loaders
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -272,6 +266,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Sep 15 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-1
+- update to latest upstream version, drop some patches
+
 * Wed Sep 15 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-9
 - Fix issues in the xpm and ico loaders
   found by Chris Evans (#130711)

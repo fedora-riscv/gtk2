@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 4
+Release: 5
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -50,6 +50,8 @@ URL: http://www.gtk.org
 Prereq: glib2 >= %{glib2_version}
 Prereq: atk >= %{atk_version}
 Prereq: pango >= %{pango_version}
+# and these for gdk-pixbuf-query-loaders
+Prereq: libtiff >= 3.6.1
 
 %define _unpackaged_files_terminate_build      1
 %define _missing_doc_files_terminate_build     1
@@ -261,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Aug 26 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-5
+- prereq a new enough libtiff (#130678)
+
 * Wed Aug 25 2004 Jonathan Blandford <jrb@redhat.com> 2.4.9-4
 - backport patch to make typeahead activate the row
 

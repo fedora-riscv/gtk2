@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 4
+Release: 5
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -35,6 +35,8 @@ Patch12: gtk+-2.4.9-backspace.patch
 Patch13: gtk+-2.4.10-folders.patch
 # make arrows in path bar larger; will be in 2.4.11
 Patch14: gtk+-2.4.10-arrows.patch
+# improve speed of completion popup for large directories; will be in 2.4.11
+Patch15: gtk+-2.4.10-bigdirs.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -102,6 +104,7 @@ docs for the GTK+ widget toolkit.
 %patch12 -p1 -b .backspace
 %patch13 -p1 -b .folders
 %patch14 -p1 -b .arrows
+%patch15 -p1 -b .bigdirs
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -274,6 +277,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Sep 28 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-5
+- Improve completion popup speed for large directories (#133313)
+
 * Thu Sep 23 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-4
 - Make arrows in path bar larger.
 

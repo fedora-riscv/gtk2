@@ -1,21 +1,21 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.1.3
+%define glib2_base_version 2.2.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.1.3
+%define pango_base_version 1.2.0
 %define pango_version %{pango_base_version}-3
 %define atk_base_version 1.0.0
 %define atk_version %{atk_base_version}-1
+%define libpng_version 2:1.2.2-16
 
-%define base_version 2.1.3
-## fixme, should be 2.1.3
-%define bin_version 2.0.103
+%define base_version 2.2.1
+%define bin_version 2.2.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 2
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -23,20 +23,18 @@ Source: gtk+-%{version}.tar.bz2
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch3: gtk+-2.0.6-themename.patch
 # Hook up Xft to XSETTINGS
-Patch4: gtk+-2.1.3-xftprefs.patch
-# Fix GtkCombo behavior change in 2.1.3 
-# (bugzilla.gnome.org 100347)
-Patch5: gtk+-2.1.3-combo.patch
+Patch4: gtk+-xftprefs.patch
+Patch5: gtk+-2.2.1-scrollfix.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
 BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
-BuildPrereq: libpng-devel
+BuildPrereq: libpng-devel >= %{libpng_version}
 BuildPrereq: /usr/bin/automake-1.4
 
-BuildRoot: /var/tmp/gtk-%{PACKAGE_VERSION}-root
+BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
 Obsoletes: Inti
 
@@ -80,7 +78,7 @@ docs for the GTK+ widget toolkit.
 
 %patch3 -p1 -b .themename
 %patch4 -p1 -b .xftprefs
-%patch5 -p0 -b .combo
+%patch5 -p1 -b .scrollfix
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -158,12 +156,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
+umask 022
 %{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
 %{_bindir}/gdk-pixbuf-query-loaders > %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 
-%postun -p /sbin/ldconfig
-/bin/rm -f %{_sysconfdir}/gtk-2.0/gtk.immodules
-/bin/rm -f %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
+%postun
+/sbin/ldconfig
+if [ $1 = 0 ] ; then
+	/bin/rm -f %{_sysconfdir}/gtk-2.0/gtk.immodules
+	/bin/rm -f %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
+fi
 
 %files -f gtk20.lang
 %defattr(-, root, root)
@@ -202,6 +204,36 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Feb 24 2003 Jonathan Blandford <jrb@redhat.com> 2.2.1-2
+- add a libpng dependency to pull in the rebuilt version.
+
+* Fri Feb 21 2003 Jonathan Blandford <jrb@redhat.com> 2.2.1-2
+- add a patch to fix broken scrolling in a lot of applications.
+
+* Sun Feb  2 2003 Owen Taylor <otaylor@redhat.com>
+- Version 2.2.1
+- Update xftprefs for gtk+-2.2.1
+
+* Wed Jan 22 2003 Tim Powers <timp@redhat.com>
+- rebuilt
+
+* Tue Jan 14 2003 Jonathan Blandford <jrb@redhat.com>
+- patch to fix TreeView misdrawing.  Remove when 2.2.1 comes out
+
+* Fri Dec 20 2002 Owen Taylor <otaylor@redhat.com>
+- Version 2.2.0
+
+* Fri Dec 20 2002 Nalin Dahyabhai <nalin@redhat.com>
+- Fix postun to not try to run a script through ldconfig
+- Only remove the gtk.immodules and gdk-pixbuf.loaders files if uninstalling
+  while not upgrading
+
+* Wed Dec 11 2002 Owen Taylor <otaylor@redhat.com>
+- Version 2.1.5
+
+* Wed Dec 11 2002 Owen Taylor <otaylor@redhat.com>
+- Version 2.1.4
+
 * Wed Dec  4 2002 Owen Taylor <otaylor@redhat.com>
 - Fix problem with GtkCombo not setting text to first item
 

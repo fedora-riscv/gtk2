@@ -8,7 +8,7 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.6.3
+%define base_version 2.6.4
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -22,11 +22,8 @@ Source1: update-scripts.tar.gz
 
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch1: gtk+-2.3.2-themename.patch
-# Mark assembly files as noexec-stack
-# Will be upstream in 2.6.4
-Patch2: gtk+-2.2.2-noexecstack.patch
 # Biarch changes
-Patch3: gtk+-2.4.1-lib64.patch
+Patch2: gtk+-2.4.1-lib64.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -85,8 +82,7 @@ docs for the GTK+ widget toolkit.
 (cd .. && tar xzf %{SOURCE1})
 
 %patch1 -p1 -b .themename
-%patch2 -p1 -b .noexecstack
-%patch3 -p1 -b .lib64
+%patch2 -p1 -b .lib64
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -255,6 +251,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Mar  1 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.4-1
+- Upgrade to 2.6.1
+- Remove upstreamed patch
+
 * Mon Feb 28 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.3-1
 - Upgrade to 2.6.3
 

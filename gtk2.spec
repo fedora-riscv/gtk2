@@ -14,7 +14,7 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 4
+Release: 5
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,7 +28,7 @@ Patch3: gtk+-2.0.6-themename.patch
 # the wrong symbosl
 Patch4: gtk+-2.0.6-exportsymbols.patch
 # Hook up Xft to XSETTINGS
-Patch5: gtk+-2.0.5-xftprefs.patch
+Patch5: gtk+-2.0.6-xftprefs.patch
 # Fix bug with GTK_IM_MODULE environment variable
 Patch6: gtk+-2.0.6-imenvvar.patch
 # Fixes to GtkIMContextSimple compose table for us-intl keyboards
@@ -197,6 +197,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon Aug 19 2002 Owen Taylor <otaylor@redhat.com>
+- Fix a memory leak in xftprefs.patch
 - Fix extra settings notifies on startup that were causing significant
   performance problems as fonts were reloaded.
 

@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.10
+%define base_version 2.4.13
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 7
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -31,12 +31,6 @@ Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
 Patch12: gtk+-2.4.9-backspace.patch
-# make SELECT_FOLDER work better; will be in 2.4.11
-Patch13: gtk+-2.4.10-folders.patch
-# make arrows in path bar larger; will be in 2.4.11
-Patch14: gtk+-2.4.10-arrows.patch
-# improve speed of completion popup for large directories; will be in 2.4.11
-Patch15: gtk+-2.4.10-bigdirs.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -98,13 +92,10 @@ docs for the GTK+ widget toolkit.
 %patch5 -p1 -b .noexecstack
 %patch6 -p1 -b .lib64
 %patch7 -p1 -b .treeview-typeahead
-%patch9 -p0 -b .search
+%patch9 -p1 -b .search
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
 %patch12 -p1 -b .backspace
-%patch13 -p1 -b .folders
-%patch14 -p1 -b .arrows
-%patch15 -p1 -b .bigdirs
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -272,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Oct 12 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.13-1
+- Upgrade to 2.4.13
+
 * Mon Oct 04 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-7
 - Don't move binaries to -32/-64 needlessly.
 

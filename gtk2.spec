@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.6
+%define base_version 2.4.7
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -255,6 +255,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Aug 14 2004 Matthias Clasen <mclasen@redhat.com> 2.4.7-1
+- update to 2.4.7
+
 * Fri Aug 13 2004 Matthias Clasen <mclasen@redhat.com> 2.4.6-1
 - update to 2.4.6
 - call libtoolize --force to win .so's back...

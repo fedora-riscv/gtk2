@@ -14,7 +14,7 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 7
+Release: 8
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -99,7 +99,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .usintl
 %patch8 -p1 -b .keycode
 %patch9 -p1 -b .extranotify
-%patch10 -p0 -b .scroll_to
+%patch10 -p1 -b .scroll_to
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

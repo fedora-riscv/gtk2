@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -30,6 +30,8 @@ Patch7: gtk+-2.4.4.treeview-typeahead.patch
 Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
+# Backport from HEAD (plus fixes from 
+# http://bugzilla.gnome.org/show_bug.cgi?id=155952)
 Patch12: gtk+-2.4.9-backspace.patch
 # Fix for pa.po will be in 2.4.14
 Patch13: gtk+-2.4.13-papo.patch
@@ -266,6 +268,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Oct 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.13-2
+- Fix up backspace-deletes-character patches to actually work
+  (#135656.)
+
 * Wed Oct 20 2004 Matthias Clasen <mclasen@redhat.com> 
 - Fix the translation of default:LTR in pa.po  (#136431)
 

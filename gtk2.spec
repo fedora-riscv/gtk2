@@ -3,21 +3,29 @@
 # Something's not quite right with libtool....
 %define __libtoolize :
 
+%define pango_base_version 0.23
+%define pango_extra_version .90-1
+%define pango_version %{pango_base_version}%{pango_extra_version}
+%define atk_base_version 0.8
+%define atk_extra_version .90-1
+%define atk_version %{atk_base_version}%{atk_extra_version}
+
+%define base_version 1.3.12
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X. (Beta version)
 Name: gtk2
-## note that there is a dir in the file list that contains the version,
-## but isn't using this variable
-Version: 1.3.6
-Release: 5
+Version: %{base_version}.90
+#Version: %{base_version}
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.gz
 Source1: gtk-beta-rc-default
 Source2: fixed-ltmain.sh
-BuildPrereq: atk-devel
-BuildPrereq: pango-devel 
-BuildPrereq: glib2-devel
+Patch1: gtk+-1.3.7-installdir.patch
+BuildPrereq: atk-devel >= %{atk_version}
+BuildPrereq: pango-devel >= %{pango_version}
+BuildPrereq: glib2-devel >= %{version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel
@@ -30,8 +38,8 @@ URL: http://www.gtk.org
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
 Prereq: glib2 >= %{version}
-Prereq: atk >= 0.2
-Prereq: pango >= 0.17
+Prereq: atk >= %{atk_version}
+Prereq: pango >= %{pango_version}
 
 %description
 The gtk+ package contains the GIMP ToolKit (GTK+), a library for
@@ -47,11 +55,15 @@ who wants to start developing against the new version of GTK+.
 Summary: Development tools for GTK+ applications. (Beta version)
 Group: Development/Libraries
 Requires: gtk2 = %{PACKAGE_VERSION}
-Requires: pango-devel
-Requires: atk-devel
+Requires: pango-devel >= %{pango_version}
+Requires: atk-devel >= %{atk_version}
+Requires: glib2-devel >= %{version}
 Requires: XFree86-devel
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
+## avoid header collisions
+Conflicts: gtk+-devel <= 1.2.8
+Conflicts: gdk-pixbuf-devel <= 0.11
 
 %description devel
 The gtk+-devel package contains the static libraries and header files
@@ -66,6 +78,45 @@ You should only install this package if you are a developer
 who wants to start developing against the new version of GTK+.
 
 %changelog
+* Wed Jan  2 2002 Havoc Pennington <hp@redhat.com>
+- 1.3.12.90 snapshot
+
+* Sun Nov 25 2001 Havoc Pennington <hp@redhat.com>
+- Version 1.3.11
+- check atk/pango versions explicitly prior to build,
+  so that --nodeps tricks don't result in bad binary RPMs
+
+* Fri Oct  5 2001 Havoc Pennington <hp@redhat.com>
+- pixbuf loaders were missing from file list
+- conflict with gdk-pixbuf-devel <= 0.11
+
+* Thu Oct  4 2001 Havoc Pennington <hp@redhat.com>
+- cvs snap
+
+* Thu Sep 27 2001 Havoc Pennington <hp@redhat.com>
+- sync with Owen's version
+
+* Thu Sep 20 2001 Havoc Pennington <hp@redhat.com>
+- smp_mflags
+- langify
+
+* Wed Sep 19 2001 Havoc Pennington <hp@redhat.com>
+- 1.3.8
+- add automake hackarounds
+
+* Thu Sep 13 2001 Havoc Pennington <hp@redhat.com>
+- conflict with old GTK with headers not moved
+- prereq new version of pango
+
+* Mon Sep 10 2001 Havoc Pennington <hp@redhat.com>
+- update to CVS snapshot
+
+* Wed Sep  5 2001 Havoc Pennington <hp@redhat.com>
+- build require specific versions of dependencies
+
+* Tue Sep  4 2001 Owen Taylor <otaylor@redhat.com>
+- Version 1.3.7
+
 * Thu Jul 26 2001 Havoc Pennington <hp@redhat.com>
 - Obsolete Inti and Inti-devel, #49967
 
@@ -273,19 +324,45 @@ who wants to start developing against the new version of GTK+.
   
 %prep
 %setup -n gtk+-%{version}
+%patch1 -p1 -b .installdir
 for i in config.guess config.sub ; do
 	test -f /usr/share/libtool/$i && cp /usr/share/libtool/$i .
 done
 
 %build
+
+## ensure that --nodeps doesn't mess things up (configure.in also
+## checks this in theory, but in principle the RPM and configure.in
+## could require different versions, and a double check is nice
+## anyhow)
+if ! pkg-config --atleast-version=%{atk_base_version} atk; then 
+  echo "atk-devel does not meet the build requirements"
+  exit 1
+fi
+if ! pkg-config --atleast-version=%{pango_base_version} pango; then 
+  echo "pango-devel does not meet the build requirements"
+  exit 1
+fi
+
+
 rm ltmain.sh && cp %{SOURCE2} ltmain.sh
+# Patch1 modifies modules/input/Makefile.am
+automake
 %configure --with-xinput=xfree --disable-gtk-doc
-make
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %makeinstall
+
+%find_lang %name
+
+#
+# Install a default RC file
+#
+./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
+install -m 444 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/gtkrc
 
 #
 # Make cleaned-up versions of examples and tutorial for installation
@@ -312,8 +389,6 @@ cd tests
 ../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_prefix}/bin
 ../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_prefix}/bin
 
-install -m 444 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/gtkrc
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -323,7 +398,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -p /sbin/ldconfig
 
-%files
+%files -f %{name}.lang
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
@@ -336,53 +411,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/libgdk_pixbuf-1.3.so.*
 %{_prefix}/lib/libgdk_pixbuf_xlib-1.3.so.*
 %dir %{_prefix}/lib/gtk-2.0
-##### CHANGE THIS when we upgrade the tarball
-%{_prefix}/lib/gtk-2.0/1.3.6
+%{_prefix}/lib/gtk-2.0/immodules
+%{_prefix}/lib/gtk-2.0/%{base_version}
 %{_prefix}/share/gtk-2.0
 %{_prefix}/share/themes/Default/gtk-2.0
-%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/gtk20.mo
-%lang(sv) %{_datadir}/locale/sv/LC_MESSAGES/gtk20.mo
-%lang(el) %{_datadir}/locale/el/LC_MESSAGES/gtk20.mo
-%lang(az) %{_datadir}/locale/az/LC_MESSAGES/gtk20.mo
-%lang(fa) %{_datadir}/locale/fa/LC_MESSAGES/gtk20.mo
-%lang(ia) %{_datadir}/locale/ia/LC_MESSAGES/gtk20.mo
-%lang(zh_CN) %{_datadir}/locale/zh_CN/LC_MESSAGES/gtk20.mo
-%lang(pt) %{_datadir}/locale/pt/LC_MESSAGES/gtk20.mo
-%lang(fi) %{_datadir}/locale/fi/LC_MESSAGES/gtk20.mo
-%lang(eu) %{_datadir}/locale/eu/LC_MESSAGES/gtk20.mo
-%lang(it) %{_datadir}/locale/it/LC_MESSAGES/gtk20.mo
-%lang(nn) %{_datadir}/locale/nn/LC_MESSAGES/gtk20.mo
-%lang(gl) %{_datadir}/locale/gl/LC_MESSAGES/gtk20.mo
-%lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/gtk20.mo
-%lang(hu) %{_datadir}/locale/hu/LC_MESSAGES/gtk20.mo
-%lang(nl) %{_datadir}/locale/nl/LC_MESSAGES/gtk20.mo
-%lang(ja) %{_datadir}/locale/ja/LC_MESSAGES/gtk20.mo
-%lang(sp) %{_datadir}/locale/sp/LC_MESSAGES/gtk20.mo
-%lang(pl) %{_datadir}/locale/pl/LC_MESSAGES/gtk20.mo
-%lang(sr) %{_datadir}/locale/sr/LC_MESSAGES/gtk20.mo
-%lang(zh_TW) %{_datadir}/locale/zh_TW/LC_MESSAGES/gtk20.mo
-%lang(en@IPA) %{_datadir}/locale/en@IPA/LC_MESSAGES/gtk20.mo
-%lang(uk) %{_datadir}/locale/uk/LC_MESSAGES/gtk20.mo
-%lang(vi) %{_datadir}/locale/vi/LC_MESSAGES/gtk20.mo
-%lang(he) %{_datadir}/locale/he/LC_MESSAGES/gtk20.mo
-%lang(es) %{_datadir}/locale/es/LC_MESSAGES/gtk20.mo
-%lang(et) %{_datadir}/locale/et/LC_MESSAGES/gtk20.mo
-%lang(da) %{_datadir}/locale/da/LC_MESSAGES/gtk20.mo
-%lang(ko) %{_datadir}/locale/ko/LC_MESSAGES/gtk20.mo
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/gtk20.mo
-%lang(wa) %{_datadir}/locale/wa/LC_MESSAGES/gtk20.mo
-%lang(pt_BR) %{_datadir}/locale/pt_BR/LC_MESSAGES/gtk20.mo
-%lang(ca) %{_datadir}/locale/ca/LC_MESSAGES/gtk20.mo
-%lang(sl) %{_datadir}/locale/sl/LC_MESSAGES/gtk20.mo
-%lang(lt) %{_datadir}/locale/lt/LC_MESSAGES/gtk20.mo
-%lang(no) %{_datadir}/locale/no/LC_MESSAGES/gtk20.mo
-%lang(hr) %{_datadir}/locale/hr/LC_MESSAGES/gtk20.mo
-%lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/gtk20.mo
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/gtk20.mo
-%lang(ga) %{_datadir}/locale/ga/LC_MESSAGES/gtk20.mo
-%lang(ro) %{_datadir}/locale/ro/LC_MESSAGES/gtk20.mo
-%lang(tr) %{_datadir}/locale/tr/LC_MESSAGES/gtk20.mo
-%lang(en_GB) %{_datadir}/locale/en_GB/LC_MESSAGES/gtk20.mo
 %dir %{_sysconfdir}/gtk-2.0
 %config %{_sysconfdir}/gtk-2.0/gtkrc
 
@@ -393,10 +425,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/*a
 %dir %{_prefix}/lib/gtk-2.0
 %{_prefix}/lib/gtk-2.0/include
-# %{_mandir}/man1/*
+%{_mandir}/man1/*
 %{_prefix}/include/*
 %{_prefix}/share/aclocal/*
-%{_prefix}/bin/make-inline-pixbuf
+%{_prefix}/bin/gdk-pixbuf-csource
 %{_prefix}/lib/pkgconfig/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/examples

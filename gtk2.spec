@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -29,6 +29,7 @@ Patch7: gtk+-2.4.4.treeview-typeahead.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=150601
 Patch8: gtk+-2.2.4-bmploop.patch
 Patch9: gtk-filechooser-search.patch
+Patch10: gtk+-2.4.7-update-counter.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -90,6 +91,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .treeview-typeahead
 %patch8 -p1 -b .bmploop
 %patch9 -p0 -b .search
+%patch10 -p0 -b .update-counter
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -260,6 +262,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Aug 24 2004 Soren Sandmann <sandmann@redhat.com> 2.4.7-4
+- Backport update counter
+
 * Tue Aug 24 2004 Jonathan Blandford <jrb@redhat.com> 2.4.7-2.3
 - patch to make '/' do the search popup
 

@@ -8,13 +8,12 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.0
+%define base_version 2.4.1
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-#Version: %{base_version}
 Release: 1
 License: LGPL
 Group: System Environment/Libraries
@@ -32,6 +31,8 @@ BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
 BuildPrereq: /usr/bin/automake-1.8
+# needed for running aclocal
+BuildPrereq: gtk-doc
 
 BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
@@ -84,10 +85,11 @@ done
 
 %build
 
+
+# Patch3 modifies Makefile.am
 aclocal-1.8
 automake-1.8
 
-# Patch4 modifies configure.in
 if test -x /usr/bin/autoconf-2.53; then
   autoconf-2.53
 elif test -x /usr/bin/autoconf-2.52; then
@@ -196,6 +198,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Thu May 20 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.1-1
+- Upgrade to 2.4.1
+
 * Wed Mar 17 2004 Alex Larsson <alexl@redhat.com> 2.4.0-1
 - update to 2.4.0
 - update bin_version to 2.4.0

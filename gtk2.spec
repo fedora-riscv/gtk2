@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 5
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -183,10 +183,11 @@ case "$host" in
 esac
 
 #
-# Install wrappers for the query binaries
+# Install wrappers for the binaries
 #
 cp ../update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 cp ../update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
+cp ../gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -252,6 +253,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Jul  8 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.1-5
+- Look for the gtk.immodules file in the right location.  (#127073)
+
+* Thu Jul  8 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.1-4
+- Add a wrapper for gdk-pixbuf-csource.
+
 * Wed Jun 23 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.1-3
 - Don't install testgtk and testtext
 - Rename binaries to -32/-64 (#124478)

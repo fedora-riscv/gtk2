@@ -14,7 +14,7 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 6
+Release: 7
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -38,6 +38,8 @@ Patch8: gtk+-2.0.6-keycode.patch
 # Fix extra settings notifies on startup that were causing significant
 # performance problems as fonts were reloaded.
 Patch9: gtk+-2.0.6-extranotify.patch
+# Fix gtk_tree_view_scroll_to_cell
+Patch10: gtk+-2.0.6-scroll_to.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -97,6 +99,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .usintl
 %patch8 -p1 -b .keycode
 %patch9 -p1 -b .extranotify
+%patch10 -p0 -b .scroll_to
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -204,6 +207,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Aug 25 2002 Jonathan Blandford <jrb@redhat.com>
+- fix gtk_tree_view_scroll_to_cell
+
 * Fri Aug 23 2002 Owen Taylor <otaylor@redhat.com>
 - Fixed Raleigh theme missing from package list
 

@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -268,6 +268,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Oct 22 2004 Owen Taylor <otaylor@redhat.com> - 2.4.13-3
+- Fix crash with backspace at end of buffer (#136840)
+
 * Wed Oct 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.13-2
 - Fix up backspace-deletes-character patches to actually work
   (#135656.)

@@ -228,6 +228,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gdk-pixbuf-loaders
 %{_bindir}/update-gtk-immodules
+%{_bindir}/gtk-update-icon-cache
 %{_libdir}/libgtk-x11-2.0.so.*
 %{_libdir}/libgdk-x11-2.0.so.*
 %{_libdir}/libgdk_pixbuf-2.0.so.*

@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.7
+%define base_version 2.4.9
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 4
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -26,8 +26,6 @@ Patch3: gtk+-2.3.2-themename.patch
 Patch5: gtk+-2.2.2-noexecstack.patch
 Patch6: gtk+-2.4.1-lib64.patch
 Patch7: gtk+-2.4.4.treeview-typeahead.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=150601
-Patch8: gtk+-2.2.4-bmploop.patch
 Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 
@@ -89,7 +87,6 @@ docs for the GTK+ widget toolkit.
 %patch5 -p1 -b .noexecstack
 %patch6 -p1 -b .lib64
 %patch7 -p1 -b .treeview-typeahead
-%patch8 -p1 -b .bmploop
 %patch9 -p0 -b .search
 %patch10 -p0 -b .update-counter
 
@@ -262,6 +259,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Aug 25 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-3
+- adjust patches
+
+* Wed Aug 25 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-1
+- update to 2.4.9
+
 * Tue Aug 24 2004 Soren Sandmann <sandmann@redhat.com> 2.4.7-4
 - Backport update counter
 

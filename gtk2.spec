@@ -8,7 +8,7 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.6.0
+%define base_version 2.6.1
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -19,9 +19,6 @@ License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
-
-# Important fixes which will be 2.6.1
-Patch0: gtk+-2.6.0-fixes.patch
 
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch1: gtk+-2.3.2-themename.patch
@@ -86,7 +83,6 @@ docs for the GTK+ widget toolkit.
 
 (cd .. && tar xzf %{SOURCE1})
 
-%patch0 -p0 -b .fixes
 %patch1 -p1 -b .themename
 %patch2 -p1 -b .noexecstack
 %patch3 -p1 -b .lib64
@@ -258,6 +254,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Jan 10 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.1-1
+- Upgrade to 2.6.1
+- Drop no longer needed fixes
+
 * Mon Dec 06 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.14-1
 - Upgrade to 2.4.14
 - Remove the no longer needed pa.po patch

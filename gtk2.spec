@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -168,7 +168,7 @@ done
 # for places where we have two copies of the GTK+ package installed.
 # (we might have x86_64 and i686 packages on the same system, for example.)
 case "$host" in
-  alpha*|ia64*|ppc64*|s390x*|x86_64*)
+  alpha*|ia64*|powerpc64*|s390x*|x86_64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-64
    mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource-64
@@ -253,6 +253,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul 27 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-3
+- Use -64 suffix on powerpc64.  (#128605)
+
 * Fri Jul 16 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-2
 - Fix permissions of gdk-pixbuf-csource script. 
 - Escape macros in %%changelog

@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 7
+Release: 8
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -269,6 +269,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Sep 13 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-8
+- bring expanders back to their old size
+
 * Fri Sep 10 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-7
 - backport support for PangoLogAttr.backspace_deletes_character
 

@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -25,6 +25,7 @@ Patch3: gtk+-2.3.2-themename.patch
 # Mark assembly files as noexec-stack
 Patch5: gtk+-2.2.2-noexecstack.patch
 Patch6: gtk+-2.4.1-lib64.patch
+Patch7: gtk+-2.4.4.treeview-typeahead.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -32,7 +33,7 @@ BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
-BuildPrereq: /usr/bin/automake-1.8
+BuildPrereq: /usr/bin/automake-1.9
 # needed for running aclocal
 BuildPrereq: gtk-doc
 
@@ -83,6 +84,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .themename
 %patch5 -p1 -b .noexecstack
 %patch6 -p1 -b .lib64
+%patch7 -p1 -b .treeview-typeahead
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -92,8 +94,8 @@ done
 
 
 # Patch3 modifies Makefile.am
-aclocal-1.8
-automake-1.8
+aclocal-1.9
+automake-1.9
 
 if test -x /usr/bin/autoconf-2.53; then
   autoconf-2.53
@@ -253,6 +255,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jul 30 2004 Jonathan Blandford <jrb@redhat.com> 2.4.4-4
+- add typeahead patch to GtkTreeView
+- automake-1.9
+
 * Tue Jul 27 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-3
 - Use -64 suffix on powerpc64.  (#128605)
 

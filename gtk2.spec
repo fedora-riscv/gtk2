@@ -117,7 +117,7 @@ fi
 %configure --with-xinput=xfree --disable-gtk-doc --disable-visibility
 %else
 %configure --with-xinput=xfree --disable-gtk-doc
-%fi
+%endif
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2

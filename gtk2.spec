@@ -14,8 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-#Version: %{base_version}
-Release: 7.1
+Release: 10
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -39,6 +38,8 @@ Patch9: gtk+-2.2.4-filterevents.patch
 Patch10: gtk+-2.2.4-pixbufxlibdep.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=150601
 Patch11: gtk+-2.2.4-bmploop.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=130711
+Patch12: gtk+-2.2.4-loaders.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -99,6 +100,7 @@ docs for the GTK+ widget toolkit.
 %patch9 -p1 -b .filterevents
 %patch10 -p1 -b .pixbufxlibdep
 %patch11 -p1 -b .bmploop
+%patch12 -p1 -b .loaders
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -223,6 +225,10 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Fri Sep  3 2004 Matthias Clasen <mclasen@redhat.com> - 2.2.4-10
+- Fix issues in the xpm and ico loaders
+  found by Chris Evans (#130711)
+
 * Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.2.4-7.1
 - Fix problem with infinite loop on bad BMP data (#130450, 
   test BMP from Chris Evans, fix from Manish Singh)

@@ -204,6 +204,8 @@ cp ../gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/immodules/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/loaders/*.la
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
@@ -266,6 +268,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Sep 15 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-2
+- don't install .la files.  (#132792)
+
 * Wed Sep 15 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-1
 - update to latest upstream version, drop some patches
 

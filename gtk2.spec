@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -31,6 +31,9 @@ Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
 Patch11: gtk+-2.4.9-treeview-activate.patch
 Patch12: gtk+-2.4.9-backspace.patch
+# make SELECT_FOLDER work better in the file chooser
+# fix will be in 2.4.11
+Patch13: gtk+-2.4.10-folders.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -96,6 +99,7 @@ docs for the GTK+ widget toolkit.
 %patch10 -p0 -b .update-counter
 %patch11 -p1 -b .treeview-activate
 %patch12 -p1 -b .backspace
+%patch13 -p1 -b .folders
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -268,6 +272,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Sep 22 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-3
+- Make SELECT_FOLDER work better in the file chooser.
+
 * Wed Sep 15 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-2
 - don't install .la files.  (#132792)
 

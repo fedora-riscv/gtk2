@@ -1,45 +1,33 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.2.0
+%define glib2_base_version 2.3.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.2.0
-%define pango_version %{pango_base_version}-3
-%define atk_base_version 1.0.0
+%define pango_base_version 1.3.0
+%define pango_version %{pango_base_version}-1
+%define atk_base_version 1.5.0
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.2.4
+%define base_version 2.3.2
 %define bin_version 2.2.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 10
+#Version: %{base_version}
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 
 # Rename the 'Default' widget theme to 'Raleigh'
-Patch3: gtk+-2.0.6-themename.patch
+Patch3: gtk+-2.3.2-themename.patch
 # Hook up Xft to XSETTINGS
-Patch4: gtk+-xftprefs.patch
+Patch4: gtk+-2.3.2-xftprefs.patch
 # Mark assembly files as noexec-stack
 Patch5: gtk+-2.2.2-noexecstack.patch
-# XFlush() rather than XSync() at the end of process_all_updates()
-# http://bugzilla.gnome.org/show_bug.cgi?id=109180
-Patch6: gtk+-2.2.2-flush.patch
-# In GTK+ CVS, http://bugzilla.gnome.org/show_bug.cgi?id=105161
-Patch7: gtk+-2.2.4-nolocaledecimal.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=122327
-Patch8: gtk+-2.2.4-focusloop.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=110493
-Patch9: gtk+-2.2.4-filterevents.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=124687
-Patch10: gtk+-2.2.4-pixbufxlibdep.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=150601
-Patch11: gtk+-2.2.4-bmploop.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=130711
-Patch12: gtk+-2.2.4-loaders.patch
+Patch10: gtk+-2.3.2-pixbufxlibdep.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -47,7 +35,7 @@ BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
-BuildPrereq: /usr/bin/automake-1.4
+BuildPrereq: /usr/bin/automake-1.8
 
 BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
@@ -94,13 +82,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .themename
 %patch4 -p1 -b .xftprefs
 %patch5 -p1 -b .noexecstack
-%patch6 -p1 -b .flush
-%patch7 -p1 -b .nolocaledecimal
-%patch8 -p1 -b .focusloop
-%patch9 -p1 -b .filterevents
 %patch10 -p1 -b .pixbufxlibdep
-%patch11 -p1 -b .bmploop
-%patch12 -p1 -b .loaders
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -108,11 +90,8 @@ done
 
 %build
 
-
-# Patch3 modifies gtk/Makefile.am
-automake-1.4 gtk/Makefile
-# Patch10 modifies contrib/gdk-pixbuf-xlib/Makefile.am
-automake-1.4 contrib/gdk-pixbuf-xlib/Makefile
+aclocal-1.8
+automake-1.8
 
 # Patch4 modifies configure.in
 if test -x /usr/bin/autoconf-2.53; then
@@ -130,10 +109,7 @@ fi
 
 %configure --with-xinput=xfree --disable-gtk-doc
 
-if ! grep -q 'HAVE_XFT2 1' config.h; then
-        echo "Did not detect Xft2"
-        exit 1
-fi
+perl -pi -e 's|hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=\"-L\\\$libdir\"|g;' libtool
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -145,6 +121,9 @@ rm -rf $RPM_BUILD_ROOT
 %makeinstall RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 %find_lang gtk20
+%find_lang gtk20-properties
+
+cat gtk20.lang gtk20-properties.lang > all.lang
 
 ./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
 #
@@ -187,7 +166,7 @@ if [ $1 = 0 ] ; then
 	/bin/rm -f %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 fi
 
-%files -f gtk20.lang
+%files -f all.lang
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README
@@ -225,13 +204,16 @@ fi
 %doc tmpdocs/examples
 
 %changelog
-* Fri Sep  3 2004 Matthias Clasen <mclasen@redhat.com> - 2.2.4-10
-- Fix issues in the xpm and ico loaders
-  found by Chris Evans (#130711)
+* Fri Jan 23 2004 Alexander Larsson <alexl@redhat.com> 2.3.2-2
+- Remove old HAVE_XFT2 check
+- find_lang gtk20-properties too
 
-* Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.2.4-7.1
-- Fix problem with infinite loop on bad BMP data (#130450, 
-  test BMP from Chris Evans, fix from Manish Singh)
+* Fri Jan 23 2004 Jonathan Blandford <jrb@redhat.com> 2.3.2-1
+- new version
+- removed patches that have been applied to 2.3.x branch
+
+* Mon Dec  1 2003 Thomas Woerner <twoerner@redhat.com> 2.2.4-5.2
+- removed rpath
 
 * Wed Oct 15 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-5.1
 - Link gdk-pixbuf-xlib against gdk-pixbuf (#106678)

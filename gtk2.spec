@@ -1,37 +1,44 @@
 # Note that this is NOT a relocatable package
 
-# Something's not quite right with libtool....
-%define __libtoolize :
-
-%define glib2_base_version 2.0.0
+%define glib2_base_version 2.0.4
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.0.99.020606
+%define pango_base_version 1.0.99.020703
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.0.0
 %define atk_version %{atk_base_version}-1
 
-%define base_version 2.0.3
+%define base_version 2.0.6
 %define bin_version 2.0.0
-
-
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
-Source1: gtk-beta-rc-default
-Source2: fixed-ltmain.sh
-Source3: gtk2.sh
-Source4: gtk2.csh
+
 Patch1: gtk+-1.3.7-installdir.patch
-# Don't use GTK_RC_FILES, since it causes problems with what
-# KDE does to customize GTK+ themes, use GTK2_RC_FILES instead
-Patch2: gtk+-2.0.2-gtkrc.patch
-Patch3: gtk+-2.0.3-xft2.patch
+# Use XftDraw so that Xft works without RENDER
+Patch2: gtk+-2.0.6-xftdraw.patch
+# Rename the 'Default' widget theme to 'Raleigh'
+Patch3: gtk+-2.0.6-themename.patch
+# Turn of --export-symbols-regex for now, since it removes
+# the wrong symbosl
+Patch4: gtk+-2.0.6-exportsymbols.patch
+# Hook up Xft to XSETTINGS
+Patch5: gtk+-2.0.5-xftprefs.patch
+# Fix bug with GTK_IM_MODULE environment variable
+Patch6: gtk+-2.0.6-imenvvar.patch
+# Fixes to GtkIMContextSimple compose table for us-intl keyboards
+Patch7: gtk+-2.0.6-usintl.patch
+# Fix problem with keycodes passed to GtkIMContextXIM
+Patch8: gtk+-2.0.6-keycode.patch
+# Fix extra settings notifies on startup that were causing significant
+# performance problems as fonts were reloaded.
+Patch9: gtk+-2.0.6-extranotify.patch
+
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
 BuildPrereq: glib2-devel >= %{glib2_version}
@@ -75,7 +82,155 @@ Conflicts: gdk-pixbuf-devel <= 0.11
 The gtk+-devel package contains the header files and developer
 docs for the GTK+ widget toolkit.  
 
+%prep
+%setup -q -n gtk+-%{version}
+%patch1 -p1 -b .installdir
+%patch2 -p1 -b .xftdraw
+%patch3 -p1 -b .themename
+%patch4 -p1 -b .exportsymbols
+%patch5 -p1 -b .xftprefs
+%patch6 -p1 -b .imenvvar
+%patch7 -p1 -b .usintl
+%patch8 -p1 -b .keycode
+%patch9 -p1 -b .extranotify
+
+for i in config.guess config.sub ; do
+	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
+done
+
+%build
+
+
+# Patch1 modifies modules/input/Makefile.am
+# Patch3 modifies gtk/Makefile.am
+aclocal-1.4
+automake-1.4
+
+# Patch4 modifies configure.in
+if test -x /usr/bin/autoconf-2.53; then
+  autoconf-2.53
+elif test -x /usr/bin/autoconf-2.52; then
+  autoconf-2.52
+elif test -x /usr/bin/autoconf; then
+  autoconf
+fi
+
+%configure --with-xinput=xfree --disable-gtk-doc
+make %{?_smp_mflags}
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+%makeinstall
+
+%find_lang gtk20
+
+./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
+#
+# Make cleaned-up versions of examples and tutorial for installation
+#
+./mkinstalldirs tmpdocs/tutorial
+# install -m 0644 docs/html/gtk_tut.html docs/html/gtk_tut-[0-9]*.html docs/html/*.gif tmpdocs/tutorial
+for dir in examples/* ; do
+    if [ -d $dir ] ; then
+       ./mkinstalldirs tmpdocs/$dir
+       for file in $dir/* ; do
+          case $file in
+	     *pre1.2.7)
+	        ;;
+	     *)
+                install -m 0644 $file tmpdocs/$dir
+		;;
+	  esac
+       done
+    fi
+done
+
+# Install the demo programs
+cd tests
+../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_bindir}
+../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_bindir}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/ldconfig
+%{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
+
+%postun -p /sbin/ldconfig
+
+%files -f gtk20.lang
+%defattr(-, root, root)
+
+%doc AUTHORS COPYING ChangeLog NEWS README TODO
+%{_bindir}/testtext
+%{_bindir}/testgtk
+%{_bindir}/gtk-demo
+%{_bindir}/gtk-query-immodules-2.0
+%{_libdir}/libgtk-x11-2.0.so.*
+%{_libdir}/libgdk-x11-2.0.so.*
+%{_libdir}/libgdk_pixbuf-2.0.so.*
+%{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
+%dir %{_libdir}/gtk-2.0
+%{_libdir}/gtk-2.0/%{bin_version}
+%{_datadir}/gtk-2.0
+%{_datadir}/themes/Default/gtk-2.0*
+%{_datadir}/themes/Emacs/gtk-2.0*
+%dir %{_sysconfdir}/gtk-2.0
+
+
+%files devel
+%defattr(-, root, root)
+
+%{_libdir}/lib*.so
+%dir %{_libdir}/gtk-2.0
+%{_libdir}/gtk-2.0/include
+%{_datadir}/gtk-doc/
+%{_mandir}/man1/*
+%{_includedir}/*
+%{_datadir}/aclocal/*
+%{_bindir}/gdk-pixbuf-csource
+%{_libdir}/pkgconfig/*
+%doc tmpdocs/tutorial
+%doc tmpdocs/examples
+
 %changelog
+* Mon Aug 19 2002 Owen Taylor <otaylor@redhat.com>
+- Fix extra settings notifies on startup that were causing significant
+  performance problems as fonts were reloaded.
+
+* Tue Aug 13 2002 Owen Taylor <otaylor@redhat.com>
+- Fixes to GtkIMContextSimple compose table for us-intl keyboards
+  (#70995, Alexandre Oliva)
+- Fix problem with keycodes passed to GtkIMContextXIM
+	
+* Thu Aug  8 2002 Owen Taylor <otaylor@redhat.com>
+- Remove fixed-ltmain.sh, no longer needed
+- Fix bug with GTK_IM_MODULE environment variable
+- Remove profile.d entries setting GDK_USE_XFT, since we now default to it on
+- Backport patch from CVS HEAD to get Xft to work on non-RENDER XServers
+- Version 2.0.6
+
+* Tue Jul 16 2002 Owen Taylor <otaylor@redhat.com>
+- Fix cut and paste error in xftprefs patch pointed out by Anders Carlsson
+
+* Mon Jul  8 2002 Owen Taylor <otaylor@redhat.com>
+- Add patch to hook Xft up to XSETTINGS
+
+* Tue Jul  2 2002 Jonathan Blandford <jrb@redhat.com>
+- tree-view fixes for anaconda.  Already in CVS.
+
+* Fri Jun 21 2002 Owen Taylor <otaylor@redhat.com>
+- Default GDK_USE_XFT to on, not off
+
+* Sun Jun 16 2002 Havoc Pennington <hp@redhat.com>
+- 2.0.5
+- remove xft configure.in patch
+
+* Fri Jun 07 2002 Havoc Pennington <hp@redhat.com>
+- rebuild in different environment
+
 * Fri Jun  7 2002 Havoc Pennington <hp@redhat.com>
 - rebuild
 
@@ -318,7 +473,7 @@ docs for the GTK+ widget toolkit.
 - added XFree86-devel requirement for gtk+-devel
 
 * Thu Mar 25 1999 Michael Fulbright <drmike@redhat.com>
-- version 1.2.1
+v- version 1.2.1
 
 * Wed Mar 17 1999 Michael Fulbright <drmike@redhat.com>
 - removed /usr/info/dir.gz file from package
@@ -394,119 +549,3 @@ docs for the GTK+ widget toolkit.
   Michael K. Johnson <johnsonm@redhat.com>
   Otto Hammersmith <otto@redhat.com>
   
-%prep
-%setup -q -n gtk+-%{version}
-%patch1 -p1 -b .installdir
-%patch2 -p1 -b .gtkrc
-%patch3 -p0 -b .xft2
-for i in config.guess config.sub ; do
-	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
-done
-
-%build
-
-
-rm ltmain.sh && cp %{SOURCE2} ltmain.sh
-# Patch1 modifies modules/input/Makefile.am
-aclocal-1.4
-automake-1.4
-
-if test -x /usr/bin/autoconf-2.53; then
-  autoconf-2.53
-elif test -x /usr/bin/autoconf-2.52; then
-  autoconf-2.52
-elif test -x /usr/bin/autoconf; then
-  autoconf
-fi
-
-%configure --with-xinput=xfree --disable-gtk-doc
-make %{?_smp_mflags}
-
-%install
-rm -rf $RPM_BUILD_ROOT
-
-%makeinstall
-
-%find_lang gtk20
-
-# install profile.d stuff
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-install -m 755 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-install -m 755 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-
-#
-# Install a default RC file
-#
-./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
-install -m 444 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/gtkrc
-
-#
-# Make cleaned-up versions of examples and tutorial for installation
-#
-./mkinstalldirs tmpdocs/tutorial
-# install -m 0644 docs/html/gtk_tut.html docs/html/gtk_tut-[0-9]*.html docs/html/*.gif tmpdocs/tutorial
-for dir in examples/* ; do
-    if [ -d $dir ] ; then
-       ./mkinstalldirs tmpdocs/$dir
-       for file in $dir/* ; do
-          case $file in
-	     *pre1.2.7)
-	        ;;
-	     *)
-                install -m 0644 $file tmpdocs/$dir
-		;;
-	  esac
-       done
-    fi
-done
-
-# Install the demo programs
-cd tests
-../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_bindir}
-../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_bindir}
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-/sbin/ldconfig
-%{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
-
-%postun -p /sbin/ldconfig
-
-%files -f gtk20.lang
-%defattr(-, root, root)
-
-%doc AUTHORS COPYING ChangeLog NEWS README TODO
-%{_bindir}/testtext
-%{_bindir}/testgtk
-%{_bindir}/gtk-demo
-%{_bindir}/gtk-query-immodules-2.0
-%{_libdir}/libgtk-x11-2.0.so.*
-%{_libdir}/libgdk-x11-2.0.so.*
-%{_libdir}/libgdk_pixbuf-2.0.so.*
-%{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
-%dir %{_libdir}/gtk-2.0
-%{_libdir}/gtk-2.0/%{bin_version}
-%{_datadir}/gtk-2.0
-%{_datadir}/themes/Default/gtk-2.0*
-%{_datadir}/themes/Emacs/gtk-2.0*
-%{_sysconfdir}/profile.d/*
-%dir %{_sysconfdir}/gtk-2.0
-#%config %{_sysconfdir}/gtk-2.0/gtkrc
-
-
-%files devel
-%defattr(-, root, root)
-
-%{_libdir}/lib*.so
-%dir %{_libdir}/gtk-2.0
-%{_libdir}/gtk-2.0/include
-%{_datadir}/gtk-doc/
-%{_mandir}/man1/*
-%{_includedir}/*
-%{_datadir}/aclocal/*
-%{_bindir}/gdk-pixbuf-csource
-%{_libdir}/pkgconfig/*
-%doc tmpdocs/tutorial
-%doc tmpdocs/examples

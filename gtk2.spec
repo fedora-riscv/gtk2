@@ -8,14 +8,14 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.2.1
+%define base_version 2.2.4
 %define bin_version 2.2.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 4
+Release: 5.1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,7 +24,19 @@ Source: gtk+-%{version}.tar.bz2
 Patch3: gtk+-2.0.6-themename.patch
 # Hook up Xft to XSETTINGS
 Patch4: gtk+-xftprefs.patch
-Patch5: gtk+-2.2.1-scrollfix.patch
+# Mark assembly files as noexec-stack
+Patch5: gtk+-2.2.2-noexecstack.patch
+# XFlush() rather than XSync() at the end of process_all_updates()
+# http://bugzilla.gnome.org/show_bug.cgi?id=109180
+Patch6: gtk+-2.2.2-flush.patch
+# In GTK+ CVS, http://bugzilla.gnome.org/show_bug.cgi?id=105161
+Patch7: gtk+-2.2.4-nolocaledecimal.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=122327
+Patch8: gtk+-2.2.4-focusloop.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=110493
+Patch9: gtk+-2.2.4-filterevents.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=124687
+Patch10: gtk+-2.2.4-pixbufxlibdep.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -78,7 +90,12 @@ docs for the GTK+ widget toolkit.
 
 %patch3 -p1 -b .themename
 %patch4 -p1 -b .xftprefs
-%patch5 -p1 -b .scrollfix
+%patch5 -p1 -b .noexecstack
+%patch6 -p1 -b .flush
+%patch7 -p1 -b .nolocaledecimal
+%patch8 -p1 -b .focusloop
+%patch9 -p1 -b .filterevents
+%patch10 -p1 -b .pixbufxlibdep
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -89,6 +106,8 @@ done
 
 # Patch3 modifies gtk/Makefile.am
 automake-1.4 gtk/Makefile
+# Patch10 modifies contrib/gdk-pixbuf-xlib/Makefile.am
+automake-1.4 contrib/gdk-pixbuf-xlib/Makefile
 
 # Patch4 modifies configure.in
 if test -x /usr/bin/autoconf-2.53; then
@@ -124,21 +143,17 @@ rm -rf $RPM_BUILD_ROOT
 
 ./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
 #
-# Make cleaned-up versions of examples and tutorial for installation
+# Make cleaned-up versions of tutorials, examples, and faq for installation
 #
-./mkinstalldirs tmpdocs/tutorial
-# install -m 0644 docs/html/gtk_tut.html docs/html/gtk_tut-[0-9]*.html docs/html/*.gif tmpdocs/tutorial
+./mkinstalldirs tmpdocs
+cp -aR docs/tutorial/html tmpdocs/tutorial
+cp -aR docs/faq/html tmpdocs/faq
+
 for dir in examples/* ; do
     if [ -d $dir ] ; then
        ./mkinstalldirs tmpdocs/$dir
        for file in $dir/* ; do
-          case $file in
-	     *pre1.2.7)
-	        ;;
-	     *)
-                install -m 0644 $file tmpdocs/$dir
-		;;
-	  esac
+	 install -m 0644 $file tmpdocs/$dir
        done
     fi
 done
@@ -201,9 +216,46 @@ fi
 %{_bindir}/gdk-pixbuf-csource
 %{_libdir}/pkgconfig/*
 %doc tmpdocs/tutorial
+%doc tmpdocs/faq
 %doc tmpdocs/examples
 
 %changelog
+* Wed Oct 15 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-5.1
+- Link gdk-pixbuf-xlib against gdk-pixbuf (#106678)
+
+* Fri Oct  3 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-4.0
+- Fix 64-bit problem in gtkimcontextxim.c (#106124)
+
+* Tue Sep 16 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-3.0
+- Fix an infinite loop that can occur in the panel (#104524)
+
+* Fri Sep  5 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-2.1
+- Fix up tutorial in packaging (#90197), add FAQ 
+- Back out change to make KP_Decimal interpretation dependent on locale
+  (#101046)
+
+* Thu Sep  4 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-1.1
+- Version 2.2.4 - fixes a few small problems in 2.2.3
+
+* Tue Aug 26 2003 Owen Taylor <otaylor@redhat.com> 2.2.3-1.1
+- Version 2.2.3
+
+* Thu Jul 10 2003 Owen Taylor <otaylor@redhat.com> 2.2.2-2.0
+- Change release number for rebuild
+
+* Wed Jul  9 2003 Owen Taylor <otaylor@redhat.com> 2.2.2-2.1
+- XFlush() rather than XSync() at the end of process_all_updates()
+  (big remote X anaconda speedup)
+- Add patch to fix frequent Red Hat 9 crash 
+  http://bugzilla.gnome.org/show_bug.cgi?id=105745
+
+* Mon Jun  9 2003 Owen Taylor <otaylor@redhat.com>
+- Version 2.2.2
+- Mark assembly files as noexec-stack
+
+* Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Mon Feb 24 2003 Jonathan Blandford <jrb@redhat.com> 2.2.1-2
 - add a libpng dependency to pull in the rebuilt version.
 

@@ -1,45 +1,32 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.0.4
+%define glib2_base_version 2.1.3
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.0.99.020703
-%define pango_version %{pango_base_version}-1
+%define pango_base_version 1.1.3
+%define pango_version %{pango_base_version}-3
 %define atk_base_version 1.0.0
 %define atk_version %{atk_base_version}-1
 
-%define base_version 2.0.6
-%define bin_version 2.0.0
+%define base_version 2.1.3
+## fixme, should be 2.1.3
+%define bin_version 2.0.103
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 8
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 
-Patch1: gtk+-1.3.7-installdir.patch
-# Use XftDraw so that Xft works without RENDER
-Patch2: gtk+-2.0.6-xftdraw.patch
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch3: gtk+-2.0.6-themename.patch
-# Turn of --export-symbols-regex for now, since it removes
-# the wrong symbosl
-Patch4: gtk+-2.0.6-exportsymbols.patch
 # Hook up Xft to XSETTINGS
-Patch5: gtk+-2.0.6-xftprefs.patch
-# Fix bug with GTK_IM_MODULE environment variable
-Patch6: gtk+-2.0.6-imenvvar.patch
-# Fixes to GtkIMContextSimple compose table for us-intl keyboards
-Patch7: gtk+-2.0.6-usintl.patch
-# Fix problem with keycodes passed to GtkIMContextXIM
-Patch8: gtk+-2.0.6-keycode.patch
-# Fix extra settings notifies on startup that were causing significant
-# performance problems as fonts were reloaded.
-Patch9: gtk+-2.0.6-extranotify.patch
-# Fix gtk_tree_view_scroll_to_cell
-Patch10: gtk+-2.0.6-scroll_to.patch
+Patch4: gtk+-2.1.3-xftprefs.patch
+# Fix GtkCombo behavior change in 2.1.3 
+# (bugzilla.gnome.org 100347)
+Patch5: gtk+-2.1.3-combo.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -90,16 +77,10 @@ docs for the GTK+ widget toolkit.
 
 %prep
 %setup -q -n gtk+-%{version}
-%patch1 -p1 -b .installdir
-%patch2 -p1 -b .xftdraw
+
 %patch3 -p1 -b .themename
-%patch4 -p1 -b .exportsymbols
-%patch5 -p1 -b .xftprefs
-%patch6 -p1 -b .imenvvar
-%patch7 -p1 -b .usintl
-%patch8 -p1 -b .keycode
-%patch9 -p1 -b .extranotify
-%patch10 -p1 -b .scroll_to
+%patch4 -p1 -b .xftprefs
+%patch5 -p0 -b .combo
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -108,10 +89,8 @@ done
 %build
 
 
-# Patch1 modifies modules/input/Makefile.am
 # Patch3 modifies gtk/Makefile.am
-aclocal-1.4
-automake-1.4
+automake-1.4 gtk/Makefile
 
 # Patch4 modifies configure.in
 if test -x /usr/bin/autoconf-2.53; then
@@ -122,13 +101,26 @@ elif test -x /usr/bin/autoconf; then
   autoconf
 fi
 
+if ! pkg-config --exists pangoxft ; then
+        echo "No pangoxft.pc!"
+        exit 1
+fi
+
 %configure --with-xinput=xfree --disable-gtk-doc
-make %{?_smp_mflags}
+
+if ! grep -q 'HAVE_XFT2 1' config.h; then
+        echo "Did not detect Xft2"
+        exit 1
+fi
+
+## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
+## past gtk 2.1.2
+make ## %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%makeinstall
+%makeinstall RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 %find_lang gtk20
 
@@ -167,16 +159,20 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/ldconfig
 %{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
+%{_bindir}/gdk-pixbuf-query-loaders > %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 
 %postun -p /sbin/ldconfig
+/bin/rm -f %{_sysconfdir}/gtk-2.0/gtk.immodules
+/bin/rm -f %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 
 %files -f gtk20.lang
 %defattr(-, root, root)
 
-%doc AUTHORS COPYING ChangeLog NEWS README TODO
+%doc AUTHORS COPYING ChangeLog NEWS README
 %{_bindir}/testtext
 %{_bindir}/testgtk
 %{_bindir}/gtk-demo
+%{_bindir}/gdk-pixbuf-query-loaders
 %{_bindir}/gtk-query-immodules-2.0
 %{_libdir}/libgtk-x11-2.0.so.*
 %{_libdir}/libgdk-x11-2.0.so.*
@@ -189,7 +185,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
-
 
 %files devel
 %defattr(-, root, root)
@@ -207,6 +202,40 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Dec  4 2002 Owen Taylor <otaylor@redhat.com>
+- Fix problem with GtkCombo not setting text to first item
+
+* Tue Dec  3 2002 Owen Taylor <otaylor@redhat.com>
+- Version 2.1.3, re-add xftprefs patch
+
+* Fri Nov 22 2002 Havoc Pennington <hp@redhat.com>
+- rebuild with xft support
+
+* Wed Nov 20 2002 Havoc Pennington <hp@redhat.com>
+- rebuild to hack around xft.pc being in the wrong place
+- buildreq the pango with pangoxft
+
+* Thu Nov  7 2002 Havoc Pennington <hp@redhat.com>
+- 2.1.3
+- remove TODO from doc, no longer exists
+- remove 64bit patch, now upstream
+- comment out scroll_to patch, jrb has to deal with this
+- remove keycode patch now upstream
+- remove usintl patch now upstream
+- remove imenvar patch, now upstream
+- remove xftprefs patch now upstream
+- remove xftdraw patch now upstream
+- remove installdir patch (no longer applies) and do "makeinstall RUN_QUERY_IMMODULES_TEST=false"
+- remove extranotify patch, now upstream
+- add gdk-pixbuf-query-loaders to file list
+- remove gdk-pixbuf.loaders and gtk.immodules in postun as they are
+  not owned by the package (these should probably live in /var since they 
+  aren't config files and we overwrite them all the time)
+
+* Thu Oct  3 2002 Owen Taylor <otaylor@redhat.com>
+- Add a fix for a 64bit problem in gtktypeutils.h
+- Bump in rebuild for RPM configuration problem
+
 * Sun Aug 25 2002 Jonathan Blandford <jrb@redhat.com>
 - fix gtk_tree_view_scroll_to_cell
 

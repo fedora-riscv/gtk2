@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch6: gtk+-2.4.1-lib64.patch
 Patch7: gtk+-2.4.4.treeview-typeahead.patch
 Patch9: gtk-filechooser-search.patch
 Patch10: gtk+-2.4.7-update-counter.patch
+Patch11: gtk+-2.4.9-treeview-activate.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -89,6 +90,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .treeview-typeahead
 %patch9 -p0 -b .search
 %patch10 -p0 -b .update-counter
+%patch11 -p1 -b .treeview-activate
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -259,6 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Aug 25 2004 Jonathan Blandford <jrb@redhat.com> 2.4.9-4
+- backport patch to make typeahead activate the row
+
 * Wed Aug 25 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.9-3
 - adjust patches
 

@@ -3,32 +3,39 @@
 # Something's not quite right with libtool....
 %define __libtoolize :
 
-%define pango_base_version 0.23
-%define pango_extra_version .90-1
-%define pango_version %{pango_base_version}%{pango_extra_version}
-%define atk_base_version 0.8
-%define atk_extra_version .90-1
-%define atk_version %{atk_base_version}%{atk_extra_version}
+%define glib2_base_version 2.0.1
+%define glib2_version %{glib2_base_version}-1
+%define pango_base_version 1.0.0
+%define pango_version %{pango_base_version}-1
+%define atk_base_version 1.0.0
+%define atk_version %{atk_base_version}-1
 
-%define base_version 1.3.12
+%define base_version 2.0.2
+%define bin_version 2.0.0
 
-Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X. (Beta version)
+
+
+Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
-Version: %{base_version}.90
+Version: %{base_version}
 #Version: %{base_version}
-Release: 1
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.gz
 Source1: gtk-beta-rc-default
 Source2: fixed-ltmain.sh
 Patch1: gtk+-1.3.7-installdir.patch
+# Don't use GTK_RC_FILES, since it causes problems with what
+# KDE does to customize GTK+ themes, use GTK2_RC_FILES instead
+Patch2: gtk+-2.0.2-gtkrc.patch
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
-BuildPrereq: glib2-devel >= %{version}
+BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel
+BuildPrereq: automake
 
 BuildRoot: /var/tmp/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
@@ -37,27 +44,23 @@ Obsoletes: Inti
 URL: http://www.gtk.org
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
-Prereq: glib2 >= %{version}
+Prereq: glib2 >= %{glib2_version}
 Prereq: atk >= %{atk_version}
 Prereq: pango >= %{pango_version}
 
 %description
-The gtk+ package contains the GIMP ToolKit (GTK+), a library for
-creating graphical user interfaces for the X Window System.  GTK+ was
-originally written for the GIMP (GNU Image Manipulation Program) image
-processing program, but is now used by several other programs as well.
-
-This package is a beta version of the next release of GTK+.
-You should only install this package if you are a developer
-who wants to start developing against the new version of GTK+.
+GTK+ is a multi-platform toolkit for creating graphical user
+interfaces. Offering a complete set of widgets, GTK+ is suitable for
+projects ranging from small one-off tools to complete application
+suites.
 
 %package devel
-Summary: Development tools for GTK+ applications. (Beta version)
+Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: gtk2 = %{PACKAGE_VERSION}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
-Requires: glib2-devel >= %{version}
+Requires: glib2-devel >= %{glib2_version}
 Requires: XFree86-devel
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
@@ -66,18 +69,52 @@ Conflicts: gtk+-devel <= 1.2.8
 Conflicts: gdk-pixbuf-devel <= 0.11
 
 %description devel
-The gtk+-devel package contains the static libraries and header files
-needed for developing GTK+ (GIMP ToolKit) applications.  The
-gtk+-devel package contains glib (a collection of routines for
-simplifying the development of GTK+ applications), GDK (the General
-Drawing Kit, which simplifies the interface for writing GTK+ widgets
-and using GTK+ widgets in applications), and GTK+ (the widget set).
-
-This package is a beta version of the next release of GTK+.
-You should only install this package if you are a developer
-who wants to start developing against the new version of GTK+.
+The gtk+-devel package contains the header files and developer
+docs for the GTK+ widget toolkit.  
 
 %changelog
+* Thu Apr 11 2002 Tim Powers <timp@redhat.com> 2.0.0-3
+- bump release number
+
+* Thu Apr 11 2002 Owen Taylor <otaylor@redhat.com>
+- Add reference docs to -devel package (#61184)
+- Use GTK2_RC_FILES, not GTK_RC_FILES, since KDE points GTK_RC_FILES 
+  to gtk-1.2 ~/.gtkrc
+
+* Wed Apr  3 2002 Alex Larsson <alexl@redhat.com>
+- Change dependency for glib2 since gtk and glib versions mismatch
+
+* Wed Apr  3 2002 Alex Larsson <alexl@redhat.com>
+- Update to version 2.0.2
+
+* Fri Mar  8 2002 Owen Taylor <otaylor@redhat.com>
+- Version 2.0.0
+
+* Mon Feb 25 2002 Alex Larsson <alexl@redhat.com>
+- Update to 1.3.15
+
+* Thu Feb 21 2002 Alex Larsson <alexl@redhat.com>
+- Bump for rebuild
+
+* Mon Feb 18 2002 Alex Larsson <alexl@redhat.com>
+- Update to 1.3.14
+
+* Fri Feb 15 2002 Havoc Pennington <hp@redhat.com>
+- add horrible buildrequires hack
+
+* Thu Feb 14 2002 Havoc Pennington <hp@redhat.com>
+- 1.3.13.91 snapshot
+
+* Mon Feb 11 2002 Matt Wilson <msw@redhat.com>
+- build from CVS snapshot
+- use setup -q
+
+* Wed Jan 30 2002 Owen Taylor <otaylor@redhat.com>
+- Version 1.3.13
+
+* Tue Jan 22 2002 Havoc Pennington <hp@redhat.com>
+- automake14
+
 * Wed Jan  2 2002 Havoc Pennington <hp@redhat.com>
 - 1.3.12.90 snapshot
 
@@ -323,31 +360,22 @@ who wants to start developing against the new version of GTK+.
   Otto Hammersmith <otto@redhat.com>
   
 %prep
-%setup -n gtk+-%{version}
+%setup -q -n gtk+-%{version}
 %patch1 -p1 -b .installdir
+%patch2 -p1 -b .gtkrc
 for i in config.guess config.sub ; do
 	test -f /usr/share/libtool/$i && cp /usr/share/libtool/$i .
 done
 
 %build
 
-## ensure that --nodeps doesn't mess things up (configure.in also
-## checks this in theory, but in principle the RPM and configure.in
-## could require different versions, and a double check is nice
-## anyhow)
-if ! pkg-config --atleast-version=%{atk_base_version} atk; then 
-  echo "atk-devel does not meet the build requirements"
-  exit 1
-fi
-if ! pkg-config --atleast-version=%{pango_base_version} pango; then 
-  echo "pango-devel does not meet the build requirements"
-  exit 1
-fi
-
 
 rm ltmain.sh && cp %{SOURCE2} ltmain.sh
 # Patch1 modifies modules/input/Makefile.am
+aclocal
 automake
+autoconf
+
 %configure --with-xinput=xfree --disable-gtk-doc
 make %{?_smp_mflags}
 
@@ -406,25 +434,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/bin/testgtk
 %{_prefix}/bin/gtk-demo
 %{_prefix}/bin/gtk-query-immodules-2.0
-%{_prefix}/lib/libgtk-x11-1.3.so.*
-%{_prefix}/lib/libgdk-x11-1.3.so.*
-%{_prefix}/lib/libgdk_pixbuf-1.3.so.*
-%{_prefix}/lib/libgdk_pixbuf_xlib-1.3.so.*
+%{_prefix}/lib/libgtk-x11-2.0.so.*
+%{_prefix}/lib/libgdk-x11-2.0.so.*
+%{_prefix}/lib/libgdk_pixbuf-2.0.so.*
+%{_prefix}/lib/libgdk_pixbuf_xlib-2.0.so.*
 %dir %{_prefix}/lib/gtk-2.0
-%{_prefix}/lib/gtk-2.0/immodules
-%{_prefix}/lib/gtk-2.0/%{base_version}
+%{_prefix}/lib/gtk-2.0/%{bin_version}
 %{_prefix}/share/gtk-2.0
 %{_prefix}/share/themes/Default/gtk-2.0
 %dir %{_sysconfdir}/gtk-2.0
 %config %{_sysconfdir}/gtk-2.0/gtkrc
 
+
 %files devel
 %defattr(-, root, root)
 
 %{_prefix}/lib/lib*.so
-%{_prefix}/lib/*a
 %dir %{_prefix}/lib/gtk-2.0
 %{_prefix}/lib/gtk-2.0/include
+%{_datadir}/gtk-doc/
 %{_mandir}/man1/*
 %{_prefix}/include/*
 %{_prefix}/share/aclocal/*

@@ -19,7 +19,7 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.gz
@@ -73,8 +73,8 @@ The gtk+-devel package contains the header files and developer
 docs for the GTK+ widget toolkit.  
 
 %changelog
-* Thu Apr 11 2002 Tim Powers <timp@redhat.com> 2.0.0-3
-- bump release number
+* Mon Apr 15 2002 root <otaylor@redhat.com>
+- Fix missing .po files (#63336)
 
 * Thu Apr 11 2002 Owen Taylor <otaylor@redhat.com>
 - Add reference docs to -devel package (#61184)
@@ -384,7 +384,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %makeinstall
 
-%find_lang %name
+%find_lang gtk20
 
 #
 # Install a default RC file
@@ -426,7 +426,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -p /sbin/ldconfig
 
-%files -f %{name}.lang
+%files -f gtk20.lang
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README TODO

@@ -1,14 +1,14 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.4.0
+%define glib2_base_version 2.6.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.4.0
+%define pango_base_version 1.8.0
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.6.0
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.4.14
+%define base_version 2.6.0
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -20,19 +20,15 @@ Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
+# Important fixes which will be 2.6.1
+Patch0: gtk+-2.6.0-fixes.patch
+
 # Rename the 'Default' widget theme to 'Raleigh'
-Patch3: gtk+-2.3.2-themename.patch
+Patch1: gtk+-2.3.2-themename.patch
 # Mark assembly files as noexec-stack
-Patch5: gtk+-2.2.2-noexecstack.patch
-Patch6: gtk+-2.4.1-lib64.patch
-# Backports of various GTK+ HEAD features
-Patch7: gtk+-2.4.4.treeview-typeahead.patch
-Patch9: gtk-filechooser-search.patch
-Patch10: gtk+-2.4.7-update-counter.patch
-Patch11: gtk+-2.4.9-treeview-activate.patch
-# Backport from HEAD (plus fixes from 
-# http://bugzilla.gnome.org/show_bug.cgi?id=155952)
-Patch12: gtk+-2.4.9-backspace.patch
+Patch2: gtk+-2.2.2-noexecstack.patch
+# Biarch changes
+Patch3: gtk+-2.4.1-lib64.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -90,14 +86,10 @@ docs for the GTK+ widget toolkit.
 
 (cd .. && tar xzf %{SOURCE1})
 
-%patch3 -p1 -b .themename
-%patch5 -p1 -b .noexecstack
-%patch6 -p1 -b .lib64
-%patch7 -p1 -b .treeview-typeahead
-%patch9 -p1 -b .search
-%patch10 -p0 -b .update-counter
-%patch11 -p1 -b .treeview-activate
-%patch12 -p1 -b .backspace
+%patch0 -p0 -b .fixes
+%patch1 -p1 -b .themename
+%patch2 -p1 -b .noexecstack
+%patch3 -p1 -b .lib64
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -106,7 +98,7 @@ done
 %build
 libtoolize --force
 
-# Patch3 modifies Makefile.am
+# Patch3 modifies gdk-pixbuf/Makefile.am
 aclocal-1.7
 automake-1.7
 

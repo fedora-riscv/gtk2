@@ -1,33 +1,29 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.3.0
+%define glib2_base_version 2.4.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.3.0
+%define pango_base_version 1.4.0
 %define pango_version %{pango_base_version}-1
-%define atk_base_version 1.5.0
+%define atk_base_version 1.6.0
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.3.2
-%define bin_version 2.2.0
+%define base_version 2.4.0
+%define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 2
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 
 # Rename the 'Default' widget theme to 'Raleigh'
 Patch3: gtk+-2.3.2-themename.patch
-# Hook up Xft to XSETTINGS
-Patch4: gtk+-2.3.2-xftprefs.patch
 # Mark assembly files as noexec-stack
 Patch5: gtk+-2.2.2-noexecstack.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=124687
-Patch10: gtk+-2.3.2-pixbufxlibdep.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -80,9 +76,7 @@ docs for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch3 -p1 -b .themename
-%patch4 -p1 -b .xftprefs
 %patch5 -p1 -b .noexecstack
-%patch10 -p1 -b .pixbufxlibdep
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -108,8 +102,6 @@ if ! pkg-config --exists pangoxft ; then
 fi
 
 %configure --with-xinput=xfree --disable-gtk-doc
-
-perl -pi -e 's|hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=\"-L\\\$libdir\"|g;' libtool
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -204,6 +196,31 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Wed Mar 17 2004 Alex Larsson <alexl@redhat.com> 2.4.0-1
+- update to 2.4.0
+- update bin_version to 2.4.0
+
+* Wed Mar 10 2004 Mark McLoughlin <markmc@redhat.com> 2.3.6-1
+- Update to 2.3.6
+- Remove 2.3.5 buildfix patch
+- Remove gdk-pixbuf-xlib dependancy fix
+
+* Wed Mar 03 2004 Mark McLoughlin <markmc@redhat.com> 2.3.5-1
+- Update to 2.3.5
+- Bump the required glib and pango versions
+- Make it build on x86_64
+
+* Tue Mar 02 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Wed Feb 25 2004 Mark McLoughlin <markmc@redhat.com> 2.3.4-1
+- Update to 2.3.4
+- Remove the xft-prefs patch, its upstream now
+- Don't kill libtool's hardcode_libdir_flag_spec anymore
+
+* Fri Feb 13 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Fri Jan 23 2004 Alexander Larsson <alexl@redhat.com> 2.3.2-2
 - Remove old HAVE_XFT2 check
 - find_lang gtk20-properties too

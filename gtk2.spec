@@ -3,14 +3,14 @@
 # Something's not quite right with libtool....
 %define __libtoolize :
 
-%define glib2_base_version 2.0.1
+%define glib2_base_version 2.0.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.0.0
+%define pango_base_version 1.0.99.020606
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.0.0
 %define atk_version %{atk_base_version}-1
 
-%define base_version 2.0.2
+%define base_version 2.0.3
 %define bin_version 2.0.0
 
 
@@ -19,23 +19,26 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 4
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
-Source: gtk+-%{version}.tar.gz
+Source: gtk+-%{version}.tar.bz2
 Source1: gtk-beta-rc-default
 Source2: fixed-ltmain.sh
+Source3: gtk2.sh
+Source4: gtk2.csh
 Patch1: gtk+-1.3.7-installdir.patch
 # Don't use GTK_RC_FILES, since it causes problems with what
 # KDE does to customize GTK+ themes, use GTK2_RC_FILES instead
 Patch2: gtk+-2.0.2-gtkrc.patch
+Patch3: gtk+-2.0.3-xft2.patch
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
 BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libpng-devel
-BuildPrereq: automake
+BuildPrereq: /usr/bin/automake-1.4
 
 BuildRoot: /var/tmp/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
@@ -57,7 +60,7 @@ suites.
 %package devel
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
-Requires: gtk2 = %{PACKAGE_VERSION}
+Requires: gtk2 = %{version}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
 Requires: glib2-devel >= %{glib2_version}
@@ -73,6 +76,38 @@ The gtk+-devel package contains the header files and developer
 docs for the GTK+ widget toolkit.  
 
 %changelog
+* Fri Jun  7 2002 Havoc Pennington <hp@redhat.com>
+- rebuild
+
+* Thu Jun  6 2002 Owen Taylor <otaylor@redhat.com>
+- Add patch so that configuration works with pango-1.1/fontconfig
+
+* Tue Jun  4 2002 Havoc Pennington <hp@redhat.com>
+- 2.0.3
+
+* Mon Jun 03 2002 Havoc Pennington <hp@redhat.com>
+- rebuild in different environment
+
+* Mon Jun  3 2002 Havoc Pennington <hp@redhat.com>
+- drop /etc/gtk-2.0/gtkrc from the file list, will now be provided by redhat-artwork
+
+* Wed May 29 2002 Havoc Pennington <hp@redhat.com>
+- rebuild in different environment
+
+* Wed May 29 2002 Havoc Pennington <hp@redhat.com>
+- add profile.d entries to set GDK_USE_XFT
+
+* Thu May 23 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
+* Thu Apr 25 2002 Havoc Pennington <hp@redhat.com>
+- rebuild in different environment
+- hardcode automake 1.4 req
+
+* Fri Apr 19 2002 Havoc Pennington <hp@redhat.com>
+- do the prefix/lib -> libdir thing
+- include key themes in the package
+
 * Mon Apr 15 2002 root <otaylor@redhat.com>
 - Fix missing .po files (#63336)
 
@@ -192,7 +227,7 @@ docs for the GTK+ widget toolkit.
 - Rename to 1.3.1b to avoid version increment difficulties
 
 * Thu Aug 10 2000 Havoc Pennington <hp@redhat.com>
-- Fix .pc files to not contain -I/usr/include
+- Fix .pc files to not contain -I%{_includedir}
 
 * Thu Aug 10 2000 Havoc Pennington <hp@redhat.com>
 - Update to a CVS snapshot
@@ -221,7 +256,7 @@ docs for the GTK+ widget toolkit.
 - Snapshot version to install in /opt/pango
 
 * Mon Feb 21 2000 Owen Taylor <otaylor@redhat.com>
-- Fix weird excess  problem that somehow turned up in /etc/gtkrc.LANG
+- Fix weird excess  problem that somehow turned up in %{_sysconfdir}/gtkrc.LANG
 
 * Mon Feb 14 2000 Owen Taylor <otaylor@redhat.com>
 - More patches from 1.2.7
@@ -292,7 +327,7 @@ docs for the GTK+ widget toolkit.
 - Version 1.2.0
 
 * Thu Feb 25 1999 Michael Fulbright <drmike@redhat.com>
-- version 1.2.0pre2, patched to use --sysconfdir=/etc
+- version 1.2.0pre2, patched to use --sysconfdir=%{_sysconfdir}
 
 * Mon Feb 15 1999 Michael Fulbright <drmike@redhat.com>
 - patched in Owen's patch to fix Metal theme
@@ -363,8 +398,9 @@ docs for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 %patch1 -p1 -b .installdir
 %patch2 -p1 -b .gtkrc
+%patch3 -p0 -b .xft2
 for i in config.guess config.sub ; do
-	test -f /usr/share/libtool/$i && cp /usr/share/libtool/$i .
+	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
 done
 
 %build
@@ -372,9 +408,16 @@ done
 
 rm ltmain.sh && cp %{SOURCE2} ltmain.sh
 # Patch1 modifies modules/input/Makefile.am
-aclocal
-automake
-autoconf
+aclocal-1.4
+automake-1.4
+
+if test -x /usr/bin/autoconf-2.53; then
+  autoconf-2.53
+elif test -x /usr/bin/autoconf-2.52; then
+  autoconf-2.52
+elif test -x /usr/bin/autoconf; then
+  autoconf
+fi
 
 %configure --with-xinput=xfree --disable-gtk-doc
 make %{?_smp_mflags}
@@ -385,6 +428,11 @@ rm -rf $RPM_BUILD_ROOT
 %makeinstall
 
 %find_lang gtk20
+
+# install profile.d stuff
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install -m 755 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install -m 755 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 
 #
 # Install a default RC file
@@ -414,15 +462,15 @@ done
 
 # Install the demo programs
 cd tests
-../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_prefix}/bin
-../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_prefix}/bin
+../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_bindir}
+../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-%{_prefix}/bin/gtk-query-immodules-2.0 > /etc/gtk-2.0/gtk.immodules
+%{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
 
 %postun -p /sbin/ldconfig
 
@@ -430,33 +478,35 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
-%{_prefix}/bin/testtext
-%{_prefix}/bin/testgtk
-%{_prefix}/bin/gtk-demo
-%{_prefix}/bin/gtk-query-immodules-2.0
-%{_prefix}/lib/libgtk-x11-2.0.so.*
-%{_prefix}/lib/libgdk-x11-2.0.so.*
-%{_prefix}/lib/libgdk_pixbuf-2.0.so.*
-%{_prefix}/lib/libgdk_pixbuf_xlib-2.0.so.*
-%dir %{_prefix}/lib/gtk-2.0
-%{_prefix}/lib/gtk-2.0/%{bin_version}
-%{_prefix}/share/gtk-2.0
-%{_prefix}/share/themes/Default/gtk-2.0
+%{_bindir}/testtext
+%{_bindir}/testgtk
+%{_bindir}/gtk-demo
+%{_bindir}/gtk-query-immodules-2.0
+%{_libdir}/libgtk-x11-2.0.so.*
+%{_libdir}/libgdk-x11-2.0.so.*
+%{_libdir}/libgdk_pixbuf-2.0.so.*
+%{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
+%dir %{_libdir}/gtk-2.0
+%{_libdir}/gtk-2.0/%{bin_version}
+%{_datadir}/gtk-2.0
+%{_datadir}/themes/Default/gtk-2.0*
+%{_datadir}/themes/Emacs/gtk-2.0*
+%{_sysconfdir}/profile.d/*
 %dir %{_sysconfdir}/gtk-2.0
-%config %{_sysconfdir}/gtk-2.0/gtkrc
+#%config %{_sysconfdir}/gtk-2.0/gtkrc
 
 
 %files devel
 %defattr(-, root, root)
 
-%{_prefix}/lib/lib*.so
-%dir %{_prefix}/lib/gtk-2.0
-%{_prefix}/lib/gtk-2.0/include
+%{_libdir}/lib*.so
+%dir %{_libdir}/gtk-2.0
+%{_libdir}/gtk-2.0/include
 %{_datadir}/gtk-doc/
 %{_mandir}/man1/*
-%{_prefix}/include/*
-%{_prefix}/share/aclocal/*
-%{_prefix}/bin/gdk-pixbuf-csource
-%{_prefix}/lib/pkgconfig/*
+%{_includedir}/*
+%{_datadir}/aclocal/*
+%{_bindir}/gdk-pixbuf-csource
+%{_libdir}/pkgconfig/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/examples

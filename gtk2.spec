@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 6
+Release: 7
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -193,14 +193,10 @@ case "$host" in
   alpha*|ia64*|powerpc64*|s390x*|x86_64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-64
-   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource-64
-   mv $RPM_BUILD_ROOT%{_bindir}/gtk-demo $RPM_BUILD_ROOT%{_bindir}/gtk-demo-64
    ;;
   *)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-32
    mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-32
-   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource-32
-   mv $RPM_BUILD_ROOT%{_bindir}/gtk-demo $RPM_BUILD_ROOT%{_bindir}/gtk-demo-32
    ;;
 esac
 
@@ -209,7 +205,6 @@ esac
 #
 cp ../update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 cp ../update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
-cp ../gdk-pixbuf-csource $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-csource
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -243,7 +238,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING ChangeLog NEWS README
-%{_bindir}/gtk-demo*
+%{_bindir}/gtk-demo
 %{_bindir}/gdk-pixbuf-query-loaders*
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gdk-pixbuf-loaders
@@ -270,13 +265,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 %{_includedir}/*
 %{_datadir}/aclocal/*
-%{_bindir}/gdk-pixbuf-csource*
+%{_bindir}/gdk-pixbuf-csource
 %{_libdir}/pkgconfig/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct 04 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-7
+- Don't move binaries to -32/-64 needlessly.
+
 * Fri Oct 01 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.10-6
 - Fix a problem in the last patch.
 

@@ -14,7 +14,7 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
 #Version: %{base_version}
-Release: 5
+Release: 6
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -57,6 +57,10 @@ URL: http://www.gtk.org
 Prereq: glib2 >= %{glib2_version}
 Prereq: atk >= %{atk_version}
 Prereq: pango >= %{pango_version}
+
+%define _unpackaged_files_terminate_build      1
+%define _missing_doc_files_terminate_build     1
+
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -151,6 +155,9 @@ cd tests
 ../libtool --mode=install install testgtk $RPM_BUILD_ROOT%{_bindir}
 ../libtool --mode=install install testtext $RPM_BUILD_ROOT%{_bindir}
 
+# Remove unpackaged files
+rm $RPM_BUILD_ROOT%{_libdir}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -175,8 +182,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/%{bin_version}
 %{_datadir}/gtk-2.0
-%{_datadir}/themes/Default/gtk-2.0*
-%{_datadir}/themes/Emacs/gtk-2.0*
+%{_datadir}/themes/Default
+%{_datadir}/themes/Emacs
+%{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
 
 
@@ -196,6 +204,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Aug 23 2002 Owen Taylor <otaylor@redhat.com>
+- Fixed Raleigh theme missing from package list
+
 * Mon Aug 19 2002 Owen Taylor <otaylor@redhat.com>
 - Fix a memory leak in xftprefs.patch
 - Fix extra settings notifies on startup that were causing significant
@@ -474,7 +485,7 @@ rm -rf $RPM_BUILD_ROOT
 - added XFree86-devel requirement for gtk+-devel
 
 * Thu Mar 25 1999 Michael Fulbright <drmike@redhat.com>
-v- version 1.2.1
+- version 1.2.1
 
 * Wed Mar 17 1999 Michael Fulbright <drmike@redhat.com>
 - removed /usr/info/dir.gz file from package

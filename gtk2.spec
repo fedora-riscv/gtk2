@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -253,6 +253,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jul 16 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-2
+- Fix permissions of gdk-pixbuf-csource script. 
+- Escape macros in %%changelog
+
 * Fri Jul  9 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-1
 - Update to 2.4.4
 
@@ -603,7 +607,7 @@ rm -rf $RPM_BUILD_ROOT
 - Rename to 1.3.1b to avoid version increment difficulties
 
 * Thu Aug 10 2000 Havoc Pennington <hp@redhat.com>
-- Fix .pc files to not contain -I%{_includedir}
+- Fix .pc files to not contain -I%%{_includedir}
 
 * Thu Aug 10 2000 Havoc Pennington <hp@redhat.com>
 - Update to a CVS snapshot
@@ -632,7 +636,7 @@ rm -rf $RPM_BUILD_ROOT
 - Snapshot version to install in /opt/pango
 
 * Mon Feb 21 2000 Owen Taylor <otaylor@redhat.com>
-- Fix weird excess  problem that somehow turned up in %{_sysconfdir}/gtkrc.LANG
+- Fix weird excess  problem that somehow turned up in %%{_sysconfdir}/gtkrc.LANG
 
 * Mon Feb 14 2000 Owen Taylor <otaylor@redhat.com>
 - More patches from 1.2.7
@@ -728,7 +732,7 @@ rm -rf $RPM_BUILD_ROOT
 - Fixed Source: to point to v1.1 
 
 * Tue Aug 04 1998 Michael Fulbright <msf@redhat.com>
-- change %postun to %preun
+- change %%postun to %%preun
 
 * Mon Jun 27 1998 Shawn T. Amundson
 - Changed version to 1.1.0

@@ -111,7 +111,13 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
+# workaround gcc issues with aliasing
+# 2.6.5 will fix this
+%ifarch ppc64
+%configure --with-xinput=xfree --disable-gtk-doc --disable-visibility
+%else
 %configure --with-xinput=xfree --disable-gtk-doc
+%fi
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2

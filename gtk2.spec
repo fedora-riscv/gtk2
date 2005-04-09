@@ -24,6 +24,8 @@ Source1: update-scripts.tar.gz
 Patch1: gtk+-2.3.2-themename.patch
 # Biarch changes
 Patch2: gtk+-2.4.1-lib64.patch
+# Fixed in 2.6.6
+Patch3: gtk+-2.6.5-set_mode.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -83,6 +85,7 @@ docs for the GTK+ widget toolkit.
 
 %patch1 -p1 -b .themename
 %patch2 -p1 -b .lib64
+%patch3 -p1 -b .set_mode
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

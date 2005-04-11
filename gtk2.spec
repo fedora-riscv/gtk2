@@ -8,13 +8,13 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.6.5
+%define base_version 2.6.6
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,10 +24,6 @@ Source1: update-scripts.tar.gz
 Patch1: gtk+-2.3.2-themename.patch
 # Biarch changes
 Patch2: gtk+-2.4.1-lib64.patch
-# Fixed in 2.6.6
-Patch3: gtk+-2.6.5-input.patch
-# Fixed in 2.6.6
-Patch4: gtk+-2.6.5-stock-icon.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -87,8 +83,6 @@ docs for the GTK+ widget toolkit.
 
 %patch1 -p1 -b .themename
 %patch2 -p1 -b .lib64
-%patch3 -p1 -b .input
-%patch4 -p0 -b .icons
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -263,6 +257,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Apr 11 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.6-1
+- Update to 2.6.6
+- Drop upstreamed patches
+
 * Sun Apr 10 2005 Jeremy Katz <katzj@redhat.com> - 2.6.5-2
 - add patch from upstream CVS for broken icons (#154340, bgo#169870)
 

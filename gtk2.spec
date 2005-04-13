@@ -17,7 +17,7 @@ Version: %{base_version}
 Release: 1
 License: LGPL
 Group: System Environment/Libraries
-Source: gtk+-%{version}.tar.gz
+Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
 # Rename the 'Default' widget theme to 'Raleigh'

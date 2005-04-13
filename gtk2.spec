@@ -8,7 +8,7 @@
 %define atk_version %{atk_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.6.6
+%define base_version 2.6.7
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -257,6 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Apr 13 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.7-1
+- Update to 2.6.7
+
 * Mon Apr 11 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.6-1
 - Update to 2.6.6
 - Drop upstreamed patches

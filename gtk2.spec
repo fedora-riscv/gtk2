@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,6 +24,8 @@ Source1: update-scripts.tar.gz
 Patch1: gtk+-2.3.2-themename.patch
 # Biarch changes
 Patch2: gtk+-2.4.1-lib64.patch
+# Remove debug spew from the bmp loader; fixed in 2.6.8
+Patch3: gtk+-2.6.7-spew.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -84,6 +86,7 @@ docs for the GTK+ widget toolkit.
 
 %patch1 -p1 -b .themename
 %patch2 -p1 -b .lib64
+%patch3 -p1 -b .spew
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -258,6 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun May  8 2005 Matthias Clasen <mclasen@redhat.com>
+- remove debug spew
+
 * Fri Apr 22 2005 Florian La Roche <laroche@redhat.com>
 - add a Prereq: for the new openssl version to be installed first
 

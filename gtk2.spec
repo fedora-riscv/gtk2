@@ -14,7 +14,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -49,7 +49,6 @@ Prereq: atk >= %{atk_version}
 Prereq: pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
 Prereq: libtiff >= 3.6.1
-Prereq: openssl >= 0.9.7f
 
 %define _unpackaged_files_terminate_build      1
 %define _missing_doc_files_terminate_build     1
@@ -261,6 +260,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue May 10 2005 Matthias Clasen <mclasen@redhat.com>
+- remove the openssl prereq again, as it did not fix
+  Florians problem.
+
 * Sun May  8 2005 Matthias Clasen <mclasen@redhat.com>
 - remove debug spew
 

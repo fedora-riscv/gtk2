@@ -23,7 +23,7 @@ Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
 # Rename the 'Default' widget theme to 'Raleigh'
-Patch1: gtk+-2.3.2-themename.patch
+Patch1: gtk+-2.7.0-themename.patch
 # Biarch changes
 Patch2: gtk+-2.4.1-lib64.patch
 

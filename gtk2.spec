@@ -1,20 +1,22 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.6.0
+%define glib2_base_version 2.7.0
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.8.0
+%define pango_base_version 1.9.0
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.6.0
 %define atk_version %{atk_base_version}-1
+%define cairo_base_version 0.5.1
+%define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.6.7
+%define base_version 2.7.0
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 4
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,8 +26,6 @@ Source1: update-scripts.tar.gz
 Patch1: gtk+-2.3.2-themename.patch
 # Biarch changes
 Patch2: gtk+-2.4.1-lib64.patch
-# Remove debug spew from the bmp loader; fixed in 2.6.8
-Patch3: gtk+-2.6.7-spew.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -67,6 +67,7 @@ Requires: gtk2 = %{version}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
 Requires: glib2-devel >= %{glib2_version}
+Requires: cairo-devel >= %{cairo_version}
 Requires: XFree86-devel
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
@@ -85,7 +86,6 @@ docs for the GTK+ widget toolkit.
 
 %patch1 -p1 -b .themename
 %patch2 -p1 -b .lib64
-%patch3 -p1 -b .spew
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -111,13 +111,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-# workaround gcc issues with aliasing
-# 2.6.5 will fix this
-%ifarch ppc64
-%configure --with-xinput=xfree --disable-gtk-doc --disable-visibility
-%else
 %configure --with-xinput=xfree --disable-gtk-doc
-%endif
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -260,6 +254,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jun 21 2005 Matthias Clasen <mclasen@redhat.com>
+- update to 2.7.0
+- bump requirements
+
 * Tue May 10 2005 Matthias Clasen <mclasen@redhat.com>
 - remove the openssl prereq again, as it did not fix
   Florians problem.

@@ -6,7 +6,7 @@
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.6.0
 %define atk_version %{atk_base_version}-1
-%define cairo_base_version 0.5.1
+%define cairo_base_version 0.5.2
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 

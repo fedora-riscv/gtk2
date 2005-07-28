@@ -2,15 +2,15 @@
 
 %define glib2_base_version 2.7.1
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.9.0
+%define pango_base_version 1.9.1
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.6.0
 %define atk_version %{atk_base_version}-1
-%define cairo_base_version 0.5.2
+%define cairo_base_version 0.6.0
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.7.3
+%define base_version 2.7.4
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -254,6 +254,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Jul 28 2005 Owen Taylor <otaylor@redhat.com> 2.7.4-1
+- Update to 2.7.4
+
 * Fri Jul 15 2005 Matthias Clasen <mclasen@redhat.com>
 - Update to 2.7.3
 

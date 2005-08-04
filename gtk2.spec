@@ -10,7 +10,11 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
+<<<<<<< gtk2.spec
+%define base_version 2.7.5
+=======
 %define base_version 2.7.4
+>>>>>>> 1.85
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -22,10 +26,8 @@ Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
-# Rename the 'Default' widget theme to 'Raleigh'
-Patch1: gtk+-2.7.0-themename.patch
 # Biarch changes
-Patch2: gtk+-2.4.1-lib64.patch
+Patch0: gtk+-2.4.1-lib64.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -84,8 +86,7 @@ docs for the GTK+ widget toolkit.
 
 (cd .. && tar xzf %{SOURCE1})
 
-%patch1 -p1 -b .themename
-%patch2 -p1 -b .lib64
+%patch0 -p1 -b .lib64
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -254,6 +255,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Aug  4 2005 Matthias Clasen <mclasen@redhat.com>
+- Newer upstream version
+
 * Thu Jul 28 2005 Owen Taylor <otaylor@redhat.com> 2.7.4-1
 - Update to 2.7.4
 

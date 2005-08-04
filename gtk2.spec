@@ -10,11 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-<<<<<<< gtk2.spec
 %define base_version 2.7.5
-=======
-%define base_version 2.7.4
->>>>>>> 1.85
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.

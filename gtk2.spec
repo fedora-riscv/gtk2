@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.4
+%define base_version 2.8.5
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,8 +24,6 @@ Source1: update-scripts.tar.gz
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
-# fixed in 2.8.5
-Patch1: gtk+-2.8.4-size-overflow.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -85,7 +83,6 @@ docs for the GTK+ widget toolkit.
 (cd .. && tar xzf %{SOURCE1})
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .size-overflow
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -254,6 +251,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct  3 2005 Matthias Clasen <mclasen@redhat.com> 2.8.5-1
+- New upstream version
+
 * Fri Sep 30 2005 Matthias Clasen <mclasen@redhat.com> 2.8.4-2
 - Prevent an overflow in size hints handling
 

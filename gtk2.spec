@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -70,7 +70,9 @@ Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
 Requires: glib2-devel >= %{glib2_version}
 Requires: cairo-devel >= %{cairo_version}
-Requires: XFree86-devel
+Requires: libX11-devel, libXcursor-devel, libXinerama-devel
+Requires: libXext-devel, libXi-devel, libXrandr-devel
+Requires: libXfixes-devel
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
 ## avoid header collisions
@@ -257,6 +259,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct 31 2005 Matthias Clasen <mclasen@redhat.com> 2.8.6-4
+- Switch requires to modular X
+
 * Mon Oct 24 2005 Matthias Clasen <mclasen@redhat.com> 2.8.6-3
 - Add a setting to hide the input method menu
 

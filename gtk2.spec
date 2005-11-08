@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 5
+Release: 6
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -86,7 +86,7 @@ docs for the GTK+ widget toolkit.
 %prep
 %setup -q -n gtk+-%{version}
 
-(cd .. && tar xzf %{SOURCE1})
+tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .mimecache
@@ -189,8 +189,8 @@ esac
 #
 # Install wrappers for the binaries
 #
-cp ../update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
-cp ../update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
+cp update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
+cp update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -259,6 +259,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Nov  8 2005 Matthias Clasen <mclasen@redhat.com> 2.8.6-6
+- Clean up spec file a bit
+
 * Mon Oct 31 2005 Matthias Clasen <mclasen@redhat.com> 2.8.6-5
 - Switch requires to modular X
 

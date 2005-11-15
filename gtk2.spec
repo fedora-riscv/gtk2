@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.6
+%define base_version 2.8.7
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 6
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -24,10 +24,8 @@ Source1: update-scripts.tar.gz
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
-# Fixed in 2.8.7
-Patch1: gtk+-2.8.6-mimecache.patch
 # Backported from 2.10
-Patch2: gtk+-2.8.6-inputmethod.patch
+Patch1: gtk+-2.8.6-inputmethod.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -89,8 +87,7 @@ docs for the GTK+ widget toolkit.
 tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .mimecache
-%patch2 -p0 -b .inputmethod
+%patch1 -p0 -b .inputmethod
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -259,6 +256,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Nov 15 2005 Matthias Clasen <mclasen@redhat.com> 2.8.7-1
+- Update to 2.8.7
+
 * Tue Nov  8 2005 Matthias Clasen <mclasen@redhat.com> 2.8.6-6
 - Clean up spec file a bit
 

@@ -87,7 +87,7 @@ docs for the GTK+ widget toolkit.
 tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
-%patch1 -p0 -b .inputmethod
+%patch1 -p1 -b .inputmethod
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

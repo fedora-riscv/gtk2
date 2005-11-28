@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.7
+%define base_version 2.8.8
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -256,6 +256,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Nov 28 2005 Matthias Clasen <mclasen@redhat.com> 2.8.8-1
+- Update to 2.8.8
+
 * Tue Nov 15 2005 Matthias Clasen <mclasen@redhat.com> 2.8.7-1
 - Update to 2.8.7
 

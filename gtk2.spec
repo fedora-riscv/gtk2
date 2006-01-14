@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -118,6 +118,7 @@ fi
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
 make ## %{?_smp_mflags}
+make check
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -256,6 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jan 13 2006 Matthias Clasen <mclasen@redhat.com> 2.8.10-2
+- Run make check
+
 * Thu Jan 12 2006 Matthias Clasen <mclasen@redhat.com> 2.8.10-1
 - Update to 2.8.10
 

@@ -26,6 +26,7 @@ Source1: update-scripts.tar.gz
 Patch0: gtk+-2.4.1-lib64.patch
 # Backported from 2.10
 Patch1: gtk+-2.8.6-inputmethod.patch
+Patch2: gtk+-2.8.10-abicheck.pach
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -88,6 +89,7 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .inputmethod
+%patch2 -p1 -b .abicheck
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

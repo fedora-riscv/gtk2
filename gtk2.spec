@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -27,6 +27,7 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Backported from 2.10
 Patch1: gtk+-2.8.6-inputmethod.patch
 Patch2: gtk+-2.8.10-abicheck.patch
+Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -90,6 +91,7 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .inputmethod
 %patch2 -p1 -b .abicheck
+%patch3 -p1 -b .set-invisible-char-to-bullet
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -259,6 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Jan 19 2006 Christopher Aillon <caillon@redhat.com> 2.8.10-4
+- Use Unicode character 2022 for the default invisible character
+
 * Wed Jan 18 2006 Matthias Clasen <mclasen@redhat.com> 2.8.10-3
 - Rebuild against GLib 2.9.4
 

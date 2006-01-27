@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.10
+%define base_version 2.8.11
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -261,6 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jan 27 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-1
+- Update to 2.8.11
+
 * Thu Jan 19 2006 Christopher Aillon <caillon@redhat.com> 2.8.10-4
 - Use Unicode character 2022 for the default invisible character
 

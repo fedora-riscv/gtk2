@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 4
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -26,7 +26,6 @@ Source1: update-scripts.tar.gz
 Patch0: gtk+-2.4.1-lib64.patch
 # Backported from 2.10
 Patch1: gtk+-2.8.6-inputmethod.patch
-Patch2: gtk+-2.8.10-abicheck.patch
 Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
@@ -90,7 +89,6 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .inputmethod
-%patch2 -p1 -b .abicheck
 %patch3 -p1 -b .set-invisible-char-to-bullet
 
 for i in config.guess config.sub ; do

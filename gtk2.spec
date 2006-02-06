@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.6-inputmethod.patch
 Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Workaround for https://bugs.freedesktop.org/show_bug.cgi?id=4320
+# fixed in 2.8.12
 Patch4: render-avoid-repeat.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
@@ -262,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Feb  6 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-4
+- Sync render fix with upstream
+
 * Fri Feb  3 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-3
 - Avoid a slowpath in XRender
 

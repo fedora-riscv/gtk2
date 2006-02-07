@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 5.1
+Release: 6
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -67,7 +67,7 @@ suites.
 %package devel
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
-Requires: gtk2 = %{version}
+Requires: gtk2 = %{version}-%{release}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
 Requires: glib2-devel >= %{glib2_version}
@@ -263,7 +263,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 2.8.11-5.1
+* Tue Feb  7 2006 Christopher Aillon <caillon@redhat.com> 2.8.11-6
+- Fix up jkeating's recent %%changelog entry to match this spec's style
+- Make the devel package Require %%{version}-%%{release}
+
+* Tue Feb  7 2006 Jesse Keating <jkeating@redhat.com> 2.8.11-5.1
 - rebuilt for new gcc4.1 snapshot and glibc changes
 
 * Mon Feb  6 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-5

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 6
+Release: 7
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -30,6 +30,9 @@ Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Workaround for https://bugs.freedesktop.org/show_bug.cgi?id=4320
 # fixed in 2.8.12
 Patch4: render-avoid-repeat.patch
+# Fix a double free in the file chooser
+# fixed in 2.8.12
+Patch5: gtk+-2.8.11-double-free.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -94,6 +97,7 @@ tar xzf %{SOURCE1}
 %patch1 -p1 -b .inputmethod
 %patch3 -p1 -b .set-invisible-char-to-bullet
 %patch4 -p1 -b .render-avoid-repeat
+%patch5 -p1 -b .double-free
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -263,6 +267,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Feb  9 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-7
+- Fix a double free in the file chooser
+
 * Tue Feb  7 2006 Christopher Aillon <caillon@redhat.com> 2.8.11-6
 - Fix up jkeating's recent %%changelog entry to match this spec's style
 - Make the devel package Require %%{version}-%%{release}

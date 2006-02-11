@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.11
+%define base_version 2.8.12
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -27,12 +27,6 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Backported from 2.10
 Patch1: gtk+-2.8.6-inputmethod.patch
 Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
-# Workaround for https://bugs.freedesktop.org/show_bug.cgi?id=4320
-# fixed in 2.8.12
-Patch4: render-avoid-repeat.patch
-# Fix a double free in the file chooser
-# fixed in 2.8.12
-Patch5: gtk+-2.8.11-double-free.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -96,8 +90,6 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .inputmethod
 %patch3 -p1 -b .set-invisible-char-to-bullet
-%patch4 -p1 -b .render-avoid-repeat
-%patch5 -p1 -b .double-free
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -267,6 +259,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Feb 11 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.12-1
+- Update to 2.8.12
+
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.8.11-7.1
 - bump again for double-long bug on ppc(64)
 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 7.1
+Release: 8
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -262,10 +262,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Fri Feb 24 2006 Ray Strode <rstrode@redhat.com> - 2.8.12-2
+* Fri Feb 24 2006 Ray Strode <rstrode@redhat.com> - 2.8.12-8
 - add dependency on hicolor
 
-* Sat Feb 11 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.12-1
+* Sat Feb 11 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.12-7.1
 - Update to 2.8.12
 
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.8.11-7.1

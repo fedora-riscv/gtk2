@@ -51,6 +51,9 @@ Prereq: pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
 Prereq: libtiff >= 3.6.1
 
+# required for icon themes apis to work
+Prereq: hicolor-icon-theme
+
 %define _unpackaged_files_terminate_build      1
 %define _missing_doc_files_terminate_build     1
 
@@ -259,6 +262,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Feb 24 2006 Ray Strode <rstrode@redhat.com> - 2.8.12-2
+- add dependency on hicolor
+
 * Sat Feb 11 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.12-1
 - Update to 2.8.12
 

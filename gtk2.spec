@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.12
+%define base_version 2.8.13
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 8
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -26,6 +26,7 @@ Source1: update-scripts.tar.gz
 Patch0: gtk+-2.4.1-lib64.patch
 # Backported from 2.10
 Patch1: gtk+-2.8.6-inputmethod.patch
+# Fedora patch
 Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
@@ -262,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Feb 25 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.13-1
+- Update to 2.8.13
+
 * Fri Feb 24 2006 Ray Strode <rstrode@redhat.com> - 2.8.12-8
 - add dependency on hicolor
 

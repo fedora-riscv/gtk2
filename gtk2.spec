@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -45,15 +45,15 @@ Obsoletes: Inti
 
 URL: http://www.gtk.org
 
+# required for icon themes apis to work
+Requires: hicolor-icon-theme
+
 # We need to prereq these so we can run gtk-query-immodules-2.0
 Prereq: glib2 >= %{glib2_version}
 Prereq: atk >= %{atk_version}
 Prereq: pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
 Prereq: libtiff >= 3.6.1
-
-# required for icon themes apis to work
-Prereq: hicolor-icon-theme
 
 %define _unpackaged_files_terminate_build      1
 %define _missing_doc_files_terminate_build     1
@@ -263,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Feb 27 2006 Ray Strode <rstrode@redhat.com> - 2.8.13-2
+- s/Prereq/Requires/ for hicolor dep
+
 * Sat Feb 25 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.13-1
 - Update to 2.8.13
 

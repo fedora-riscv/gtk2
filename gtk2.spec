@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -34,6 +34,7 @@ BuildPrereq: pango-devel >= %{pango_version}
 BuildPrereq: glib2-devel >= %{glib2_version}
 BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
+BuildPrereq: libXi-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
 BuildPrereq: /usr/bin/automake-1.7
 # needed for running aclocal
@@ -263,6 +264,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Mar 01 2006 Karsten Hopp <karsten@redhat.de> 2.8.13-3
+- Buildrequires: libXi-devel
+
 * Mon Feb 27 2006 Ray Strode <rstrode@redhat.com> - 2.8.13-2
 - s/Prereq/Requires/ for hicolor dep
 

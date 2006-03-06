@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -201,6 +201,7 @@ cp update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/immodules/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/loaders/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/engines/*.la
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
@@ -264,6 +265,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Mar  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.13-4
+- Don't ship .la files for engines, either
+
 * Wed Mar 01 2006 Karsten Hopp <karsten@redhat.de> 2.8.13-3
 - Buildrequires: libXi-devel
 

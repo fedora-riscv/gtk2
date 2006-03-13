@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.14
+%define base_version 2.8.15
 %define bin_version 2.4.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
@@ -28,8 +28,6 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.6-inputmethod.patch
 # Fedora patch
 Patch3: gtk+-2.8.10-set-invisible-char-to-bullet.patch
-# Crash in treeview a11y
-Patch4: gtk+-2.8.14-a11y-crash.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -97,7 +95,6 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .inputmethod
 %patch3 -p1 -b .set-invisible-char-to-bullet
-%patch4 -p1 -b .a11y-crash
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -268,6 +265,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Mar 13 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.15-1
+- Update to 2.8.15
+- Drop upstreamed patch
+
 * Fri Mar 10 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.14-2
 - Fix a crash when using accessible treeviews
 

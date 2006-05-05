@@ -10,8 +10,8 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.8.17
-%define bin_version 2.4.0
+%define base_version 2.9.0
+%define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 Name: gtk2
@@ -24,10 +24,8 @@ Source1: update-scripts.tar.gz
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
-# Backported from 2.10
-Patch1: gtk+-2.8.6-inputmethod.patch
 # Fedora patch
-Patch2: gtk+-2.8.10-set-invisible-char-to-bullet.patch
+Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -93,8 +91,7 @@ docs for the GTK+ widget toolkit.
 tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .inputmethod
-%patch2 -p1 -b .set-invisible-char-to-bullet
+%patch1 -p1 -b .set-invisible-char-to-bullet
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -200,9 +197,7 @@ cp update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/immodules/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/loaders/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.4.0/engines/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/*/*.la
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
@@ -266,6 +261,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri May  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.0-1
+- Update to 2.9.0
+
 * Fri Apr  7 2006 Matthias Clasen <mclasen@redhat.com> - 2.8.17-2
 - Update to 2.8.17
 

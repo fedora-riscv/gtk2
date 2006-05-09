@@ -42,6 +42,12 @@ BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
 Obsoletes: Inti
 
+# Conflicts with packages containing theme engines
+# built against the 2.4.0 ABI
+Conflicts: gtk2-engines < 2.7.4-7
+Conflicts: libgnomeui < libgnomeui-2.15.1cvs20060505-2
+Conflicts: redhat-artwork < 0.243-1
+
 URL: http://www.gtk.org
 
 # required for icon themes apis to work
@@ -262,7 +268,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon May  8 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.0-3
-- Bump required versions of GLib, Pango and cairo.
+- Bump required versions of GLib, Pango and cairo
+- Add conflicts to force updating theme engine packages
 
 * Fri May  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.0-1
 - Update to 2.9.0

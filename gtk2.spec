@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -37,6 +37,7 @@ BuildPrereq: libpng-devel >= %{libpng_version}
 BuildPrereq: /usr/bin/automake-1.7
 # needed for running aclocal
 BuildPrereq: gtk-doc
+BuildRequires: cups-devel
 
 BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
 Obsoletes: gtk+-gtkbeta
@@ -123,7 +124,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -267,6 +268,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jun  6 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-2
+- Add a BuildRequires for cups-devel
+- configure with --disable-rebuilds
+
 * Mon Jun  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-1
 - Update to 2.9.2
 

@@ -36,7 +36,7 @@ BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libXi-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
-BuildRequires: automake autoconf libtool pkgconfig
+BuildRequires: automake17 autoconf libtool pkgconfig
 BuildPrereq: gtk-doc
 BuildRequires: cups-devel
 

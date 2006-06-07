@@ -36,8 +36,7 @@ BuildPrereq: libtiff-devel
 BuildPrereq: libjpeg-devel
 BuildPrereq: libXi-devel
 BuildPrereq: libpng-devel >= %{libpng_version}
-BuildPrereq: /usr/bin/automake-1.7
-# needed for running aclocal
+BuildRequires: automake autoconf libtool pkg-config
 BuildPrereq: gtk-doc
 BuildRequires: cups-devel
 

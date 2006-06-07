@@ -16,11 +16,13 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2
+Release: 3
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
+# the builtin cache in the 2.9.2 tarball is defective
+Source2: gtkbuiltincache.h
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
@@ -99,6 +101,8 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
+
+cp %{SOURCE2} gtk/
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -268,6 +272,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jun  7 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-3
+- Fix the builtin icon cache
+
 * Tue Jun  6 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-2
 - Add a BuildRequires for cups-devel
 - configure with --disable-rebuilds

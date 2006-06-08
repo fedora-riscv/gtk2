@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,6 +28,8 @@ Source2: gtkbuiltincache.h
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
+# Fixed in 2.9.3
+Patch2: gtk+-2.9.2.evo-crash.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -101,6 +103,7 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
+%patch2 -p1 -b .evo-crash
 
 cp %{SOURCE2} gtk/
 
@@ -272,6 +275,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Jun  8 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-4
+- Fix a crash in evolution
+
 * Wed Jun  7 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-3
 - Fix the builtin icon cache
 

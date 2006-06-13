@@ -21,8 +21,6 @@ License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
-# the builtin cache in the 2.9.2 tarball is defective
-Source2: gtkbuiltincache.h
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
@@ -101,8 +99,6 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
-
-cp %{SOURCE2} gtk/
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

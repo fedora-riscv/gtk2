@@ -28,8 +28,6 @@ Source2: gtkbuiltincache.h
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
-# Fixed in 2.9.3
-Patch2: gtk+-2.9.2.evo-crash.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -43,7 +41,7 @@ BuildRequires: gettext
 BuildRequires: gtk-doc
 BuildRequires: cups-devel
 
-BuildRoot: %{_tmppath}/gtk-%{PACKAGE_VERSION}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
 Obsoletes: Inti
 
@@ -76,7 +74,7 @@ projects ranging from small one-off tools to complete application
 suites.
 
 %package devel
-Summary: Development tools for GTK+ applications.
+Summary: Development tools for GTK+ applications
 Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 Requires: pango-devel >= %{pango_version}
@@ -103,7 +101,6 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
-%patch2 -p1 -b .evo-crash
 
 cp %{SOURCE2} gtk/
 
@@ -275,6 +272,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jun 13 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.3-1
+- Update to 2.9.3
+
 * Thu Jun  8 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-4
 - Fix a crash in evolution
 

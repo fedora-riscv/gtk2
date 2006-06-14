@@ -38,6 +38,7 @@ BuildRequires: automake17 autoconf libtool pkgconfig
 BuildRequires: gettext
 BuildRequires: gtk-doc
 BuildRequires: cups-devel
+BuildRequires: cairo-devel >= %{cairo_version}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta

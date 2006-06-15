@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3
+Release: 4
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -39,6 +39,11 @@ BuildRequires: gettext
 BuildRequires: gtk-doc
 BuildRequires: cups-devel
 BuildRequires: cairo-devel >= %{cairo_version}
+BuildRequires: libXrandr-devel
+BuildRequires: libXrender-devel
+BuildRequires: libXcursor-devel
+BuildRequires: libXfixes-devel
+BuildRequires: libXinerama-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
@@ -269,6 +274,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Jun 15 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.3-4
+- Add more BuildRequires
+
 * Wed Jun 14 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.3-3
 - Require cairo 1.1.8
 

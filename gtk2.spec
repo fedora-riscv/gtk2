@@ -1,16 +1,16 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.11.0
+%define glib2_base_version 2.12.0
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.13.0
 %define pango_version %{pango_base_version}-1
-%define atk_base_version 1.6.0
+%define atk_base_version 1.9.0
 %define atk_version %{atk_base_version}-1
-%define cairo_base_version 1.1.8
+%define cairo_base_version 1.2.0
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.9.4
+%define base_version 2.10.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -274,6 +274,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Jul  3 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.0-1
+- Update to 2.10.0
+
 * Wed Jun 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.4-1
 - Update to 2.9.4
 

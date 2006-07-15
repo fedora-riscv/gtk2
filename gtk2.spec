@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1.1
+Release: 2
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -26,6 +26,8 @@ Source1: update-scripts.tar.gz
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
+# Filechooser search
+Patch2: gtk+-2.10.0-search.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -105,6 +107,7 @@ tar xzf %{SOURCE1}
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
+%patch2 -p1 -b .search
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -274,7 +277,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - sh: line 0: fg: no job control
+* Sat Jul 15 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.0-2
+- Add Search support to the filechooser
+
+* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 2.10.0-1.1
 - rebuild
 
 * Mon Jul  3 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.0-1

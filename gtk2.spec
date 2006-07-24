@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.0
+%define base_version 2.10.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5
+Release: 1
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -277,6 +277,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jul 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.1-1
+- Update to 2.10.1
+
 * Wed Jul 19 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.0-5
 - Fix a typo in the Search support patch
 

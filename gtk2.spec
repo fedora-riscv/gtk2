@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,6 +28,8 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
 Patch2: gtk+-2.10.1-search.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=346800
+Patch3: gtk+-2.10.1-fix-tree-crash.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -108,6 +110,7 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
+%patch3 -p1 -b .fix-tree-crash
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -167,7 +170,9 @@ if test "x$compile_host" != "x$host" ; then
   echo 1>&2 "Host mismatch: compile='$compile_host', spec file='$host'" && exit 1
 fi
 
-%makeinstall RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+make install DESTDIR=$RPM_BUILD_ROOT        \
+             RUN_QUERY_IMMODULES_TEST=false \
+             RUN_QUERY_LOADER_TEST=false 
 
 %find_lang gtk20
 %find_lang gtk20-properties
@@ -277,6 +282,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Aug  9 2006 Ray Strode <rstrode@redhat.com> - 2.10.1-2
+- patch from Jonathan Matthew <jontahn@kaolin.wh9.net> to fix
+  crash in GtkTreeModelFilter (upstream bug 346800)
+
 * Sun Jul 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.1-1
 - Update to 2.10.1
 

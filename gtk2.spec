@@ -10,16 +10,16 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.1
+%define base_version 2.10.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: gtk+-%{version}.tar.bz2
+Source: gtk+-%{version}.tar.gz
 Source1: update-scripts.tar.gz
 
 # Biarch changes
@@ -28,8 +28,6 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
 Patch2: gtk+-2.10.1-search.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=346800
-Patch3: gtk+-2.10.1-fix-tree-crash.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -110,7 +108,6 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
-%patch3 -p1 -b .fix-tree-crash
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -282,6 +279,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Aug 18 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-1.fc6
+- Update to 2.10.2
+
 * Mon Aug 14 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.1-3.fc6
 - Fix a problem with the search patch
 

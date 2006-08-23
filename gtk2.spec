@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -30,6 +30,7 @@ Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 Patch2: gtk+-2.10.1-search.patch
 # Fixed in cvs
 Patch3: gtk+-2.10.2-recent.patch
+Patch4: gtk+-2.10.2-values-and-names.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -111,6 +112,7 @@ tar xzf %{SOURCE1}
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
 %patch3 -p1 -b .recent
+%patch4 -p1 -b .values-and-names
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -282,6 +284,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Aug 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-3.fc6
+- Fix confusion between values and names in printer options (#203588)
+
 * Fri Aug 19 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-2.fc6
 - Fix some problems with the recent files code
 

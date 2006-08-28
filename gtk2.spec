@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,9 +28,11 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
 Patch2: gtk+-2.10.1-search.patch
-# Fixed in cvs
+
+# The following are fixed in upstream cvs
 Patch3: gtk+-2.10.2-recent.patch
 Patch4: gtk+-2.10.2-values-and-names.patch
+Patch5: gtk+-2.10.2-poll.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -113,6 +115,7 @@ tar xzf %{SOURCE1}
 %patch2 -p1 -b .search
 %patch3 -p1 -b .recent
 %patch4 -p1 -b .values-and-names
+%patch5 -p1 -b .poll
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -284,6 +287,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Aug 28 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-4.fc6
+- Use a reasonable timeout when polling for printer 
+  list updates  (#203585)
+
 * Wed Aug 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-3.fc6
 - Fix confusion between values and names in printer options (#203588)
 

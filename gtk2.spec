@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -33,6 +33,10 @@ Patch2: gtk+-2.10.1-search.patch
 Patch3: gtk+-2.10.2-recent.patch
 Patch4: gtk+-2.10.2-values-and-names.patch
 Patch5: gtk+-2.10.2-poll.patch
+Patch6: gtk+-2.10.2-printer-list.patch
+
+# backport from HEAD
+Patch7: gtk+-2.10.2-cursor-blink.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -116,6 +120,8 @@ tar xzf %{SOURCE1}
 %patch3 -p1 -b .recent
 %patch4 -p1 -b .values-and-names
 %patch5 -p1 -b .poll
+%patch6 -p1 -b .printer-list
+%patch7 -p0 -b .cursor-blink
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -287,6 +293,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Aug 31 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-5.fc6
+- Fix problems with listing printers
+- Stop cursor blinking after a while, to save energy
+
 * Mon Aug 28 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-4.fc6
 - Use a reasonable timeout when polling for printer 
   list updates  (#203585)

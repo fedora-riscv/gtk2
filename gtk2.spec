@@ -123,7 +123,7 @@ tar xzf %{SOURCE1}
 %patch5 -p1 -b .poll
 %patch6 -p1 -b .printer-list
 %patch7 -p0 -b .cursor-blink
-%patch8 -p0 -b .im-reset
+%patch8 -p1 -b .im-reset
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

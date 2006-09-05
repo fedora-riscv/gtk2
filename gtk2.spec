@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -28,10 +28,13 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
 Patch2: gtk+-2.10.3-search.patch
+# use fam for recent-files
+Patch3: gtk+-2.10.3-fam.patch
 
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
 Patch8: gtk+-2.10.2-im-reset.patch
+
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -50,6 +53,8 @@ BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
+# for patch 3
+BuildRequires: gamin-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
@@ -112,6 +117,7 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
+%patch3 -p1 -b .fam
 
 %patch7 -p0 -b .cursor-blink
 %patch8 -p1 -b .im-reset
@@ -124,6 +130,8 @@ done
 libtoolize --force
 
 # Patch3 modifies gdk-pixbuf/Makefile.am
+# Patch9 modifies configure.in
+autoheader
 aclocal-1.7
 automake-1.7
 
@@ -286,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-2.fc6
+- Use fam for recent files
+
 * Tue Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-1.fc6
 - Update to 2.10.3
 

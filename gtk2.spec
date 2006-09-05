@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.2
+%define base_version 2.10.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -27,13 +27,7 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
-Patch2: gtk+-2.10.1-search.patch
-
-# The following are fixed in upstream cvs
-Patch3: gtk+-2.10.2-recent.patch
-Patch4: gtk+-2.10.2-values-and-names.patch
-Patch5: gtk+-2.10.2-poll.patch
-Patch6: gtk+-2.10.2-printer-list.patch
+Patch2: gtk+-2.10.3-search.patch
 
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
@@ -118,10 +112,7 @@ tar xzf %{SOURCE1}
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
-%patch3 -p1 -b .recent
-%patch4 -p1 -b .values-and-names
-%patch5 -p1 -b .poll
-%patch6 -p1 -b .printer-list
+
 %patch7 -p0 -b .cursor-blink
 %patch8 -p1 -b .im-reset
 
@@ -295,6 +286,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-1.fc6
+- Update to 2.10.3
+
 * Fri Sep  1 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-6.fc6
 - Fix a problem with entering Hangul in entries
 

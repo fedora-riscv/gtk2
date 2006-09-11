@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -35,7 +35,9 @@ Patch3: gtk+-2.10.3-fam.patch
 Patch7: gtk+-2.10.2-cursor-blink.patch
 Patch8: gtk+-2.10.2-im-reset.patch
 
+# fixed in upstream cvs
 Patch9: gtk+-2.10.3-sylpheed-crash.patch
+Patch10: gtk+-2.10.3-desktop.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -123,6 +125,7 @@ tar xzf %{SOURCE1}
 %patch7 -p0 -b .cursor-blink
 %patch8 -p1 -b .im-reset
 %patch9 -p1 -b .sylpheed-crash
+%patch10 -p1 -b .desktop
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -296,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Sep 10 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-4
+- Fix display of Desktop in file chooser buttons.
+
 * Fri Sep  8 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-3.fc6
 - Fix a Sylpheed crash  (#192101)
 

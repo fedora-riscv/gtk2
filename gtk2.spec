@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -38,6 +38,7 @@ Patch8: gtk+-2.10.2-im-reset.patch
 # fixed in upstream cvs
 Patch9: gtk+-2.10.3-sylpheed-crash.patch
 Patch10: gtk+-2.10.3-desktop.patch
+Patch11: gtk+-2.10.3-gedit-color-picker.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -126,6 +127,7 @@ tar xzf %{SOURCE1}
 %patch8 -p1 -b .im-reset
 %patch9 -p1 -b .sylpheed-crash
 %patch10 -p1 -b .desktop
+%patch11 -p1 -b .gedit-color-picker
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -299,6 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Sep 13 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-5
+- Make color picker work with window groups
+
 * Sun Sep 10 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-4
 - Fix display of Desktop in file chooser buttons.
 

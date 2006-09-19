@@ -16,11 +16,13 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
+# This script belongs to patch 13
+Source2: add-translations.pl
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
@@ -39,6 +41,8 @@ Patch8: gtk+-2.10.2-im-reset.patch
 Patch9: gtk+-2.10.3-sylpheed-crash.patch
 Patch10: gtk+-2.10.3-desktop.patch
 Patch11: gtk+-2.10.3-gedit-color-picker.patch
+Patch12: gtk+-2.10.3-parent-walk.patch
+Patch13: gtk+-2.10.3-auth-dialogs.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -59,6 +63,8 @@ BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
 # for patch 3
 BuildRequires: gamin-devel
+# for Source2
+BuildRequires: perl
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
@@ -128,6 +134,12 @@ tar xzf %{SOURCE1}
 %patch9 -p1 -b .sylpheed-crash
 %patch10 -p1 -b .desktop
 %patch11 -p1 -b .gedit-color-picker
+%patch12 -p1 -b .parent-walk
+%patch13 -p1 -b .auth-dialogs
+
+pushd po/
+perl %{SOURCE2}
+popd
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -301,6 +313,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Sep 19 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-7
+- Fix issues with auth dialogs in the file chooser
+
 * Wed Sep 13 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-6
 - Don't spew a warning if libbeagle is not installed
 

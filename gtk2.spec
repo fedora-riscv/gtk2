@@ -42,6 +42,8 @@ Patch9: gtk+-2.10.3-sylpheed-crash.patch
 Patch10: gtk+-2.10.3-desktop.patch
 Patch11: gtk+-2.10.3-gedit-color-picker.patch
 Patch12: gtk+-2.10.3-parent-walk.patch
+
+# http://bugzilla.gnome.org/show_bug.cgi?id=354887
 Patch13: gtk+-2.10.3-auth-dialogs.patch
 
 BuildPrereq: atk-devel >= %{atk_version}

@@ -10,41 +10,29 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.3
+%define base_version 2.10.4
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 7%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
-# This script belongs to patch 13
-Source2: add-translations.pl
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
-Patch2: gtk+-2.10.3-search.patch
+Patch2: gtk+-2.10.4-search.patch
 # use fam for recent-files
 Patch3: gtk+-2.10.3-fam.patch
 
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
-Patch8: gtk+-2.10.2-im-reset.patch
-
-# fixed in upstream cvs
-Patch9: gtk+-2.10.3-sylpheed-crash.patch
-Patch10: gtk+-2.10.3-desktop.patch
-Patch11: gtk+-2.10.3-gedit-color-picker.patch
-Patch12: gtk+-2.10.3-parent-walk.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=354887
-Patch13: gtk+-2.10.3-auth-dialogs.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -65,8 +53,6 @@ BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
 # for patch 3
 BuildRequires: gamin-devel
-# for Source2
-BuildRequires: perl
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
@@ -111,6 +97,7 @@ Requires: cairo-devel >= %{cairo_version}
 Requires: libX11-devel, libXcursor-devel, libXinerama-devel
 Requires: libXext-devel, libXi-devel, libXrandr-devel
 Requires: libXfixes-devel
+Requires: pkgconfig
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
 ## avoid header collisions
@@ -132,16 +119,6 @@ tar xzf %{SOURCE1}
 %patch3 -p1 -b .fam
 
 %patch7 -p0 -b .cursor-blink
-%patch8 -p1 -b .im-reset
-%patch9 -p1 -b .sylpheed-crash
-%patch10 -p1 -b .desktop
-%patch11 -p1 -b .gedit-color-picker
-%patch12 -p1 -b .parent-walk
-%patch13 -p1 -b .auth-dialogs
-
-pushd po/
-perl %{SOURCE2}
-popd
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -315,6 +292,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Sep 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.4-1
+- Update to 2.10.4
+- Drop upstreamed patches
+- Update the search patch
+- Require pkgconfig in the -devel package
+
 * Tue Sep 19 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-7
 - Fix issues with auth dialogs in the file chooser
 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -33,6 +33,9 @@ Patch3: gtk+-2.10.3-fam.patch
 
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
+
+# fixed in upstream cvs
+PAtch8: gtk+-2.10.4-deadlock.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -119,6 +122,8 @@ tar xzf %{SOURCE1}
 %patch3 -p1 -b .fam
 
 %patch7 -p0 -b .cursor-blink
+
+%patch8 -p1 -b .deadlock
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -292,6 +297,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Sep 29 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.4-3
+- Fix a possible deadlock when not using the gnome-vfs
+  filesystem backend
+
 * Sat Sep 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.4-2
 - Fix a problem with the search patch
 

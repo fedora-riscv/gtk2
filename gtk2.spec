@@ -36,7 +36,7 @@ Patch7: gtk+-2.10.2-cursor-blink.patch
 
 # fixed in upstream cvs
 Patch8: gtk+-2.10.4-deadlock.patch
-Patch9: gtk=-2.10.4-path-check.patch
+Patch9: gtk+-2.10.4-path-check.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}

@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.4
+%define base_version 2.10.6
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -34,9 +34,7 @@ Patch3: gtk+-2.10.3-fam.patch
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
 
-# fixed in upstream cvs
-Patch8: gtk+-2.10.4-deadlock.patch
-Patch9: gtk+-2.10.4-path-check.patch
+Patch10: gtk+-2.10.4-im-reset.patch
 
 BuildPrereq: atk-devel >= %{atk_version}
 BuildPrereq: pango-devel >= %{pango_version}
@@ -124,8 +122,7 @@ tar xzf %{SOURCE1}
 
 %patch7 -p0 -b .cursor-blink
 
-%patch8 -p1 -b .deadlock
-%patch9 -p1 -b .path-check
+%patch10 -p1 -b .im-reset
 
 for i in config.guess config.sub ; do
 	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

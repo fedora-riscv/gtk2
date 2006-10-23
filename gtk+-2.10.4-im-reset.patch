@@ -1,0 +1,40 @@
+--- gtk+-2.10.4/gtk/gtkentry.c.im-reset	2006-10-06 00:41:48.000000000 -0400
++++ gtk+-2.10.4/gtk/gtkentry.c	2006-10-06 00:40:54.000000000 -0400
+@@ -238,6 +238,7 @@
+  */
+ static void gtk_entry_start_editing (GtkCellEditable *cell_editable,
+ 				     GdkEvent        *event);
++static void gtk_entry_editing_done  (GtkCellEditable *cell_editable);
+ 
+ /* Default signal handlers
+  */
+@@ -903,6 +904,7 @@
+ gtk_entry_cell_editable_init (GtkCellEditableIface *iface)
+ {
+   iface->start_editing = gtk_entry_start_editing;
++  iface->editing_done = gtk_entry_editing_done;
+ }
+ 
+ static void
+@@ -2302,6 +2304,12 @@
+ }
+ 
+ static void
++gtk_entry_editing_done (GtkCellEditable *cell_editable)
++{
++  gtk_im_context_reset (GTK_ENTRY (cell_editable)->im_context);
++}
++
++static void
+ gtk_entry_password_hint_free (GtkEntryPasswordHint *password_hint)
+ {
+   if (password_hint->password_hint_timeout_id)
+@@ -3505,7 +3513,7 @@
+ {
+   if (entry->need_im_reset)
+     {
+-      entry->need_im_reset = 0;
++      entry->need_im_reset = FALSE;
+       gtk_im_context_reset (entry->im_context);
+     }
+ }

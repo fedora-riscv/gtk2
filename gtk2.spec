@@ -202,12 +202,12 @@ cp -aR docs/tutorial/html tmpdocs/tutorial
 cp -aR docs/faq/html tmpdocs/faq
 
 for dir in examples/* ; do
-    if [ -d $dir ] ; then
-       ./mkinstalldirs tmpdocs/$dir
-       for file in $dir/* ; do
-	 install -m 0644 $file tmpdocs/$dir
-       done
-    fi
+  if [ -d $dir ] ; then
+     ./mkinstalldirs tmpdocs/$dir
+     for file in $dir/* ; do
+       install -m 0644 $file tmpdocs/$dir
+     done
+  fi
 done
 
 # We need to have separate 32-bit and 64-bit binaries

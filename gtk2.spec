@@ -16,10 +16,10 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: gtk+-%{version}.tar.bz2
+Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
 # Biarch changes
@@ -36,13 +36,13 @@ Patch7: gtk+-2.10.2-cursor-blink.patch
 
 Patch10: gtk+-2.10.4-im-reset.patch
 
-BuildPrereq: atk-devel >= %{atk_version}
-BuildPrereq: pango-devel >= %{pango_version}
-BuildPrereq: glib2-devel >= %{glib2_version}
-BuildPrereq: libtiff-devel
-BuildPrereq: libjpeg-devel
-BuildPrereq: libXi-devel
-BuildPrereq: libpng-devel >= %{libpng_version}
+BuildRequires: atk-devel >= %{atk_version}
+BuildRequires: pango-devel >= %{pango_version}
+BuildRequires: glib2-devel >= %{glib2_version}
+BuildRequires: libtiff-devel
+BuildRequires: libjpeg-devel
+BuildRequires: libXi-devel
+BuildRequires: libpng-devel >= %{libpng_version}
 BuildRequires: automake17 autoconf libtool pkgconfig
 BuildRequires: gettext
 BuildRequires: gtk-doc
@@ -72,11 +72,11 @@ URL: http://www.gtk.org
 Requires: hicolor-icon-theme
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
-Prereq: glib2 >= %{glib2_version}
-Prereq: atk >= %{atk_version}
-Prereq: pango >= %{pango_version}
+Requires(post): glib2 >= %{glib2_version}
+Requires(post): atk >= %{atk_version}
+Requires(post): pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
-Prereq: libtiff >= 3.6.1
+Requires(post): libtiff >= 3.6.1
 
 %define _unpackaged_files_terminate_build      1
 %define _missing_doc_files_terminate_build     1
@@ -125,7 +125,7 @@ tar xzf %{SOURCE1}
 %patch10 -p1 -b .im-reset
 
 for i in config.guess config.sub ; do
-	test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
+  test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
 done
 
 %build
@@ -285,7 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/include
-%{_datadir}/gtk-doc/
+%{_datadir}/gtk-doc/html/*
 %{_mandir}/man1/*
 %{_includedir}/*
 %{_datadir}/aclocal/*
@@ -296,6 +296,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Nov 20 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-4
+- Some spec file cleanups
+
 * Fri Nov 17 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-3
 - Rework the filechooser search to support tracker, too
 
@@ -1162,7 +1165,7 @@ rm -rf $RPM_BUILD_ROOT
 - Version 1.2.0
 
 * Thu Feb 25 1999 Michael Fulbright <drmike@redhat.com>
-- version 1.2.0pre2, patched to use --sysconfdir=%{_sysconfdir}
+- version 1.2.0pre2, patched to use --sysconfdir=%%{_sysconfdir}
 
 * Mon Feb 15 1999 Michael Fulbright <drmike@redhat.com>
 - patched in Owen's patch to fix Metal theme

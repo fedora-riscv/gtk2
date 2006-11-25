@@ -37,6 +37,7 @@ Patch7: gtk+-2.10.2-cursor-blink.patch
 Patch10: gtk+-2.10.4-im-reset.patch
 Patch11: gtk+-2.10.4-strncpy.patch
 Patch12: gtk+-2.10.4-panel-crash.patch
+Patch13: gtk+-2.10.4-printernames.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -127,6 +128,7 @@ tar xzf %{SOURCE1}
 %patch10 -p1 -b .im-reset
 %patch11 -p1 -b .strncpy
 %patch12 -p1 -b .panel-crash
+%patch13 -p1 -b .printernames
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

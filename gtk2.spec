@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -35,6 +35,8 @@ Patch3: gtk+-2.10.3-fam.patch
 Patch7: gtk+-2.10.2-cursor-blink.patch
 
 Patch10: gtk+-2.10.4-im-reset.patch
+Patch11: gtk+-2.10.4-strncpy.patch
+Patch12: gtk+-2.10.4-panel-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -123,6 +125,8 @@ tar xzf %{SOURCE1}
 %patch7 -p0 -b .cursor-blink
 
 %patch10 -p1 -b .im-reset
+%patch11 -p1 -b .strncpy
+%patch12 -p1 -b .panel-crash
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -296,6 +300,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Nov 25 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-6
+- Fix a recent-files related crash
+
 * Tue Nov 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-5
 - Change the search patch to check for beagle first
 

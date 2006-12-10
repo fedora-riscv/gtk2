@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -34,10 +34,14 @@ Patch3: gtk+-2.10.3-fam.patch
 # backport from HEAD
 Patch7: gtk+-2.10.2-cursor-blink.patch
 
+# fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
 Patch11: gtk+-2.10.4-strncpy.patch
 Patch12: gtk+-2.10.4-panel-crash.patch
 Patch13: gtk+-2.10.4-printernames.patch
+Patch14: gtk+-2.10.4-message-dialog-a11y.patch
+Patch15: gtk+-2.10.4-mnemonic-clipping.patch
+Patch16: gtk+-2.10.4-close-loader.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -129,6 +133,9 @@ tar xzf %{SOURCE1}
 %patch11 -p1 -b .strncpy
 %patch12 -p1 -b .panel-crash
 %patch13 -p1 -b .printernames
+%patch14 -p1 -b .message-dialog-ally
+%patch15 -p1 -b .mnemonic-clipping
+%patch16 -p1 -b .close-loader
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -302,6 +309,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sat Dec  9 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-7
+- Fix error handling in pixbuf loaders (#218755)
+- Fix clipping of mnemonic underlines (#218615)
+- Give accessible names to message dialogs (#215472)
+- Fix a crash in the handling of invalid icon themes (#218247)
+- Make the print dialog work when the 'BrowseShortNames Off' cups
+  option is used (#217220)
+
 * Sat Nov 25 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-6
 - Fix a recent-files related crash
 

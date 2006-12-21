@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -42,6 +42,7 @@ Patch13: gtk+-2.10.4-printernames.patch
 Patch14: gtk+-2.10.4-message-dialog-a11y.patch
 Patch15: gtk+-2.10.4-mnemonic-clipping.patch
 Patch16: gtk+-2.10.4-close-loader.patch
+Patch17: colors.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -136,6 +137,7 @@ tar xzf %{SOURCE1}
 %patch14 -p1 -b .message-dialog-ally
 %patch15 -p1 -b .mnemonic-clipping
 %patch16 -p1 -b .close-loader
+%patch17 -p1 -b .colors
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -309,6 +311,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Dec 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-8
+- Make update scripts handle slight variations in $host
+
 * Sat Dec  9 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-7
 - Fix error handling in pixbuf loaders (#218755)
 - Fix clipping of mnemonic underlines (#218615)

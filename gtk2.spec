@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -309,6 +309,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Thu Dec 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.4-9
+- Make gdk_pixbuf_loader_close() idempotent
+- Always emit the closed signal when the loader is closed
+
 * Thu Dec 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-8
 - Make update scripts handle slight variations in $host
 

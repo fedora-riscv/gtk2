@@ -19,7 +19,7 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.gz
+Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
 Source1: update-scripts.tar.gz
 
 # Biarch changes

@@ -10,16 +10,16 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.6
+%define base_version 2.10.7
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 9%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
+Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.gz
 Source1: update-scripts.tar.gz
 
 # Biarch changes
@@ -27,21 +27,15 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
-Patch2: gtk+-2.10.4-search.patch
+Patch2: gtk+-2.10.7-search.patch
 # use fam for recent-files
 Patch3: gtk+-2.10.3-fam.patch
 
 # backport from HEAD
-Patch7: gtk+-2.10.2-cursor-blink.patch
+Patch7: gtk+-2.10.7-cursor-blink.patch
 
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
-Patch11: gtk+-2.10.4-strncpy.patch
-Patch12: gtk+-2.10.4-panel-crash.patch
-Patch13: gtk+-2.10.4-printernames.patch
-Patch14: gtk+-2.10.4-message-dialog-a11y.patch
-Patch15: gtk+-2.10.4-mnemonic-clipping.patch
-Patch16: gtk+-2.10.4-close-loader.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -127,15 +121,9 @@ tar xzf %{SOURCE1}
 %patch2 -p1 -b .search
 %patch3 -p1 -b .fam
 
-%patch7 -p0 -b .cursor-blink
+%patch7 -p1 -b .cursor-blink
 
 %patch10 -p1 -b .im-reset
-%patch11 -p1 -b .strncpy
-%patch12 -p1 -b .panel-crash
-%patch13 -p1 -b .printernames
-%patch14 -p1 -b .message-dialog-ally
-%patch15 -p1 -b .mnemonic-clipping
-%patch16 -p1 -b .close-loader
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

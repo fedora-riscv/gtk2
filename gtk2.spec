@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -151,7 +151,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -297,7 +297,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Thu Dec 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.4-9
+* Tue Jan 09 2007 Behdad Esfahbod <besfahbo@redhat.com> - 2.10.7-2
+- Configure with --with-included-loaders=png.  Saves a page per process
+
+* Thu Dec 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.7-1
 - Make gdk_pixbuf_loader_close() idempotent
 - Always emit the closed signal when the loader is closed
 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -36,6 +36,7 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
+Patch11: gtk+-2.10.8-recent-menu-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -124,6 +125,7 @@ tar xzf %{SOURCE1}
 %patch7 -p1 -b .cursor-blink
 
 %patch10 -p1 -b .im-reset
+%patch11 -p1 -b .recent-menu-crash
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -297,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jan 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.8-2
+- Fix a crash in the recent-files menu code.
+
 * Wed Jan 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.8-1
 - Update to 2.10.8
 

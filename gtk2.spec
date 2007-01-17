@@ -27,7 +27,7 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
-Patch2: gtk+-2.10.7-search.patch
+Patch2: gtk+-2.10.8-search.patch
 # use fam for recent-files
 Patch3: gtk+-2.10.3-fam.patch
 

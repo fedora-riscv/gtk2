@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.8
+%define base_version 2.10.9
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -20,7 +20,8 @@ Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
-Source1: update-scripts.tar.gz
+Source1: update-gdk-pixbuf-loaders
+Source2: update-gtk-immodules 
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
@@ -36,7 +37,6 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
-Patch11: gtk+-2.10.8-recent-menu-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -115,17 +115,13 @@ docs for the GTK+ widget toolkit.
 %prep
 %setup -q -n gtk+-%{version}
 
-tar xzf %{SOURCE1}
-
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
 %patch3 -p1 -b .fam
 
 %patch7 -p1 -b .cursor-blink
-
 %patch10 -p1 -b .im-reset
-%patch11 -p1 -b .recent-menu-crash
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -230,8 +226,8 @@ esac
 #
 # Install wrappers for the binaries
 #
-cp update-gtk-immodules $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
-cp update-gdk-pixbuf-loaders $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la

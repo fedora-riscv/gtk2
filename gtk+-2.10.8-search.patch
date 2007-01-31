@@ -1,5 +1,5 @@
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginetracker.h	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginetracker.h	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,59 @@
 +/*
 + * Copyright (C) 2005 Mr Jamie McCracken
@@ -60,8 +60,8 @@
 +G_END_DECLS
 +
 +#endif /* __GTK_SEARCH_ENGINE_TRACKER_H__ */
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchengine.h	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchengine.h	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,91 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.
@@ -154,8 +154,8 @@
 +G_END_DECLS
 +
 +#endif /* __GTK_SEARCH_ENGINE_H__ */
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginebeagle.h	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginebeagle.h	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,59 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.
@@ -216,8 +216,8 @@
 +G_END_DECLS
 +
 +#endif /* __GTK_SEARCH_ENGINE_BEAGLE_H__ */
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchengine.c	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchengine.c	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,197 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.
@@ -416,8 +416,8 @@
 +  
 +  g_signal_emit (engine, signals[ERROR], 0, error_message);
 +}
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginetracker.c	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginetracker.c	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,362 @@
 +/*
 + * Copyright (C) 2005 Mr Jamie McCracken
@@ -781,8 +781,8 @@
 +  
 +  return GTK_SEARCH_ENGINE (engine);
 +}
---- gtk+-2.10.8/gtk/Makefile.am.search	2007-01-16 22:14:43.000000000 -0500
-+++ gtk+-2.10.8/gtk/Makefile.am	2007-01-17 01:21:08.000000000 -0500
+--- gtk+-2.10.9/gtk/Makefile.am.search	2007-01-22 10:48:04.000000000 -0500
++++ gtk+-2.10.9/gtk/Makefile.am	2007-01-30 23:27:42.000000000 -0500
 @@ -332,6 +332,11 @@
  
  # GTK+ header files that don't get installed
@@ -807,8 +807,8 @@
  	fnmatch.c		\
  	gtkaboutdialog.c	\
  	gtkaccelgroup.c		\
---- gtk+-2.10.8/gtk/gtkfilechooserdefault.c.search	2007-01-16 22:14:43.000000000 -0500
-+++ gtk+-2.10.8/gtk/gtkfilechooserdefault.c	2007-01-17 01:21:08.000000000 -0500
+--- gtk+-2.10.9/gtk/gtkfilechooserdefault.c.search	2007-01-22 10:48:04.000000000 -0500
++++ gtk+-2.10.9/gtk/gtkfilechooserdefault.c	2007-01-30 23:27:42.000000000 -0500
 @@ -78,6 +78,8 @@
  #include <errno.h>
  #include <string.h>
@@ -2308,7 +2308,7 @@
    else if (impl->location_entry && impl->toplevel_last_focus_widget == impl->location_entry)
      {
        /* The focus is on a dialog's action area button, *and* the widget that
-@@ -7913,15 +8202,452 @@
+@@ -7913,15 +8202,453 @@
    gtk_widget_grab_focus (widget);
  }
  
@@ -2657,6 +2657,7 @@
 +
 +  impl->search_query = _gtk_query_new ();
 +  _gtk_query_set_text (impl->search_query, query_text);
++  _gtk_search_engine_set_query (impl->search_engine, impl->search_query);
 +
 +  g_signal_connect (impl->search_engine, "hits-added",
 +		    G_CALLBACK (search_engine_hits_added_cb), impl);
@@ -2767,7 +2768,7 @@
         */
        filter_index = g_slist_index (impl->filters, filter);
        if (impl->filters && filter && filter_index < 0)
-@@ -7961,28 +8687,44 @@
+@@ -7961,28 +8688,44 @@
  {
    GtkTreePath *cursor_path;
    const GtkFilePath *new_path;
@@ -2829,7 +2830,7 @@
      }
  
    if (new_path != impl->preview_path &&
-@@ -7998,7 +8740,7 @@
+@@ -7998,7 +8741,7 @@
        if (new_path)
  	{
  	  impl->preview_path = gtk_file_path_copy (new_path);
@@ -2838,7 +2839,7 @@
  	}
        else
  	{
-@@ -8067,6 +8809,8 @@
+@@ -8067,6 +8810,8 @@
  {
    GtkFilePath *path;
  
@@ -2847,7 +2848,7 @@
    /* We ref the file chooser since volume_mount() may run a main loop, and the
     * user could close the file chooser window in the meantime.
     */
-@@ -8087,6 +8831,8 @@
+@@ -8087,6 +8832,8 @@
        if (path != NULL)
          {
            change_folder_and_display_error (impl, path);
@@ -2856,7 +2857,7 @@
            gtk_file_path_free (path);
          }
      }
-@@ -8119,7 +8865,10 @@
+@@ -8119,7 +8866,10 @@
      goto out;
  
    if (!error && gtk_file_info_get_is_folder (info))
@@ -2868,7 +2869,7 @@
    else
      gtk_file_chooser_default_select_path (GTK_FILE_CHOOSER (data->impl), data->path, NULL);
  
-@@ -8136,26 +8885,25 @@
+@@ -8136,26 +8886,25 @@
  			 GtkTreeIter           *iter)
  {
    gpointer col_data;
@@ -2900,7 +2901,7 @@
      {
        GtkFileSystemVolume *volume;
  
-@@ -8163,7 +8911,7 @@
+@@ -8163,7 +8912,7 @@
  
        shortcuts_activate_volume (impl, volume);
      }
@@ -2909,7 +2910,7 @@
      {
        struct ShortcutsActivateData *data;
  
-@@ -8176,6 +8924,10 @@
+@@ -8176,6 +8925,10 @@
  				  GTK_FILE_INFO_IS_FOLDER,
  				  shortcuts_activate_get_info_cb, data);
      }
@@ -2920,7 +2921,7 @@
  }
  
  /* Callback used when a row in the shortcuts list is activated */
-@@ -8188,15 +8940,13 @@
+@@ -8188,15 +8941,13 @@
    GtkTreeIter iter;
    GtkTreeIter child_iter;
  
@@ -2938,7 +2939,7 @@
  }
  
  /* Handler for GtkWidget::key-press-event on the shortcuts list */
-@@ -8236,8 +8986,15 @@
+@@ -8236,8 +8987,15 @@
  			gpointer           data)
  {
    GtkFileChooserDefault *impl = data;
@@ -2955,7 +2956,7 @@
  }
  
  static gboolean
-@@ -8249,6 +9006,9 @@
+@@ -8249,6 +9007,9 @@
  {
    GtkFileChooserDefault *impl = data;
  
@@ -2965,7 +2966,7 @@
    if (impl->action == GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER ||
        impl->action == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER)
      {
-@@ -8274,7 +9034,7 @@
+@@ -8274,7 +9035,7 @@
  			GtkFileChooserDefault *impl)
  {
    /* See if we are in the new folder editable row for Save mode */
@@ -2974,7 +2975,7 @@
      {
        const GtkFileInfo *info;
        gboolean had_selection;
-@@ -8289,6 +9049,8 @@
+@@ -8289,6 +9050,8 @@
  
   out:
  
@@ -2983,7 +2984,7 @@
    update_chooser_entry (impl);
    check_preview_change (impl);
    bookmarks_check_add_sensitivity (impl);
-@@ -8306,6 +9068,12 @@
+@@ -8306,6 +9069,12 @@
    GtkTreeIter iter, child_iter;
    const GtkFileInfo *info;
  
@@ -2996,7 +2997,7 @@
    if (!gtk_tree_model_get_iter (GTK_TREE_MODEL (impl->sort_model), &iter, path))
      return;
  
-@@ -8376,6 +9144,15 @@
+@@ -8376,6 +9145,15 @@
    const GtkFileInfo *info; 
    gboolean sensitive = TRUE;
  
@@ -3012,7 +3013,7 @@
    profile_start ("start", NULL);
    
    info = get_list_file_info (impl, iter);
-@@ -8425,13 +9202,33 @@
+@@ -8425,13 +9203,33 @@
  		     gpointer           data)
  {
    GtkFileChooserDefault *impl = data;
@@ -3048,7 +3049,7 @@
  		    NULL);
  
        return;
-@@ -8447,6 +9244,7 @@
+@@ -8447,6 +9245,7 @@
    g_object_set (cell,
  		"text", gtk_file_info_get_display_name (info),
  		"sensitive", sensitive,
@@ -3056,7 +3057,7 @@
  		NULL);
  }
  
-@@ -8508,7 +9306,6 @@
+@@ -8508,7 +9307,6 @@
  		      gpointer           data)
  {
    GtkFileChooserDefault *impl;
@@ -3064,7 +3065,7 @@
    GtkFileTime time_mtime;
    GDate mtime, now;
    int days_diff;
-@@ -8517,17 +9314,35 @@
+@@ -8517,17 +9315,35 @@
  
    impl = data;
  
@@ -3108,7 +3109,7 @@
  
    if (time_mtime == 0)
      strcpy (buf, _("Unknown"));
-@@ -8558,10 +9373,6 @@
+@@ -8558,10 +9374,6 @@
  	}
      }
  
@@ -3119,7 +3120,7 @@
    g_object_set (cell,
  		"text", buf,
  		"sensitive", sensitive,
-@@ -8587,7 +9398,23 @@
+@@ -8587,7 +9399,23 @@
  static void
  location_popup_handler (GtkFileChooserDefault *impl,
  			const gchar           *path)
@@ -3144,7 +3145,7 @@
    if (impl->action == GTK_FILE_CHOOSER_ACTION_OPEN
        || impl->action == GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER)
      {
-@@ -8656,6 +9483,7 @@
+@@ -8656,6 +9484,7 @@
      g_assert_not_reached ();
  
    shortcuts_activate_iter (impl, &iter);
@@ -3152,7 +3153,7 @@
  }
  
  /* Handler for the "home-folder" keybinding signal */
-@@ -8700,26 +9528,26 @@
+@@ -8700,26 +9529,26 @@
  /* Drag and drop interfaces */
  
  static void
@@ -3185,7 +3186,7 @@
  
    pos = *gtk_tree_path_get_indices (path);
    bookmarks_pos = shortcuts_get_index (model->impl, SHORTCUTS_BOOKMARKS);
-@@ -8729,13 +9557,13 @@
+@@ -8729,13 +9558,13 @@
  
  /* GtkTreeDragSource::drag_data_get implementation for the shortcuts filter model */
  static gboolean
@@ -3204,7 +3205,7 @@
  
    /* FIXME */
  
-@@ -8744,30 +9572,30 @@
+@@ -8744,30 +9573,30 @@
  
  /* Fill the GtkTreeDragSourceIface vtable */
  static void
@@ -3246,8 +3247,8 @@
  			"child-model", child_model,
  			"virtual-root", root,
  			NULL);
---- gtk+-2.10.8/gtk/gtkfilechooserprivate.h.search	2007-01-16 22:14:43.000000000 -0500
-+++ gtk+-2.10.8/gtk/gtkfilechooserprivate.h	2007-01-17 01:23:26.000000000 -0500
+--- gtk+-2.10.9/gtk/gtkfilechooserprivate.h.search	2007-01-22 10:48:04.000000000 -0500
++++ gtk+-2.10.9/gtk/gtkfilechooserprivate.h	2007-01-30 23:27:42.000000000 -0500
 @@ -25,6 +25,8 @@
  #include "gtkfilesystem.h"
  #include "gtkfilesystemmodel.h"
@@ -3344,8 +3345,8 @@
    guint expand_folders : 1;
  
  #if 0
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginesimple.h	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginesimple.h	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,59 @@
 +/*
 + * Copyright (C) 2005 Red Hat, Inc
@@ -3406,9 +3407,9 @@
 +G_END_DECLS
 +
 +#endif /* __GTK_SEARCH_ENGINE_SIMPLE_H__ */
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginesimple.c	2007-01-17 01:21:08.000000000 -0500
-@@ -0,0 +1,378 @@
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginesimple.c	2007-01-30 23:29:14.000000000 -0500
+@@ -0,0 +1,376 @@
 +/*
 + * Copyright (C) 2005 Red Hat, Inc
 + *
@@ -3487,8 +3488,6 @@
 +      g_object_unref (simple->priv->query);
 +      simple->priv->query = NULL;
 +    }
-+  
-+  g_free (simple->priv);
 +  
 +  G_OBJECT_CLASS (_gtk_search_engine_simple_parent_class)->finalize (object);
 +}
@@ -3787,8 +3786,8 @@
 +  
 +  return engine;
 +}
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtksearchenginebeagle.c	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtksearchenginebeagle.c	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,420 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.
@@ -4210,8 +4209,8 @@
 +  
 +  return GTK_SEARCH_ENGINE (engine);
 +}
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtkquery.c	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtkquery.c	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,142 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.
@@ -4355,8 +4354,8 @@
 +					    g_strdup (mime_type));
 +}
 +
---- /dev/null	2007-01-16 08:16:47.736226048 -0500
-+++ gtk+-2.10.8/gtk/gtkquery.h	2007-01-17 01:21:08.000000000 -0500
+--- /dev/null	2007-01-30 22:42:40.851021051 -0500
++++ gtk+-2.10.9/gtk/gtkquery.h	2007-01-30 23:27:42.000000000 -0500
 @@ -0,0 +1,74 @@
 +/*
 + * Copyright (C) 2005 Novell, Inc.

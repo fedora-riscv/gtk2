@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -226,8 +226,8 @@ esac
 #
 # Install wrappers for the binaries
 #
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
-cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -295,6 +295,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Feb  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.9-3
+- Fix update-gtk-immodules and update-gdk-pixbuf-loaders 
+  being swapped  (#227134)
+
 * Tue Jan 30 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.9-2
 - Fix filechooser search support
 

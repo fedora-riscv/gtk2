@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -130,19 +130,12 @@ done
 %build
 libtoolize --force
 
+# Patch2 modifies gdk/Makefile.am
 # Patch3 modifies gdk-pixbuf/Makefile.am
-# Patch9 modifies configure.in
-autoheader
 aclocal-1.7
 automake-1.7
-
-if test -x /usr/bin/autoconf-2.53; then
-  autoconf-2.53
-elif test -x /usr/bin/autoconf-2.52; then
-  autoconf-2.52
-elif test -x /usr/bin/autoconf; then
-  autoconf
-fi
+autoconf
+autoheader
 
 if ! pkg-config --exists pangoxft ; then
         echo "No pangoxft.pc!"
@@ -295,6 +288,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Feb  9 2007 Stepan Kasal <skasal@redhat.com> - 2.10.9-4
+- Clean up the autotools calles in %%prep.
+
 * Fri Feb  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.9-3
 - Fix update-gtk-immodules and update-gdk-pixbuf-loaders 
   being swapped  (#227134)

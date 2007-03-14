@@ -101,6 +101,7 @@ Requires: cairo-devel >= %{cairo_version}
 Requires: libX11-devel, libXcursor-devel, libXinerama-devel
 Requires: libXext-devel, libXi-devel, libXrandr-devel
 Requires: libXfixes-devel
+Requires: libpng-devel
 Requires: pkgconfig
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
@@ -290,6 +291,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Wed Mar 14 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-1
 - Update to 2.10.11
+- Require libpng-devel in the devel package (#232013)
 
 * Mon Mar 12 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.10-1
 - Update to 2.10.10

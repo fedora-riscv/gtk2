@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.10
+%define base_version 2.10.11
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -37,9 +37,6 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
-
-# fixed in upstream svn
-Patch11: gtk+-2.10.10-tab-detach.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,7 +122,6 @@ docs for the GTK+ widget toolkit.
 
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
-%patch11 -p1 -b .tab-detach
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -292,6 +288,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Mar 14 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-1
+- Update to 2.10.11
+
 * Mon Mar 12 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.10-1
 - Update to 2.10.10
 

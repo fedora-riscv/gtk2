@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -65,7 +65,7 @@ Obsoletes: Inti
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI
 Conflicts: gtk2-engines < 2.7.4-7
-Conflicts: libgnomeui < libgnomeui-2.15.1cvs20060505-2
+Conflicts: libgnomeui < 2.15.1cvs20060505-2
 Conflicts: redhat-artwork < 0.243-1
 
 URL: http://www.gtk.org
@@ -289,6 +289,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Mar 20 2007 Florian La Roche <laroche@redhat.com> - 2.10.11-2
+- fix Conflicts: libgnomeui line
+
 * Wed Mar 14 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-1
 - Update to 2.10.11
 - Require libpng-devel in the devel package (#232013)

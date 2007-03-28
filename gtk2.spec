@@ -31,12 +31,12 @@ Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 Patch2: gtk+-2.10.8-search.patch
 # use fam for recent-files
 Patch3: gtk+-2.10.3-fam.patch
-
 # backport from HEAD
 Patch7: gtk+-2.10.7-cursor-blink.patch
-
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
+# fixed in upstream cvs
+Patch11: raw-printers.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -120,9 +120,9 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .search
 %patch3 -p1 -b .fam
-
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
+%patch11 -p1 -b .raw-printers
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -289,6 +289,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Mar 28 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-2
+- Support raw printers
+
 * Tue Mar 20 2007 Florian La Roche <laroche@redhat.com> - 2.10.11-2
 - fix Conflicts: libgnomeui line
 

@@ -37,7 +37,6 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 Patch10: gtk+-2.10.4-im-reset.patch
 # fixed in upstream cvs
 Patch11: raw-printers.patch
-Patch12: gtk-keys.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -124,7 +123,6 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
 %patch11 -p1 -b .raw-printers
-%patch12 -p1 -b .keys
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

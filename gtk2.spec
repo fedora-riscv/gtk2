@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -37,6 +37,7 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 Patch10: gtk+-2.10.4-im-reset.patch
 # fixed in upstream cvs
 Patch11: raw-printers.patch
+Patch12: gtk+-2.10.11-user-dirs.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -123,6 +124,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
 %patch11 -p1 -b .raw-printers
+%patch12 -p1 -b .user-dirs
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -289,6 +291,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Apr 10 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-5
+- Use DESKTOP xdg-user-dir in the file chooser
+
 * Mon Apr  9 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-4
 - Fix a memory leak in the search patch
 

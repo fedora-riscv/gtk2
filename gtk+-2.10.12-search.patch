@@ -3137,7 +3137,7 @@
 +
 +      search_switch_to_browse_mode (impl); /* This will give us the location widgets back */
 +      if (impl->current_folder)
-+        change_folder_and_display_error (impl, impl->current_folder);
++        change_folder_and_display_error (impl, impl->current_folder, FALSE);
 +
 +      if (impl->location_mode == LOCATION_MODE_PATH_BAR)
 +        widget_to_focus = impl->browse_files_tree_view;

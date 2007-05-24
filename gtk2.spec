@@ -261,6 +261,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
+%{_sysconfdir}/gtk-2.0/im-multipress.conf
 
 %files devel
 %defattr(-, root, root)

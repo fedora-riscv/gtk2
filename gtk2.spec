@@ -28,7 +28,7 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # use fam for recent-files
-Patch2: gtk+-2.10.3-fam.patch
+#Patch2: gtk+-2.10.3-fam.patch
 Patch3: gtk+-2.10.11-user-dirs.patch
 
 BuildRequires: atk-devel >= %{atk_version}
@@ -48,8 +48,8 @@ BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
-# for patch 3
-BuildRequires: gamin-devel
+# for patch 2
+#BuildRequires: gamin-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: gtk+-gtkbeta
@@ -111,7 +111,7 @@ docs for the GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
-%patch2 -p1 -b .fam
+#%patch2 -p1 -b .fam
 %patch3 -p1 -b .user-dirs
 
 for i in config.guess config.sub ; do

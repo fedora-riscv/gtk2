@@ -30,6 +30,8 @@ Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
 Patch3: gtk+-2.10.11-user-dirs.patch
+# destdir support is broken in input
+Patch4: gtk+-2.11.0-destdir.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -113,6 +115,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
 %patch3 -p1 -b .user-dirs
+%patch4 -p1 -b .destdir
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

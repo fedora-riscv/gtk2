@@ -10,16 +10,16 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.12
+%define base_version 2.10.11
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 7%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
+Source: http://ftp.gnome.org/pub/gnome/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 
@@ -28,13 +28,15 @@ Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
 # Filechooser search
-Patch2: gtk+-2.10.12-search.patch
+Patch2: gtk+-2.10.8-search.patch
 # use fam for recent-files
 Patch3: gtk+-2.10.3-fam.patch
 # backport from HEAD
 Patch7: gtk+-2.10.7-cursor-blink.patch
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
+# fixed in upstream cvs
+Patch11: raw-printers.patch
 Patch12: gtk+-2.10.11-user-dirs.patch
 
 BuildRequires: atk-devel >= %{atk_version}
@@ -121,6 +123,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .fam
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
+%patch11 -p1 -b .raw-printers
 %patch12 -p1 -b .user-dirs
 
 for i in config.guess config.sub ; do
@@ -288,9 +291,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Sat May 19 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.12-1
-- Update to 2.10.12
-- Drop upstreamed patches
+* Thu May 24 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-7
+- Rebuild to fix $host issues (#241243)
 
 * Tue May 15 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-6
 - Backport some fixes for the ftw()-based search engine

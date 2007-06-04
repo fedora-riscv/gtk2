@@ -26,7 +26,7 @@ Source2: update-gtk-immodules
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
-Patch1: gtk+-2.8.10-set-invisible-char-to-bullet.patch
+Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
 Patch3: gtk+-2.10.11-user-dirs.patch

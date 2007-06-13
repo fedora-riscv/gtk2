@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.12
+%define base_version 2.10.13
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -288,23 +288,26 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Thu May 24 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.12-2
+* Wed Jun 13 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.13-1
+- Update to 2.10.13
+
+* Thu May 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.12-2
 - Rebuild to fix buildsystem configuration issues
 
-* Sat May 19 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.12-1
+* Sat May 19 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.12-1
 - Update to 2.10.12
 - Drop upstreamed patches
 
-* Tue May 15 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-6
+* Tue May 15 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-6
 - Backport some fixes for the ftw()-based search engine
 
-* Tue Apr 10 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-5
+* Tue Apr 10 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-5
 - Use DESKTOP xdg-user-dir in the file chooser
 
-* Mon Apr  9 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-4
+* Mon Apr  9 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-4
 - Fix a memory leak in the search patch
 
-* Wed Mar 28 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-3
+* Wed Mar 28 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-3
 - Support raw printers
 
 * Tue Mar 20 2007 Florian La Roche <laroche@redhat.com> - 2.10.11-2

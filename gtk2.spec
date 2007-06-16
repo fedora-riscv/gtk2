@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.11.2
+%define base_version 2.11.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -29,7 +29,6 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
-Patch3: gtk+-2.10.11-user-dirs.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -112,7 +111,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
-%patch3 -p1 -b .user-dirs
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -280,6 +278,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jun 15 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-1
+- Update to 2.11.3
+- Drop upstreamed patches
+
 * Wed Jun  6 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.2-1
 - Update to 2.11.2
 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -96,6 +96,10 @@ Requires: libXext-devel, libXi-devel, libXrandr-devel
 Requires: libXfixes-devel
 Requires: libpng-devel
 Requires: pkgconfig
+# for /usr/share/aclocal
+Requires: automake
+# for /usr/share/gtk-doc/html
+Requires: gtk-doc
 Obsoletes: gtk+-gtkbeta-devel
 Obsoletes: Inti-devel
 ## avoid header collisions
@@ -267,7 +271,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %{_libdir}/lib*.so
-%dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/include
 %{_datadir}/gtk-doc/html/*
 %{_mandir}/man1/*
@@ -280,6 +283,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-3
+- Clean up directory ownership
+
 * Sat Jun 16 2007 Caolan McNamara <caolanm@redhat.com> - 1.11.3-2
 - Resolves: rhbz#244516 avoid typename in headers for C++
 

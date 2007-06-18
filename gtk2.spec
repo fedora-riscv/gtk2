@@ -1,8 +1,8 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.12.0
+%define glib2_base_version 2.13.3
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.13.0
+%define pango_base_version 1.15.3
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.9.0
 %define atk_version %{atk_base_version}-1
@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -283,6 +283,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-4
+- Update versioned dependencies (#244602)
+
 * Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-3
 - Clean up directory ownership
 

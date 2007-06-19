@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.11.3
+%define base_version 2.11.4
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -29,7 +29,6 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
-Patch3: gtk+-2.11.3-typename.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,7 +115,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
-%patch3 -p1 -b .typename
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -283,44 +281,47 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-4
+* Tue Jun 19 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.4-1
+- Update to 2.11.4
+
+* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.3-4
 - Update versioned dependencies (#244602)
 
-* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-3
+* Sun Jun 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.3-3
 - Clean up directory ownership
 
-* Sat Jun 16 2007 Caolan McNamara <caolanm@redhat.com> - 1.11.3-2
+* Sat Jun 16 2007 Caolan McNamara <caolanm@redhat.com> - 2.11.3-2
 - Resolves: rhbz#244516 avoid typename in headers for C++
 
-* Fri Jun 15 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.3-1
+* Fri Jun 15 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.3-1
 - Update to 2.11.3
 - Drop upstreamed patches
 
-* Wed Jun  6 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.2-1
+* Wed Jun  6 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.2-1
 - Update to 2.11.2
 
-* Mon Jun  4 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.1-1
+* Mon Jun  4 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.1-1
 - Update to 2.11.1
 - Update patches
 
-* Thu May 24 2007 Matthias Clasen <mclasen@redhat.com> - 1.11.0-1
+* Thu May 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.0-1
 - Update to 2.11.0
 - Drop upstreamed patches
 
-* Sat May 19 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.12-1
+* Sat May 19 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.12-1
 - Update to 2.10.12
 - Drop upstreamed patches
 
-* Tue May 15 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-6
+* Tue May 15 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-6
 - Backport some fixes for the ftw()-based search engine
 
-* Tue Apr 10 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-5
+* Tue Apr 10 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-5
 - Use DESKTOP xdg-user-dir in the file chooser
 
-* Mon Apr  9 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-4
+* Mon Apr  9 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-4
 - Fix a memory leak in the search patch
 
-* Wed Mar 28 2007 Matthias Clasen <mclasen@redhat.com> - 1.10.11-3
+* Wed Mar 28 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.11-3
 - Support raw printers
 
 * Tue Mar 20 2007 Florian La Roche <laroche@redhat.com> - 2.10.11-2

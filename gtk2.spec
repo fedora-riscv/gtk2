@@ -275,6 +275,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 %{_datadir}/aclocal/*
 %{_bindir}/gdk-pixbuf-csource
+%{_bindir}/gtk-builder-convert
 %{_libdir}/pkgconfig/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq

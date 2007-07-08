@@ -30,10 +30,6 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
 
-# http://bugzilla.gnome.org/show_bug.cgi?id=426987
-# http://bugzilla.gnome.org/show_bug.cgi?id=446183
-Patch3: gtk+-2.10.13-dont-cache-icon-pixbufs.patch
-
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -119,7 +115,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
-%patch3 -p1 -b .dont-cache-icon-pixbufs
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -287,11 +282,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
-* Sun Jul  8 2007 Ray Strode <rstrode@redhat.com> - 2.11.5-2
-- don't cache icon pixbufs in recentmanager code,
-  Patch by Emmanuele Bassi <ebassi@gnome.org>, 
-  gnome bug 426987
-
 * Mon Jul  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.5-1
 - Update to 2.11.5
 

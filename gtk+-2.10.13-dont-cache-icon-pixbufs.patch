@@ -1,6 +1,7 @@
---- gtk-2.10.13/gtk/gtkrecentmanager.c	(revision 18287)
-+++ gtk-2.10.13/gtk/gtkrecentmanager.c	(revision 18288)
-@@ -1847,106 +1847,56 @@
+diff -up gtk+-2.10.13/gtk/gtkrecentmanager.c.dont-cache-icon-pixbufs gtk+-2.10.13/gtk/gtkrecentmanager.c
+--- gtk+-2.10.13/gtk/gtkrecentmanager.c.dont-cache-icon-pixbufs	2007-07-08 08:46:03.000000000 -0400
++++ gtk+-2.10.13/gtk/gtkrecentmanager.c	2007-07-08 08:51:07.000000000 -0400
+@@ -2238,106 +2238,56 @@ gtk_recent_info_last_application (GtkRec
    return g_strdup (name);
  }
  
@@ -36,7 +37,7 @@
 -/* TODO: use the GtkFileChooser's icon cache instead of our own to reduce
 - * the memory footprint
 - */
- static GdkPixbuf *
+-static GdkPixbuf *
 -get_cached_icon (const gchar *name,
 -		 gint         pixel_size)
 -{
@@ -80,7 +81,7 @@
 -}
 -
 -
--static GdkPixbuf *
+ static GdkPixbuf *
  get_icon_for_mime_type (const char *mime_type,
  			gint        pixel_size)
  {
@@ -93,11 +94,11 @@
    if (!separator)
 -    return NULL; /* maybe we should return a GError with "invalid MIME-type" */
 +    return NULL;
- 
++
 +  icon_theme = gtk_icon_theme_get_default ();
 +
 +  /* try with the three icon name variants for MIME types */
-+
+ 
 +  /* canonicalize MIME type: foo/x-bar -> foo-x-bar */
 +  icon_name = g_string_new (NULL);
 +  g_string_append_len (icon_name, mime_type, separator - mime_type);
@@ -136,13 +137,21 @@
    g_string_free (icon_name, TRUE);
  
    return pixbuf;
-@@ -1995,7 +1945,8 @@
-   /* this function should never fail */  
+@@ -2383,9 +2333,15 @@ gtk_recent_info_get_icon (GtkRecentInfo 
+   if (info->mime_type)
+     retval = get_icon_for_mime_type (info->mime_type, size);
+ 
+-  /* this should never fail */  
++  /* this should never fail */
    if (!retval)
-     {
--      if (info->mime_type && strcmp (info->mime_type, "x-directory/normal") == 0)
+-    retval = get_icon_fallback (GTK_STOCK_FILE, size);
++    {
 +      if (info->mime_type &&
 +          strcmp (info->mime_type, "x-directory/normal") == 0)
-         retval = get_icon_fallback (GTK_STOCK_DIRECTORY, size);
-       else
-         retval = get_icon_fallback (GTK_STOCK_FILE, size);
++        retval = get_icon_fallback (GTK_STOCK_DIRECTORY, size);
++      else
++        retval = get_icon_fallback (GTK_STOCK_FILE, size);
++    }
+   
+   return retval;
+ }

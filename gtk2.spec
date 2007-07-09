@@ -223,6 +223,8 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
+
 #
 # We need the substitution of $host so we use an external
 # file list
@@ -258,6 +260,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/%{bin_version}
+%{_libdir}/gtk-2.0/modules
 %{_datadir}/gtk-2.0
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
@@ -282,6 +285,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jul  8 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.5-2
+- Own /usr/lib/gtk-2.0/modules
+
 * Mon Jul  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.5-1
 - Update to 2.11.5
 

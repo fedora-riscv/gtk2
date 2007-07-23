@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.10.13
+%define base_version 2.10.14
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -36,9 +36,6 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
 Patch12: gtk+-2.10.11-user-dirs.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=446183
-# http://bugzilla.gnome.org/show_bug.cgi?id=426987
-Patch13: gtk+-2.10.13-dont-cache-icon-pixbufs.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,7 +122,6 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
 %patch12 -p1 -b .user-dirs
-%patch13 -p1 -b .dont-cache-icon-pixbufs
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -292,6 +288,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Jul 23 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.14-1
+- Update to 2.10.14
+
 * Sun Jul  8 2007 Ray Strode <rstrode@redhat.com> - 2.10.13-2
 - don't cache icon pixbufs in recentmanager code,
   Patch by Emmanuele Bassi <ebassi@gnome.org>, 

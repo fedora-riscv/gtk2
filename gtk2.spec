@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.13.3
+%define glib2_base_version 2.13.7
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.15.3
 %define pango_version %{pango_base_version}-1
@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.11.5
+%define base_version 2.11.6
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -29,6 +29,8 @@ Patch0: gtk+-2.4.1-lib64.patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # use fam for recent-files
 #Patch2: gtk+-2.10.3-fam.patch
+# fixed in upstream svn
+Patch3: cups-authstring.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -115,6 +117,7 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
+%patch3 -p0 -b .authstring
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -285,6 +288,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Jul 23 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-1
+- Update to 2.11.6
+- Make it build against recent cups
+
+* Thu Jul 19 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.5-4
+- Up the glib requirement
+
 * Sun Jul  8 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.5-3
 - Own /usr/lib/gtk-2.0/modules
 

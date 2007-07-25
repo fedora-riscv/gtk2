@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -31,6 +31,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 #Patch2: gtk+-2.10.3-fam.patch
 # fixed in upstream svn
 Patch3: cups-authstring.patch
+# fixed in upstream svn
+Patch4: silence-icon-cache-validator.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -118,6 +120,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 #%patch2 -p1 -b .fam
 %patch3 -p0 -b .authstring
+%patch4 -p1 -b .silence
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -288,6 +291,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-2
+- Silence the icon cache validator (#248789)
+
 * Mon Jul 23 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-1
 - Update to 2.11.6
 - Make it build against recent cups

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -33,6 +33,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch3: cups-authstring.patch
 # fixed in upstream svn
 Patch4: silence-icon-cache-validator.patch
+# fixed in upstream svn
+Patch5: systray-tooltips.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -121,6 +123,7 @@ docs for the GTK+ widget toolkit.
 #%patch2 -p1 -b .fam
 %patch3 -p0 -b .authstring
 %patch4 -p1 -b .silence
+%patch5 -p1 -b .tooltips
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -291,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jul 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-3
+- Fix the behaviour of tooltips on system tray icons
+
 * Tue Jul 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-2
 - Silence the icon cache validator (#248789)
 

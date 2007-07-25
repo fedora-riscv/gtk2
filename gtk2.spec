@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -36,6 +36,8 @@ Patch7: gtk+-2.10.7-cursor-blink.patch
 # fixed in upstream cvs
 Patch10: gtk+-2.10.4-im-reset.patch
 Patch12: gtk+-2.10.11-user-dirs.patch
+# fixed in upstream svn
+Patch13: silence-icon-cache-validator.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -122,6 +124,7 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .cursor-blink
 %patch10 -p1 -b .im-reset
 %patch12 -p1 -b .user-dirs
+%patch13 -p1 -b .silence
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -288,6 +291,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.14-3
+- Silence the icon cache validator (#248789)
+
 * Mon Jul 23 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.14-1
 - Update to 2.10.14
 

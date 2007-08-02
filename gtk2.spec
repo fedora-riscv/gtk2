@@ -16,8 +16,8 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
-License: LGPL
+Release: 4%{?dist}
+License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
@@ -256,8 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f all.lang
 %defattr(-, root, root)
 
-%doc AUTHORS COPYING ChangeLog NEWS README
-%{_bindir}/gtk-demo
+%doc AUTHORS COPYING NEWS README
 %{_bindir}/gdk-pixbuf-query-loaders*
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gdk-pixbuf-loaders
@@ -292,8 +291,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples
+%{_bindir}/gtk-demo
+%{_datadir}/gtk-2.0/demo
 
 %changelog
+* Thu Aug  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-4
+- Move gtk-demo to the -devel package
+- Don't install ChangeLog
+- Update the License field
+
 * Wed Jul 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-3
 - Fix the behaviour of tooltips on system tray icons
 

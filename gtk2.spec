@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -269,7 +269,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/%{bin_version}
 %{_libdir}/gtk-2.0/modules
-%{_datadir}/gtk-2.0
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
@@ -292,9 +291,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/faq
 %doc tmpdocs/examples
 %{_bindir}/gtk-demo
-%{_datadir}/gtk-2.0/demo
+%{_datadir}/gtk-2.0
 
 %changelog
+* Sun Aug  5 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-5
+- Really move gtk-demo over
+
 * Thu Aug  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-4
 - Move gtk-demo to the -devel package
 - Don't install ChangeLog

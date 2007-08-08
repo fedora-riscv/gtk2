@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -35,6 +35,8 @@ Patch3: cups-authstring.patch
 Patch4: silence-icon-cache-validator.patch
 # fixed in upstream svn
 Patch5: systray-tooltips.patch
+# fixed in upstream svn
+Patch6: tooltip-compat.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -124,6 +126,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p0 -b .authstring
 %patch4 -p1 -b .silence
 %patch5 -p1 -b .tooltips
+%patch6 -p0 -b .tooltip-compat
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -294,6 +297,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Aug  8 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-6
+- Improve tooltip compatibility to make acroread work again
+ 
 * Sun Aug  5 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-5
 - Really move gtk-demo over
 

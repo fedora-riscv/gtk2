@@ -126,7 +126,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p0 -b .authstring
 %patch4 -p1 -b .silence
 %patch5 -p1 -b .tooltips
-%patch6 -p0 -b .tooltip-compat
+%patch6 -p1 -b .tooltip-compat
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -236,6 +236,7 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 
 #
 # We need the substitution of $host so we use an external
@@ -271,6 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/%{bin_version}
+%{_libdir}/gtk-2.0/immodules
 %{_libdir}/gtk-2.0/modules
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
@@ -297,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Aug 27 2007 Jens Petersen <petersen@redhat.com> - 2.11.6-7
+- own libdir/gtk-2.0/immodules directory (#255621)
+
 * Wed Aug  8 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-6
 - Improve tooltip compatibility to make acroread work again
  

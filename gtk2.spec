@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -147,13 +147,19 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png --enable-debug
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
 make ## %{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
+
+# create a dummy binary for /usr/lib/gtk-2.0/immodules to work around
+# problems in our ia64 multilib infrastructure
+# See https://bugzilla.redhat.com/show_bug.cgi?id=253726 for more details
+echo 'int main (void) { return 0; }' > relocation-tag.c
+gcc -Os relocation-tag.c -o .relocation-tag
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -238,6 +244,11 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 
+# we need to install a binary in the immodules directory to make sure
+# that it gets properly relocated to /emul for ia64 emulation of x86
+# See https://bugzilla.redhat.com/show_bug.cgi?id=253726
+install -m 0644 .relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
+
 #
 # We need the substitution of $host so we use an external
 # file list
@@ -299,6 +310,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Aug 27 2007 Jens Petersen <petersen@redhat.com> - 2.11.6-8
+- install dummy binary in libdir/gtk-2.0/immodules directory to
+  aid rpm when doing ia64 multilib (bug 253726)
+
 * Mon Aug 27 2007 Jens Petersen <petersen@redhat.com> - 2.11.6-7
 - own libdir/gtk-2.0/immodules directory (#255621)
 

@@ -37,6 +37,9 @@ Patch4: silence-icon-cache-validator.patch
 Patch5: systray-tooltips.patch
 # fixed in upstream svn
 Patch6: tooltip-compat.patch
+# a workaround for some brokenness in the flash plugin
+# see http://bugzilla.gnome.org/show_bug.cgi?id=463773
+Patch7: workaround.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -127,6 +130,7 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .silence
 %patch5 -p1 -b .tooltips
 %patch6 -p1 -b .tooltip-compat
+%patch7 -p1 -b .workaround
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -310,7 +314,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
-* Mon Aug 27 2007 Jens Petersen <petersen@redhat.com> - 2.11.6-8
+* Fri Sep  7 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-9
+- Add a workaround for the flash plugin
+
+* Fri Sep  7 2007 Ray Strode <rstrode@redhat.com> - 2.11.6-8
 - install dummy binary in libdir/gtk-2.0/immodules directory to
   aid rpm when doing ia64 multilib (bug 253726)
 

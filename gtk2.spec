@@ -2,7 +2,7 @@
 
 %define glib2_base_version 2.13.7
 %define glib2_version %{glib2_base_version}-1
-%define pango_base_version 1.15.3
+%define pango_base_version 1.17.3
 %define pango_version %{pango_base_version}-1
 %define atk_base_version 1.9.0
 %define atk_version %{atk_base_version}-1
@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.11.6
+%define base_version 2.12.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 9%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -27,19 +27,11 @@ Source2: update-gtk-immodules
 Patch0: gtk+-2.4.1-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
-# use fam for recent-files
-#Patch2: gtk+-2.10.3-fam.patch
-# fixed in upstream svn
-Patch3: cups-authstring.patch
-# fixed in upstream svn
-Patch4: silence-icon-cache-validator.patch
-# fixed in upstream svn
-Patch5: systray-tooltips.patch
-# fixed in upstream svn
-Patch6: tooltip-compat.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
-Patch7: workaround.patch
+Patch2: workaround.patch
+# fixed in upstream svn
+Patch3: novalidate.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,12 +117,8 @@ docs for the GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
-#%patch2 -p1 -b .fam
-%patch3 -p0 -b .authstring
-%patch4 -p1 -b .silence
-%patch5 -p1 -b .tooltips
-%patch6 -p1 -b .tooltip-compat
-%patch7 -p1 -b .workaround
+%patch2 -p1 -b .workaround
+%patch3 -p1 -b .novalidate
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -139,8 +127,7 @@ done
 %build
 libtoolize --force
 
-# Patch2 modifies gdk/Makefile.am
-# Patch3 modifies gdk-pixbuf/Makefile.am
+# Patch0 modifies gdk-pixbuf/Makefile.am
 aclocal-1.7
 automake-1.7
 autoconf
@@ -314,6 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Sep 14 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-1
+- Update to 2.12.0
+
 * Fri Sep  7 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-9
 - Add a workaround for the flash plugin
 

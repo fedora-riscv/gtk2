@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -32,6 +32,7 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch2: workaround.patch
 # fixed in upstream svn
 Patch3: novalidate.patch
+Patch4: libtracker.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -119,6 +120,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .novalidate
+%patch4 -p1 -b .libtracker
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -301,6 +303,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Sep 18 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-2
+- Adapt to tracker ABI changes
+
 * Fri Sep 14 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-1
 - Update to 2.12.0
 

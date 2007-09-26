@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -33,8 +33,8 @@ Patch2: workaround.patch
 # fixed in upstream svn
 Patch3: novalidate.patch
 Patch4: libtracker.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=460194
 Patch5: swt-tooltips.patch
+Patch6: simple-search-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -53,12 +53,8 @@ BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
-# for patch 2
-#BuildRequires: gamin-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Obsoletes: gtk+-gtkbeta
-Obsoletes: Inti
 
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI
@@ -105,11 +101,6 @@ Requires: pkgconfig
 Requires: automake
 # for /usr/share/gtk-doc/html
 Requires: gtk-doc
-Obsoletes: gtk+-gtkbeta-devel
-Obsoletes: Inti-devel
-## avoid header collisions
-Conflicts: gtk+-devel <= 1.2.8
-Conflicts: gdk-pixbuf-devel <= 0.11
 
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -124,6 +115,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .novalidate
 %patch4 -p1 -b .libtracker
 %patch5 -p1 -b .swt-tooltips
+%patch6 -p0 -b .simple-search-crash
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -306,6 +298,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Sep 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-4
+- Fix a crash in simple search
+- Drop obsolete Obsoletes and Conflicts 
+
 * Thu Sep 20 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-3
 - Fix a problem with swt and tooltips 
 

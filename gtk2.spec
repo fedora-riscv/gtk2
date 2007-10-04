@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
@@ -35,6 +35,7 @@ Patch3: novalidate.patch
 Patch4: libtracker.patch
 Patch5: swt-tooltips.patch
 Patch6: simple-search-crash.patch
+Patch7: scale-button-grab.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,6 +117,7 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .libtracker
 %patch5 -p1 -b .swt-tooltips
 %patch6 -p0 -b .simple-search-crash
+%patch7 -p0 -b .scale-button-grab
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -298,6 +300,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Oct  4 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-5
+- Fix a grab problem with multiple volume buttons
+
 * Tue Sep 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-4
 - Fix a crash in simple search
 - Drop obsolete Obsoletes and Conflicts 

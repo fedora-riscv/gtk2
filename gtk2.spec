@@ -10,16 +10,16 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.0
+%define base_version 2.12.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.11/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 
@@ -30,15 +30,7 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
-# fixed in upstream svn
-Patch3: novalidate.patch
-Patch4: libtracker.patch
-Patch5: swt-tooltips.patch
-Patch6: simple-search-crash.patch
-Patch7: scale-button-grab.patch
 
-#
-Patch8: double-free.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,12 +108,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .novalidate
-%patch4 -p1 -b .libtracker
-%patch5 -p1 -b .swt-tooltips
-%patch6 -p0 -b .simple-search-crash
-%patch7 -p0 -b .scale-button-grab
-%patch8 -p1 -b .double-free
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -304,6 +290,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Oct 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-1
+- Update to 2.12.1 (bug fixes and translation updates)
+- Drop obsolete patches
+
 * Thu Oct 11 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-6
 - Fix a double-free problem in gtk-update-icon-cache (#327711)
 

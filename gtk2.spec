@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -31,6 +31,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=482531
+Patch3: firefox-print-preview.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -108,6 +110,7 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
+%patch3 -p1 -b .firefox-print-preview
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -290,6 +293,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Oct 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-2
+- Fix a crash in the firefox print preview (#336771)
+
 * Wed Oct 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-1
 - Update to 2.12.1 (bug fixes and translation updates)
 - Drop obsolete patches

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -36,6 +36,9 @@ Patch3: firefox-print-preview.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=488119
 Patch4: system-log-crash.patch
+
+# fixed in upstream svn
+Patch5: builder-turkish.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -115,6 +118,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .firefox-print-preview
 %patch4 -p1 -b .system-log-crash
+%patch5 -p1 -b .builder-turkish
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -297,6 +301,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Oct 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-5
+- Fix a bug that prevents GtkBuilder-using apps (like totem)
+  to run in some locales (like Turkish) (#348631)
+
 * Mon Oct 22 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-4
 - Fix a crash in gnome-system-log (#321701)
 

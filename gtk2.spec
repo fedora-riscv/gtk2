@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -234,6 +234,7 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 
 # we need to install a binary in the immodules directory to make sure
 # that it gets properly relocated to /emul for ia64 emulation of x86
@@ -301,6 +302,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sun Nov  4 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-6
+- Include the /usr/lib/gtk-2.0/2.10.0/filesystems directory
+
 * Thu Oct 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-5
 - Fix a bug that prevents GtkBuilder-using apps (like totem)
   to run in some locales (like Turkish) (#348631)

@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.1
+%define base_version 2.12.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -31,14 +31,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
 
-# http://bugzilla.gnome.org/show_bug.cgi?id=482531
-Patch3: firefox-print-preview.patch
-
 # http://bugzilla.gnome.org/show_bug.cgi?id=488119
-Patch4: system-log-crash.patch
-
-# fixed in upstream svn
-Patch5: builder-turkish.patch
+Patch3: system-log-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,9 +110,7 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .firefox-print-preview
-%patch4 -p1 -b .system-log-crash
-%patch5 -p1 -b .builder-turkish
+%patch3 -p1 -b .system-log-crash
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -302,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Nov 26 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.2-1
+- Update to 2.12.2
+
 * Sun Nov  4 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.1-6
 - Include the /usr/lib/gtk-2.0/2.10.0/filesystems directory
 

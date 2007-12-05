@@ -34,8 +34,6 @@ Patch2: workaround.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=488119
 Patch3: system-log-crash.patch
 
-Patch4: dirindex.patch
-
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -113,7 +111,6 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
-%patch4 -p1 -b .dirindex
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

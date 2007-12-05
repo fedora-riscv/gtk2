@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.2
+%define base_version 2.12.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -134,7 +134,7 @@ fi
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
-make ## %{?_smp_mflags}
+make CFLAGS="-ggdb -O0" ## %{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
 
@@ -294,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Dec  5 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-1
+- Update to 2.12.3
+
 * Mon Nov 26 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.2-1
 - Update to 2.12.2
 

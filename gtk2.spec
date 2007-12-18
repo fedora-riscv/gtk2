@@ -43,6 +43,9 @@ Patch5: im-setting.patch
 # fix a gtk-doc issue
 Patch6: gtkdoc-rebase.patch
 
+# work around a kernel bug on build systems
+Patch7: atomiclookup-collision.patch
+
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -123,6 +126,7 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .tab-label
 %patch5 -p1 -b .im-setting
 %patch6 -p1 -b .gtkdoc-rebase
+%patch7 -p1 -b .atomiclookup-collision
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -142,7 +146,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png --enable-debug
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png 
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
@@ -307,6 +311,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Tue Dec 18 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-4
 - Fix a gtk-doc problem
+- Work around a kernel problem in the build system
 
 * Mon Dec 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-3
 - Add a setting to change input methods

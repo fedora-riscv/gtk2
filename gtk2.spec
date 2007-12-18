@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -36,6 +36,9 @@ Patch3: system-log-crash.patch
 
 # fixed in upstream svn
 Patch4: tab-label.patch
+
+# backport from svn trunk
+Patch5: im-setting.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -115,6 +118,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .tab-label
+%patch5 -p1 -b .im-setting
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -298,6 +302,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Dec 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-3
+- Add a setting to change input methods
+
 * Tue Dec 11 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-2
 - Fix yet another notebook tab related crash
 

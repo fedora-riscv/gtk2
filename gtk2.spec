@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -39,6 +39,9 @@ Patch4: tab-label.patch
 
 # backport from svn trunk
 Patch5: im-setting.patch
+
+# fix a gtk-doc issue
+Patch6: gtkdoc-rebase.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -119,6 +122,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .tab-label
 %patch5 -p1 -b .im-setting
+%patch6 -p1 -b .gtkdoc-rebase
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -154,7 +158,6 @@ gcc -Os relocation-tag.c -o .relocation-tag
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 # Deriving /etc/gtk-2.0/$host location
 # NOTE: Duplicated below
 #
@@ -302,6 +305,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Dec 18 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-4
+- Fix a gtk-doc problem
+
 * Mon Dec 17 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-3
 - Add a setting to change input methods
 

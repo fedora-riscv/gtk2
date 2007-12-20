@@ -54,6 +54,7 @@ BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
+BuildRequires: libXcomposite-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -298,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Dec 19 2007 Colin Walters <walters@redhat.com> - 2.12.3-3
+- BR libXcomposite-devel so we get the sexy.
+
 * Tue Dec 11 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-2
 - Fix yet another notebook tab related crash
 

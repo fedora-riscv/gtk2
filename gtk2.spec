@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -63,6 +63,7 @@ BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
+BuildRequires: libXcomposite-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -104,7 +105,7 @@ Requires: glib2-devel >= %{glib2_version}
 Requires: cairo-devel >= %{cairo_version}
 Requires: libX11-devel, libXcursor-devel, libXinerama-devel
 Requires: libXext-devel, libXi-devel, libXrandr-devel
-Requires: libXfixes-devel
+Requires: libXfixes-devel, libXcomposite-devel
 Requires: libpng-devel
 Requires: pkgconfig
 # for /usr/share/aclocal
@@ -309,6 +310,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Dec 19 2007 Colin Walters <walters@redhat.com> - 2.12.3-5
+- BR libXcomposite-devel so we get the sexiness, also pull it in
+  in the devel package.
+
 * Tue Dec 18 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.3-4
 - Fix a gtk-doc problem
 - Work around a kernel problem in the build system

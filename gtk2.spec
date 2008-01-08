@@ -298,7 +298,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
-* Tue Jan  8 2008 Matthias Clasen  <mclasen@redhat.com> - 2.13.4-1
+* Tue Jan  8 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.4-1
 - Update to 2.12.4
 - Drop obsolete patches
 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.10/gtk+-%{version}.tar.bz2
@@ -38,6 +38,8 @@ Patch10: gtk+-2.10.4-im-reset.patch
 Patch12: gtk+-2.10.11-user-dirs.patch
 # fixed in upstream svn
 Patch13: silence-icon-cache-validator.patch
+# backport from GTK+ 2.12 and later (gnome.org #476342)
+Patch14: gtk+-2.10.14-dont-validate-icon-cache.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,6 +127,7 @@ docs for the GTK+ widget toolkit.
 %patch10 -p1 -b .im-reset
 %patch12 -p1 -b .user-dirs
 %patch13 -p1 -b .silence
+%patch14 -p1 -b .dont-validate-icon-cache
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -291,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc tmpdocs/examples
 
 %changelog
+* Mon Jan 14 2008 Dan Williams <dcbw@redhat.com> - 2.10.14-4
+- Only validate an icon cache when debugging (gnome.org #476342)
+
 * Tue Jul 24 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.14-3
 - Silence the icon cache validator (#248789)
 

@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.8
+%define base_version 2.12.9
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -36,12 +36,6 @@ Patch3: system-log-crash.patch
 
 # backport from svn trunk
 Patch4: im-setting.patch
-
-# fixed upstream
-Patch5: libbeagle.patch
-
-# fixed in upstream svn
-Patch6: lpoptions.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -122,8 +116,6 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
-%patch5 -p1 -b .libbeagle
-%patch6 -p1 -b .lpoptions
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -306,6 +298,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Mar 12 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-1
+- Update to 2.12.9
+
 * Tue Mar  4 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.8-3
 - Honor cups user default options from ~/.cups/lpoptions
 

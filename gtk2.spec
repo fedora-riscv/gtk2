@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -36,6 +36,9 @@ Patch3: system-log-crash.patch
 
 # backport from svn trunk
 Patch4: im-setting.patch
+
+# fixed upstream
+Patch5: foreign-cmap.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,6 +119,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
+%patch5 -p1 -b .foreign-cmap
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -298,6 +302,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Apr  3 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-2
+- Don't free foreign colormaps
+
 * Wed Mar 12 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-1
 - Update to 2.12.9
 

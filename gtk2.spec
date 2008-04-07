@@ -34,7 +34,7 @@ Patch2: workaround.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=488119
 Patch3: system-log-crash.patch
 
-https://bugzilla.redhat.com/show_bug.cgi?id=440340
+# https://bugzilla.redhat.com/show_bug.cgi?id=440340
 Patch4: foreign-cmap.patch
 
 BuildRequires: atk-devel >= %{atk_version}

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -39,6 +39,9 @@ Patch4: im-setting.patch
 
 # fixed upstream
 Patch5: foreign-cmap.patch
+
+# fixed upstream
+Patch6: implicit-g_fopen.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -120,6 +123,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
 %patch5 -p1 -b .foreign-cmap
+%patch6 -p1 -b .implicit-g_fopen
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -302,6 +306,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Apr  7 2008 Marek Kasik  <mkasik@redhat.com> - 2.12.9-3
+- Correction of "implicit declaration of function 'g_fopen'"
+  warning
+- Resolves: #439114
+
 * Thu Apr  3 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-2
 - Don't free foreign colormaps
 

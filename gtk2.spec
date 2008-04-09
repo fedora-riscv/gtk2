@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -42,6 +42,11 @@ Patch5: foreign-cmap.patch
 
 # fixed upstream
 Patch6: implicit-g_fopen.patch
+
+# fixed upstream
+Patch7: filechooser-iconsize.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=521032
+Patch8: filechooser-auth.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -124,6 +129,8 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .im-setting
 %patch5 -p1 -b .foreign-cmap
 %patch6 -p1 -b .implicit-g_fopen
+%patch7 -p1 -b .filechooser-iconsize
+%patch8 -p1 -b .filechooser-auth
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -306,6 +313,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Apr  9 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-4
+- Make sure we use the right icon size for all icons in the
+  file chooser (Fix by Tomas Bzatek)
+- Improve the handling of auth dialogs in the file chooser (Tomas Bzatek)
+
 * Mon Apr  7 2008 Marek Kasik  <mkasik@redhat.com> - 2.12.9-3
 - Correction of "implicit declaration of function 'g_fopen'"
   warning

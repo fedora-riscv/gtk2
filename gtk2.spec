@@ -65,6 +65,9 @@ Conflicts: gtk2-engines < 2.7.4-7
 Conflicts: libgnomeui < 2.15.1cvs20060505-2
 Conflicts: redhat-artwork < 0.243-1
 
+Provides: gail = %{version}-%{release}
+Obsoletes: gail < 2.13.0-1
+
 URL: http://www.gtk.org
 
 # required for icon themes apis to work
@@ -104,6 +107,9 @@ Requires: pkgconfig
 Requires: automake
 # for /usr/share/gtk-doc/html
 Requires: gtk-doc
+
+Provides: gail-devel = %{version}-%{release}
+Obsoletes: gail-devel < 2.13.0-1
 
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -270,6 +276,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgdk-x11-2.0.so.*
 %{_libdir}/libgdk_pixbuf-2.0.so.*
 %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
+%{_libdir}/libgailutil.so.*
 %dir %{_libdir}/gtk-2.0
 %{_libdir}/gtk-2.0/%{bin_version}
 %{_libdir}/gtk-2.0/immodules

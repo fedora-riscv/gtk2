@@ -42,6 +42,7 @@ BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
 BuildRequires: libtiff-devel
 BuildRequires: libjpeg-devel
+BuildRequires: jasper-devel
 BuildRequires: libXi-devel
 BuildRequires: libpng-devel >= %{libpng_version}
 BuildRequires: automake17 autoconf libtool pkgconfig

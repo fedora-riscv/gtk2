@@ -19,7 +19,7 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 

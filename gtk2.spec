@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.9
+%define base_version 2.13.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -34,23 +34,8 @@ Patch2: workaround.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=488119
 Patch3: system-log-crash.patch
 
-# backport from svn trunk
-Patch4: im-setting.patch
-
-# fixed upstream
-Patch5: foreign-cmap.patch
-
-# fixed upstream
-Patch6: implicit-g_fopen.patch
-
-# fixed upstream
-Patch7: filechooser-iconsize.patch
-
 # http://bugzilla.gnome.org/show_bug.cgi?id=521032
-Patch8: filechooser-auth.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=467698
-Patch9: tab-drag-crash.patch
+Patch4: filechooser-auth.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -130,12 +115,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
-%patch4 -p1 -b .im-setting
-%patch5 -p1 -b .foreign-cmap
-%patch6 -p1 -b .implicit-g_fopen
-%patch7 -p1 -b .filechooser-iconsize
-%patch8 -p1 -b .filechooser-auth
-%patch9 -p1 -b .tab-drag-crash
+%patch4 -p1 -b .filechooser-auth
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -318,6 +298,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Apr 24 2008 Matthias Clasen  <mclasen@redhat.com> - 2.13.0-1
+- Update to 2.13.0
+
 * Wed Apr  9 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-5
 - Fix a possible crash when dragging notebook tabs
 

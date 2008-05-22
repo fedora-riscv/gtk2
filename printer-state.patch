@@ -1,0 +1,209 @@
+--- docs/reference/gtk/Makefile.am	2008-02-12 18:57:20.000000000 +0100
++++ docs/reference/gtk/Makefile.am	2008-05-19 13:41:40.000000000 +0200
+@@ -237,7 +237,10 @@ HTML_IMAGES = \
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-paste.png			\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-preferences.png		\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-print.png			\
++	$(top_srcdir)/gtk/stock-icons/24/gtk-print-error.png		\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-print-preview.png		\
++	$(top_srcdir)/gtk/stock-icons/24/gtk-print-report.png		\
++	$(top_srcdir)/gtk/stock-icons/24/gtk-print-warning.png		\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-properties.png		\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-quit.png			\
+ 	$(top_srcdir)/gtk/stock-icons/24/gtk-redo-ltr.png		\
+--- modules/printbackends/cups/gtkprintbackendcups.c	2008-02-12 18:57:27.000000000 +0100
++++ modules/printbackends/cups/gtkprintbackendcups.c	2008-05-19 13:39:38.000000000 +0200
+@@ -1014,6 +1014,45 @@ cups_request_printer_list_cb (GtkPrintBa
+       gint job_count = 0;
+       gboolean status_changed = FALSE;
+       GList *node;
++      gint i,j;
++      const gchar *reason_msg = NULL;
++      gchar *reason_msg_desc = NULL;
++      gchar *tmp_msg = NULL;
++      gint printer_state_reason_level = 0; /* 0 - none, 1 - report, 2 - warning, 3 - error */
++      gboolean interested_in = FALSE;
++      gboolean found = FALSE;
++      static const char * const reasons[] =	/* Reasons we're interested in */
++        {
++          "toner-low",
++          "toner-empty",
++          "developer-low",
++          "developer-empty",
++          "marker-supply-low",
++          "marker-supply-empty",
++          "cover-open",
++          "door-open",
++          "media-low",
++          "media-empty",
++          "offline",
++          "connecting-to-device",
++          "other"
++        };
++      static const char * reasons_descs[] =
++        {
++          N_("Printer '%s' is low on toner."),
++          N_("Printer '%s' has no toner left."),
++          N_("Printer '%s' is low on developer."),
++          N_("Printer '%s' is out of developer."),
++          N_("Printer '%s' is low on at least one marker supply."),
++          N_("Printer '%s' is out of at least one marker supply."),
++          N_("The cover is open on printer '%s'."),
++          N_("The door is open on printer '%s'."),
++          N_("Printer '%s' is low on paper."),
++          N_("Printer '%s' is out of paper."),
++          N_("Printer '%s' is currently off-line."),
++          N_("Printer '%s' may not be connected."),
++          N_("There is a problem on printer '%s'.")
++        };
+       
+       /* Skip leading attributes until we hit a printer...
+        */
+@@ -1040,6 +1079,49 @@ cups_request_printer_list_cb (GtkPrintBa
+           description = attr->values[0].string.text;
+         else if (strcmp (attr->name, "printer-state-message") == 0)
+           state_msg = attr->values[0].string.text;
++        else if (strcmp (attr->name, "printer-state-reasons") == 0)
++          /* Store most important reason to reason_msg and set
++             its importance at printer_state_reason_level */
++          {
++            for (i = 0; i < attr->num_values; i++)
++              {
++                if (strcmp (attr->values[i].string.text, "none") != 0)
++                  {
++                    interested_in = FALSE;
++                    for (j = 0; j < G_N_ELEMENTS (reasons); j++)
++                        if (strncmp (attr->values[i].string.text, reasons[j], strlen (reasons[j])) == 0)
++                          {
++                            interested_in = TRUE;
++                            break;
++                          }
++
++                    if (interested_in)
++                      {
++                        if (g_str_has_suffix (attr->values[i].string.text, "-report"))
++                          {
++                            if (printer_state_reason_level <= 1)
++                              {
++                                reason_msg = attr->values[i].string.text;
++                                printer_state_reason_level = 1;
++                              }
++                          }
++                        else if (g_str_has_suffix (attr->values[i].string.text, "-warning"))
++                          {
++                            if (printer_state_reason_level <= 2)
++                              {
++                                reason_msg = attr->values[i].string.text;
++                                printer_state_reason_level = 2;
++                              }
++                          }
++                        else  /* It is error in the case of no suffix. */
++                          {
++                            reason_msg = attr->values[i].string.text;
++                            printer_state_reason_level = 3;
++                          }
++                      }
++                  }
++              }
++          }
+         else if (strcmp (attr->name, "printer-state") == 0)
+           state = attr->values[0].integer;
+         else if (strcmp (attr->name, "queued-job-count") == 0)
+@@ -1165,8 +1247,52 @@ cups_request_printer_list_cb (GtkPrintBa
+       status_changed = gtk_printer_set_job_count (printer, job_count);
+       status_changed |= gtk_printer_set_location (printer, location);
+       status_changed |= gtk_printer_set_description (printer, description);
++
++      /* Set description of the reason and combine it with printer-state-message. */
++      if ( (reason_msg != NULL))
++        {
++          for (i = 0; i < G_N_ELEMENTS (reasons); i++)
++            {
++              if (strncmp (reason_msg, reasons[i], strlen (reasons[i])) == 0)
++                {
++                  reason_msg_desc = g_strdup_printf (reasons_descs[i], printer_name);
++                  found = TRUE;
++                  break;
++                }
++            }
++
++          if (!found)
++            printer_state_reason_level = 0;
++
++          if (printer_state_reason_level >= 2)
++            {
++              if (strlen (state_msg) == 0)
++                state_msg = reason_msg_desc;
++              else
++                {
++                  tmp_msg = g_strjoin (" ; ", state_msg, reason_msg_desc, NULL);
++                  state_msg = tmp_msg;
++                }
++            }
++        }
++
+       status_changed |= gtk_printer_set_state_message (printer, state_msg);
+ 
++      if (tmp_msg != NULL)
++        g_free (tmp_msg);
++
++      if (reason_msg_desc != NULL)
++        g_free (reason_msg_desc);
++
++      /* Set printer icon according to importance
++         (none, report, warning, error - report is omitted). */
++      if (printer_state_reason_level == 3)
++        gtk_printer_set_icon_name (printer, "gtk-print-error");
++      else if (printer_state_reason_level == 2)
++        gtk_printer_set_icon_name (printer, "gtk-print-warning");
++      else
++        gtk_printer_set_icon_name (printer, "gtk-print");
++
+       if (status_changed)
+         g_signal_emit_by_name (GTK_PRINT_BACKEND (backend),
+                                "printer-status-changed", printer);
+@@ -1208,6 +1334,7 @@ cups_request_printer_list (GtkPrintBacke
+       "printer-location",
+       "printer-info",
+       "printer-state-message",
++      "printer-state-reasons",
+       "printer-state",
+       "queued-job-count"
+     };
+--- gtk/Makefile.am	2008-02-12 18:57:16.000000000 +0100
++++ gtk/Makefile.am	2008-05-19 13:45:29.000000000 +0200
+@@ -968,7 +968,10 @@ STOCK_ICONS = \
+ 	stock-icons/16/gtk-paste.png  			\
+ 	stock-icons/16/gtk-preferences.png    		\
+ 	stock-icons/16/gtk-print.png  			\
++	stock-icons/16/gtk-print-error.png  		\
+ 	stock-icons/16/gtk-print-preview.png  		\
++	stock-icons/16/gtk-print-report.png  		\
++	stock-icons/16/gtk-print-warning.png  		\
+ 	stock-icons/16/gtk-properties.png     		\
+ 	stock-icons/16/gtk-quit.png   			\
+ 	stock-icons/16/gtk-redo-ltr.png       		\
+@@ -1069,7 +1072,10 @@ STOCK_ICONS = \
+ 	stock-icons/24/gtk-paste.png  			\
+ 	stock-icons/24/gtk-preferences.png    		\
+ 	stock-icons/24/gtk-print.png  			\
++	stock-icons/24/gtk-print-error.png  		\
+ 	stock-icons/24/gtk-print-preview.png  		\
++	stock-icons/24/gtk-print-report.png  		\
++	stock-icons/24/gtk-print-warning.png  		\
+ 	stock-icons/24/gtk-properties.png     		\
+ 	stock-icons/24/gtk-quit.png   			\
+ 	stock-icons/24/gtk-redo-ltr.png       		\
+--- gtk/gtkstock.h	2008-02-12 18:57:16.000000000 +0100
++++ gtk/gtkstock.h	2008-05-19 13:42:35.000000000 +0200
+@@ -142,7 +142,10 @@ void          gtk_stock_set_translate_fu
+ #define GTK_STOCK_PASTE            "gtk-paste"
+ #define GTK_STOCK_PREFERENCES      "gtk-preferences"
+ #define GTK_STOCK_PRINT            "gtk-print"
++#define GTK_STOCK_PRINT_ERROR      "gtk-print-error"
+ #define GTK_STOCK_PRINT_PREVIEW    "gtk-print-preview"
++#define GTK_STOCK_PRINT_REPORT     "gtk-print-report"
++#define GTK_STOCK_PRINT_WARNING    "gtk-print-warning"
+ #define GTK_STOCK_PROPERTIES       "gtk-properties"
+ #define GTK_STOCK_QUIT             "gtk-quit"
+ #define GTK_STOCK_REDO             "gtk-redo"

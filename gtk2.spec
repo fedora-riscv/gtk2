@@ -16,12 +16,18 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
+Source3: gtk-print-error-16x16.png
+Source4: gtk-print-report-16x16.png
+Source5: gtk-print-warning-16x16.png
+Source6: gtk-print-error-24x24.png
+Source7: gtk-print-report-24x24.png
+Source8: gtk-print-warning-24x24.png
 
 # Biarch changes
 Patch0: gtk+-2.4.1-lib64.patch
@@ -51,6 +57,9 @@ Patch8: filechooser-auth.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=467698
 Patch9: tab-drag-crash.patch
+
+# Backported patch from recent upstream
+Patch10: printer-state.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -136,10 +145,21 @@ docs for the GTK+ widget toolkit.
 %patch7 -p1 -b .filechooser-iconsize
 %patch8 -p1 -b .filechooser-auth
 %patch9 -p1 -b .tab-drag-crash
+%patch10 -p0 -b .printer-state
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
 done
+
+test -f %{SOURCE3} && cp %{SOURCE3} ./gtk/stock-icons/16/gtk-print-error.png
+test -f %{SOURCE4} && cp %{SOURCE4} ./gtk/stock-icons/16/gtk-print-report.png
+test -f %{SOURCE5} && cp %{SOURCE5} ./gtk/stock-icons/16/gtk-print-warning.png
+test -f %{SOURCE6} && cp %{SOURCE6} ./gtk/stock-icons/24/gtk-print-error.png
+test -f %{SOURCE7} && cp %{SOURCE7} ./gtk/stock-icons/24/gtk-print-report.png
+test -f %{SOURCE8} && cp %{SOURCE8} ./gtk/stock-icons/24/gtk-print-warning.png
+
+# make sure that gtkbuiltincache.h gets regenerated during the build
+rm --force ./gtk/gtkbuiltincache.h
 
 %build
 libtoolize --force
@@ -318,6 +338,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu May 22 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.9-6
+- Add patch to display more printer status information in the
+  print dialog (backported from upstream 2.13.1).
+
 * Wed Apr  9 2008 Matthias Clasen  <mclasen@redhat.com> - 2.12.9-5
 - Fix a possible crash when dragging notebook tabs
 

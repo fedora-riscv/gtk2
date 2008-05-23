@@ -1,0 +1,11 @@
+--- modules/printbackends/cups/gtkprintbackendcups.c	2008-05-22 14:35:56.000000000 +0200
++++ modules/printbackends/cups/gtkprintbackendcups.c	2008-05-22 14:42:23.000000000 +0200
+@@ -423,7 +423,7 @@ gtk_print_backend_cups_print_stream (Gtk
+                                   GTK_CUPS_POST,
+                                   IPP_PRINT_JOB,
+ 				  data_io,
+-				  NULL,
++				  cups_printer->hostname,
+ 				  cups_printer->device_uri);
+ 
+   gtk_cups_request_ipp_add_string (request, IPP_TAG_OPERATION, 

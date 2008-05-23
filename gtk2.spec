@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -45,6 +45,9 @@ Patch4: foreign-cmap.patch
 
 # Backported patch from recent upstream
 Patch5: printer-state.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=248245
+Patch6: printer-hostname.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -126,6 +129,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .foreign-cmap
 %patch5 -p0 -b .printer-state
+%patch6 -p0 -b .printer-hostname
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -319,6 +323,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri May 23 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.8-4
+- Correction of hostname of printer which is the print job sent to.
+- Resolves: #248245
+
 * Thu May 22 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.8-3
 - Add patch to display more printer status information in the
   print dialog (backported from upstream 2.13.1).

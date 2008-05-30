@@ -37,9 +37,6 @@ Patch3: system-log-crash.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=521032
 Patch4: filechooser-auth.patch
 
-# http://bugzilla.gnome.org/show_bug.cgi?id=517295
-Patch5: gtk-2.13.0-calendarcomma.patch
-
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -126,7 +123,6 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .filechooser-auth
-%patch5 -p1 -b .calendarcomma
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

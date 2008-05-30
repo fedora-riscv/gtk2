@@ -126,7 +126,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .filechooser-auth
-%patch5 -p1 -b .pixbuf-loader
+%patch5 -p0 -b .pixbuf-loader
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

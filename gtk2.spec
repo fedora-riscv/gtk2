@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.13.0
+%define base_version 2.13.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
@@ -310,6 +310,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri May 30 2008 Matthias Clasen  <mclasen@redhat.com> - 2.13.1-1
+- Update to 2.13.1
+
 * Thu May  1 2008 Christopher Aillon <caillon@redhat.com> - 2.13.0-2
 - Remove trailing comma from the enum so -pedantic compiles work
 

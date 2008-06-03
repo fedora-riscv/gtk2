@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.9
+%define base_version 2.12.10
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -42,21 +42,6 @@ Patch3: system-log-crash.patch
 
 # backport from svn trunk
 Patch4: im-setting.patch
-
-# fixed upstream
-Patch5: foreign-cmap.patch
-
-# fixed upstream
-Patch6: implicit-g_fopen.patch
-
-# fixed upstream
-Patch7: filechooser-iconsize.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=521032
-Patch8: filechooser-auth.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=467698
-Patch9: tab-drag-crash.patch
 
 # Backported patch from recent upstream
 Patch10: printer-state.patch
@@ -140,11 +125,6 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
-%patch5 -p1 -b .foreign-cmap
-%patch6 -p1 -b .implicit-g_fopen
-%patch7 -p1 -b .filechooser-iconsize
-%patch8 -p1 -b .filechooser-auth
-%patch9 -p1 -b .tab-drag-crash
 %patch10 -p0 -b .printer-state
 
 for i in config.guess config.sub ; do

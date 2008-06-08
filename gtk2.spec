@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -45,6 +45,9 @@ Patch4: im-setting.patch
 
 # Backported patch from recent upstream
 Patch10: printer-state.patch
+
+# fixed in upstream svn
+Patch11: geometry.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -126,6 +129,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
 %patch10 -p0 -b .printer-state
+%patch11 -p1 -b .geometry
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -318,6 +322,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sun Jun  8 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.10-2
+- Fix a coordinate system problem
+
 * Thu May 22 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.9-6
 - Add patch to display more printer status information in the
   print dialog (backported from upstream 2.13.1).

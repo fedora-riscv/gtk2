@@ -1,0 +1,30 @@
+diff -up gtk+-2.12.10/gdk/x11/gdkwindow-x11.c.geometry gtk+-2.12.10/gdk/x11/gdkwindow-x11.c
+--- gtk+-2.12.10/gdk/x11/gdkwindow-x11.c.geometry	2008-06-08 01:13:00.000000000 -0400
++++ gtk+-2.12.10/gdk/x11/gdkwindow-x11.c	2008-06-08 01:13:09.000000000 -0400
+@@ -3412,6 +3412,7 @@ gdk_window_get_frame_extents (GdkWindow 
+   Window xwindow;
+   Window xparent;
+   Window root;
++  Window child;
+   Window *children;
+   guchar *data;
+   Window *vroots;
+@@ -3470,13 +3471,15 @@ gdk_window_get_frame_extents (GdkWindow 
+       if ((type_return == XA_CARDINAL) && (format_return == 32) &&
+ 	  (nitems_return == 4) && (data))
+         {
+-	  guint32 *ldata = (guint32 *) data;
++	  gulong *ldata = (gulong *) data;
+ 	  got_frame_extents = TRUE;
+ 
+ 	  /* try to get the real client window geometry */
+ 	  if (XGetGeometry (GDK_DISPLAY_XDISPLAY (display), xwindow,
+-			    &root, &wx, &wy, &ww, &wh, &wb, &wd))
+-	    {
++			    &root, &wx, &wy, &ww, &wh, &wb, &wd) &&
++              XTranslateCoordinates (GDK_DISPLAY_XDISPLAY (display),
++	  			     xwindow, root, 0, 0, &wx, &wy, &child))
++            {
+ 	      rect->x = wx;
+ 	      rect->y = wy;
+ 	      rect->width = ww;

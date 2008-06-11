@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -47,6 +47,7 @@ Patch4: foreign-cmap.patch
 Patch5: printer-state.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=248245
+# https://bugzilla.redhat.com/show_bug.cgi?id=449379
 Patch6: printer-hostname.patch
 
 BuildRequires: atk-devel >= %{atk_version}
@@ -323,6 +324,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Jun 11 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.8-5
+- Reworked correction of hostname of printer which is the
+- print job sent to.
+- Resolves: #248245, #449379
+
 * Fri May 23 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.8-4
 - Correction of hostname of printer which is the print job sent to.
 - Resolves: #248245

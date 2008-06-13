@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -51,6 +51,9 @@ Patch11: geometry.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=248245
 Patch12: printer-hostname.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=204621
+Patch13: printer-paper-size.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -134,6 +137,7 @@ docs for the GTK+ widget toolkit.
 %patch10 -p0 -b .printer-state
 %patch11 -p1 -b .geometry
 %patch12 -p0 -b .printer-hostname
+%patch13 -p0 -b .printer-paper-size
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -326,6 +330,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Jun 13 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.10-4
+- Sets default paper size according to default paper size of
+  selected printer and locale.
+- Resolves: #204621
+
 * Thu Jun 12 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.10-3
 - Correction of hostname of printer which is the print job sent to.
 - Resolves: #248245

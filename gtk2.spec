@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -54,6 +54,9 @@ Patch12: printer-hostname.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=204621
 Patch13: printer-paper-size.patch
+
+# fixed upstream
+Patch14: empty-modmap-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -330,6 +333,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Jun 16 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.10-5
+- Fix a crash if the modifier map is empty 
+
 * Fri Jun 13 2008 - Marek Kasik <mkasik@redhat.com> - 2.12.10-4
 - Sets default paper size according to default paper size of
   selected printer and locale.

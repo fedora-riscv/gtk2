@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.10
+%define base_version 2.12.11
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -45,12 +45,6 @@ Patch4: im-setting.patch
 
 # Backported patch from recent upstream
 Patch10: printer-state.patch
-
-# fixed in upstream svn
-Patch11: geometry.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=248245
-Patch12: printer-hostname.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=204621
 Patch13: printer-paper-size.patch
@@ -138,8 +132,6 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .system-log-crash
 %patch4 -p1 -b .im-setting
 %patch10 -p0 -b .printer-state
-%patch11 -p1 -b .geometry
-%patch12 -p0 -b .printer-hostname
 %patch13 -p0 -b .printer-paper-size
 
 for i in config.guess config.sub ; do
@@ -333,6 +325,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Jul  1 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.11-1
+- Update to 2.12.11
+
 * Mon Jun 16 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.10-5
 - Fix a crash if the modifier map is empty 
 

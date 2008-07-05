@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.13.3
+%define base_version 2.13.4
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
@@ -30,7 +30,6 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
-Patch3: gtk-2.13.3-choosergio.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -116,7 +115,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .choosergio
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -300,6 +298,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sat Jul  5 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.4-1
+- Update to 2.13.4
+
 * Thu Jun 26 2008 Lubomir Rintel <lkundrak@v3.sk> - 2.13.3-3
 - Fix that makes gio-enabled file chooser return absolute paths
 

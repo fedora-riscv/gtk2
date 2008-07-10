@@ -118,7 +118,7 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .icon-view-a11y
+%patch3 -p0 -b .icon-view-a11y
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .

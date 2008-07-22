@@ -24,7 +24,7 @@ Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 
 # Biarch changes
-Patch0: gtk+-2.4.1-lib64.patch
+Patch0: gtk+-2.13.5-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin

@@ -1,0 +1,54 @@
+diff -up gtk+-2.13.6/gtk/gtkmenu.c.menu-breakage gtk+-2.13.6/gtk/gtkmenu.c
+--- gtk+-2.13.6/gtk/gtkmenu.c.menu-breakage	2008-08-09 23:07:35.000000000 -0400
++++ gtk+-2.13.6/gtk/gtkmenu.c	2008-08-09 23:08:04.000000000 -0400
+@@ -3623,6 +3623,11 @@ gtk_menu_enter_notify (GtkWidget        
+   GtkWidget *menu_item;
+   gboolean   touchscreen_mode;
+ 
++  if (event->mode == GDK_CROSSING_GTK_GRAB ||
++      event->mode == GDK_CROSSING_GTK_UNGRAB ||
++      event->mode == GDK_CROSSING_STATE_CHANGED)
++    return TRUE;
++
+   g_object_get (gtk_widget_get_settings (widget),
+                 "gtk-touchscreen-mode", &touchscreen_mode,
+                 NULL);
+@@ -3694,6 +3699,11 @@ gtk_menu_leave_notify (GtkWidget        
+   GtkMenuItem *menu_item;
+   GtkWidget *event_widget;
+ 
++  if (event->mode == GDK_CROSSING_GTK_GRAB ||
++      event->mode == GDK_CROSSING_GTK_UNGRAB ||
++      event->mode == GDK_CROSSING_STATE_CHANGED)
++    return TRUE;
++
+   menu = GTK_MENU (widget);
+   menu_shell = GTK_MENU_SHELL (widget); 
+   
+diff -up gtk+-2.13.6/gtk/gtkmenushell.c.menu-breakage gtk+-2.13.6/gtk/gtkmenushell.c
+--- gtk+-2.13.6/gtk/gtkmenushell.c.menu-breakage	2008-08-09 23:07:44.000000000 -0400
++++ gtk+-2.13.6/gtk/gtkmenushell.c	2008-08-09 23:08:40.000000000 -0400
+@@ -802,6 +802,11 @@ gtk_menu_shell_enter_notify (GtkWidget  
+ {
+   GtkMenuShell *menu_shell = GTK_MENU_SHELL (widget);
+ 
++  if (event->mode == GDK_CROSSING_GTK_GRAB ||
++      event->mode == GDK_CROSSING_GTK_UNGRAB ||
++      event->mode == GDK_CROSSING_STATE_CHANGED)
++    return TRUE;
++
+   if (menu_shell->active)
+     {
+       GtkWidget *menu_item;
+@@ -867,6 +872,11 @@ static gint
+ gtk_menu_shell_leave_notify (GtkWidget        *widget,
+ 			     GdkEventCrossing *event)
+ {
++  if (event->mode == GDK_CROSSING_GTK_GRAB ||
++      event->mode == GDK_CROSSING_GTK_UNGRAB ||
++      event->mode == GDK_CROSSING_STATE_CHANGED)
++    return TRUE;
++
+   if (GTK_WIDGET_VISIBLE (widget))
+     {
+       GtkMenuShell *menu_shell = GTK_MENU_SHELL (widget);

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch2: workaround.patch
 # from upstream svn
 Patch3: menu-breakage.patch
+# from upstream svn
+Patch4: evo-composer.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -118,6 +120,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .menu-breakage
+%patch4 -p1 -b .evo-composer
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -301,6 +304,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Aug 11 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.6-3
+- Fix evolution composer breakage
+
 * Sat Aug  9 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.6-2
 - Fix menu breakage
 

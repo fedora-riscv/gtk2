@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
@@ -33,6 +33,7 @@ Patch2: workaround.patch
 # from upstream svn
 Patch3: color-loop.patch
 Patch4: flash-swarm.patch
+Patch5: screen-size-change.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -120,6 +121,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .color-loop
 %patch4 -p1 -b .flash-swarm
+%patch5 -p1 -b .screen-size-change
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -303,6 +305,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Aug 26 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.7-4
+- Fix an Xrandr bug
+
 * Mon Aug 25 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.7-3
 - Fix the "swarm of flash windows"
 

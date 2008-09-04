@@ -10,16 +10,16 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.13.7
+%define base_version 2.14,0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.13/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 
@@ -30,10 +30,6 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
-# from upstream svn
-Patch3: color-loop.patch
-Patch4: flash-swarm.patch
-Patch5: screen-size-change.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -119,9 +115,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .color-loop
-%patch4 -p1 -b .flash-swarm
-%patch5 -p1 -b .screen-size-change
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -145,7 +138,7 @@ fi
 
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
-make CFLAGS="-ggdb -O0" ## %{?_smp_mflags}
+make #%{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
 
@@ -305,6 +298,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Sep  4 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.0-1
+- Update to 2.14.0
+
 * Tue Aug 26 2008 Matthias Clasen <mclasen@redhat.com> - 2.13.7-4
 - Fix an Xrandr bug
 

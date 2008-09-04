@@ -1,0 +1,27 @@
+--- modules/printbackends/cups/gtkprintbackendcups.c	2008-09-03 16:58:29.000000000 +0200
++++ modules/printbackends/cups/gtkprintbackendcups.c	2008-09-03 16:57:39.000000000 +0200
+@@ -1181,6 +1181,7 @@ cups_request_printer_list_cb (GtkPrintBa
+ 	  char hostname[HTTP_MAX_URI];	/* Hostname */
+ 	  char resource[HTTP_MAX_URI];	/* Resource name */
+ 	  int  port;			/* Port number */
++	  char *cups_server;            /* CUPS server */
+ 	  
+           list_has_changed = TRUE;
+ 	  cups_printer = gtk_printer_cups_new (printer_name, backend);
+@@ -1227,8 +1228,14 @@ cups_request_printer_list_cb (GtkPrintBa
+             }
+ 
+ 	  gethostname (uri, sizeof (uri));
+-	  if (strcasecmp (uri, hostname) == 0)
+-	    strcpy (hostname, "localhost");
++	  cups_server = g_strdup (cupsServer());
++
++	  if ((strcasecmp (uri, hostname) == 0) ||
++	      ((strstr (hostname, "localhost") != NULL) &&
++	       (cups_server[0] == '/')))
++	    strcpy (hostname, cups_server);
++
++	  g_free (cups_server);
+ 
+ 	  cups_printer->hostname = g_strdup (hostname);
+ 	  cups_printer->port = port;

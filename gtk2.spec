@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -51,6 +51,9 @@ Patch13: printer-paper-size.patch
 
 # fixed upstream
 Patch14: empty-modmap-crash.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=455742
+Patch15: cups-unix-domain-socket.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -133,6 +136,7 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .im-setting
 %patch10 -p0 -b .printer-state
 %patch13 -p0 -b .printer-paper-size
+%patch15 -p0 -b .cuds
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -325,6 +329,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Sep  4 2008 Marek Kasik <mkasik@redhat.com> - 2.12.11-2
+- Add ability to comunicate with CUPS through Unix domain socket
+- Resolves: #455742
+
 * Tue Jul  1 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.11-1
 - Update to 2.12.11
 

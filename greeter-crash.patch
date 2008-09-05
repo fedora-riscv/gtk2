@@ -1,0 +1,21 @@
+diff -up gtk+-2.14.0/modules/other/gail/gailtreeview.c.greeter-crash gtk+-2.14.0/modules/other/gail/gailtreeview.c
+--- gtk+-2.14.0/modules/other/gail/gailtreeview.c.greeter-crash	2008-09-05 00:24:19.000000000 -0400
++++ gtk+-2.14.0/modules/other/gail/gailtreeview.c	2008-09-05 00:24:27.000000000 -0400
+@@ -2959,17 +2959,6 @@ model_row_deleted (GtkTreeModel *tree_mo
+     g_signal_emit_by_name (atk_obj, "row_deleted", row, 
+                            gailview->n_children_deleted + 1);
+   gailview->n_children_deleted = 0;
+-
+-  /* Generate children-changed signals */
+-  n_cols = get_n_actual_columns (tree_view);
+-  for (col = 0; col < n_cols; col++)
+-  {
+-    /*
+-     * Pass NULL as the child object, 4th argument.
+-     */
+-    g_signal_emit_by_name (atk_obj, "children_changed::remove",
+-                           ((row * n_cols) + col), NULL, NULL);
+-  }
+ }
+ 
+ /* 

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -329,6 +329,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Sep  8 2008 Marek Kasik <mkasik@redhat.com> - 2.12.11-3
+- Add a comment of the Unix domain socket connection with CUPS
+  and a little modification of the previous patch
+
 * Thu Sep  4 2008 Marek Kasik <mkasik@redhat.com> - 2.12.11-2
 - Add ability to comunicate with CUPS through Unix domain socket
 - Resolves: #455742

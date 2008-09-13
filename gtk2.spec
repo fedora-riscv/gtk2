@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.12.11
+%define base_version 2.12.12
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -30,7 +30,7 @@ Source7: gtk-print-report-24x24.png
 Source8: gtk-print-warning-24x24.png
 
 # Biarch changes
-Patch0: gtk+-2.4.1-lib64.patch
+Patch0: gtk+-2.12.12-lib64.patch
 # Fedora patch
 Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
@@ -49,11 +49,7 @@ Patch10: printer-state.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=204621
 Patch13: printer-paper-size.patch
 
-# fixed upstream
 Patch14: empty-modmap-crash.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=455742
-Patch15: cups-unix-domain-socket.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -136,7 +132,6 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .im-setting
 %patch10 -p0 -b .printer-state
 %patch13 -p0 -b .printer-paper-size
-%patch15 -p0 -b .cuds
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -329,6 +324,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sat Sep 13 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.12-1
+- Update to 2.12.12
+
 * Mon Sep  8 2008 Marek Kasik <mkasik@redhat.com> - 2.12.11-3
 - Add a comment of the Unix domain socket connection with CUPS
   and a little modification of the previous patch

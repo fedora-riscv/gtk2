@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -30,7 +30,9 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
+# fixed upstream
 Patch3: info-leak.patch
+# fixed upstream
 Patch4: gail-leaks.patch
 
 BuildRequires: atk-devel >= %{atk_version}
@@ -303,8 +305,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
-* Mon Sep 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.2-2
+* Mon Sep 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.2-3
 - BR libXdamage-devel (#462971, Owen Taylor)
+- Plug some memory leaks
 
 * Thu Sep 18 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.2-1
 - Update to 2.14.2

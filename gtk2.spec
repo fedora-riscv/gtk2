@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -34,6 +34,7 @@ Patch2: workaround.patch
 Patch3: info-leak.patch
 # fixed upstream
 Patch4: gail-leaks.patch
+Patch5: bad-filechooser.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -122,6 +123,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .info-leak
 %patch4 -p1 -b .gail-leaks
+%patch5 -p0 -b .bad-filechooser 
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -305,6 +307,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Sep 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.2-4
+- Rebuild
+
 * Mon Sep 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.2-3
 - BR libXdamage-devel (#462971, Owen Taylor)
 - Plug some memory leaks

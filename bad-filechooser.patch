@@ -1,0 +1,41 @@
+Index: gtk/gtkfilechooserdefault.c
+===================================================================
+--- gtk/gtkfilechooserdefault.c	(revision 21491)
++++ gtk/gtkfilechooserdefault.c	(working copy)
+@@ -456,6 +456,7 @@
+                                               GtkTreeIter           *child_iter,
+                                               GtkTreeIter           *iter);
+ static void     set_file_system_backend      (GtkFileChooserDefault *impl);
++static void     unset_file_system_backend    (GtkFileChooserDefault *impl);
+ 
+ 
+ 
+@@ -923,6 +924,8 @@
+   GtkFileChooserDefault *impl = GTK_FILE_CHOOSER_DEFAULT (object);
+   GSList *l;
+ 
++  unset_file_system_backend (impl);
++
+   if (impl->shortcuts_pane_filter_model)
+     g_object_unref (impl->shortcuts_pane_filter_model);
+ 
+@@ -5373,6 +5376,19 @@
+   profile_end ("end", NULL);
+ }
+ 
++static void
++unset_file_system_backend (GtkFileChooserDefault *impl)
++{
++  g_signal_disconnect_by_func (impl->file_system, "volumes-changed",
++		               G_CALLBACK (volumes_bookmarks_changed_cb), impl);
++  g_signal_disconnect_by_func (impl->file_system, "bookmarks-changed",
++		               G_CALLBACK (volumes_bookmarks_changed_cb), impl);
++
++  g_object_unref (impl->file_system);
++
++  impl->file_system = NULL;
++}
++
+ /* This function is basically a do_all function.
+  *
+  * It sets the visibility on all the widgets based on the current state, and

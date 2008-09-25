@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -181,8 +181,6 @@ make install DESTDIR=$RPM_BUILD_ROOT        \
 %find_lang gtk20
 %find_lang gtk20-properties
 
-cat gtk20.lang gtk20-properties.lang > all.lang
-
 ./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
 #
 # Make cleaned-up versions of tutorials, examples, and faq for installation
@@ -241,9 +239,9 @@ install -m 0644 .relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 # We need the substitution of $host so we use an external
 # file list
 #
-echo %dir %{_sysconfdir}/gtk-2.0/$host >> all.lang
-echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> all.lang
-echo %ghost %{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders >> all.lang
+echo %dir %{_sysconfdir}/gtk-2.0/$host >> gtk20.lang
+echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> gtk20.lang
+echo %ghost %{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders >> gtk20.lang
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -256,7 +254,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 /sbin/ldconfig
 
-%files -f all.lang
+%files -f gtk20.lang
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING NEWS README
@@ -280,7 +278,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/gtk-2.0
 %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
-%files devel
+%files devel -f gtk20-properties.lang
 %defattr(-, root, root)
 
 %{_libdir}/lib*.so
@@ -299,6 +297,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Sep 25 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.3-2
+- Move message catalogs for properties to the -devel package
+
 * Wed Sep 24 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.3-1
 - Update to 2.14.3
 

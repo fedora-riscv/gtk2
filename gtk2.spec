@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch2: workaround.patch
 # from upstream
 Patch3: randr-fix.patch
+# from upstream
+Patch4: gtk+-2.14.4-fallback-file-icon.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -119,6 +121,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .randr-fix
+%patch4 -p0 -b .fallback-file-icon
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -300,6 +303,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Oct 24 2008 Alexander Larsson <alexl@redhat.com> - 2.14.4-3
+- Manually check for fallback file icon since we're not
+  always returning that from gio anymore (from upstream)
+
 * Wed Oct 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.4-2
 - Don't emit size-changed signals if the screen size doesn't change
 

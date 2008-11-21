@@ -1,0 +1,84 @@
+--- modules/printbackends/cups/gtkprintbackendcups.c	2008-11-20 13:20:37.000000000 +0100
++++ modules/printbackends/cups/gtkprintbackendcups.c	2008-11-20 13:51:24.000000000 +0100
+@@ -25,6 +25,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <stdlib.h>
++#include <time.h>
+ 
+ #include <cups/cups.h>
+ #include <cups/language.h>
+@@ -3054,6 +3055,50 @@ foreach_option_get_settings (GtkPrinterO
+     gtk_print_settings_set (settings, option->name, value);
+ }
+ 
++/* Converts local time to UTC time. Local time has to be in HH:MM format or
++ * in HH:MM:SS format.
++ * Returns a newly allocated string holding UTC time in HH:MM:SS format
++ * or NULL.
++ */
++char *
++convert_localtime_to_utctime (const char *local_time)
++{
++  struct tm local_print_time;
++  char *utc_time = NULL;
++
++  local_print_time.tm_sec = 0;
++
++  if ((local_time != NULL) &&
++      ((sscanf (local_time, "%d:%d:%d",
++                &(local_print_time.tm_hour),
++                &(local_print_time.tm_min),
++                &(local_print_time.tm_sec)) == 3) ||
++       (sscanf (local_time, "%d:%d",
++                &(local_print_time.tm_hour),
++                &(local_print_time.tm_min)) == 2)))
++    {
++      struct tm diff_time, utc_print_time;
++
++      time_t rawtime;
++      time (&rawtime);
++
++      diff_time.tm_hour = gmtime (&rawtime)->tm_hour - localtime (&rawtime)->tm_hour;
++      diff_time.tm_min = gmtime (&rawtime)->tm_min - localtime (&rawtime)->tm_min;
++      diff_time.tm_sec = gmtime (&rawtime)->tm_sec - localtime (&rawtime)->tm_sec;
++
++      utc_print_time.tm_hour = ((local_print_time.tm_hour + diff_time.tm_hour) + 24) % 24;
++      utc_print_time.tm_min = ((local_print_time.tm_min + diff_time.tm_min) + 60) % 60;
++      utc_print_time.tm_sec = ((local_print_time.tm_sec + diff_time.tm_sec) + 60) % 60;
++
++      utc_time = g_strdup_printf ("%02d:%02d:%02d",
++                                  utc_print_time.tm_hour,
++                                  utc_print_time.tm_min,
++                                  utc_print_time.tm_sec);
++    }
++
++  return utc_time;
++}
++
+ static void
+ cups_printer_get_settings_from_options (GtkPrinter          *printer,
+ 					GtkPrinterOptionSet *options,
+@@ -3084,8 +3129,21 @@ cups_printer_get_settings_from_options (
+ 
+       print_at = gtk_print_settings_get (settings, "print-at");
+       print_at_time = gtk_print_settings_get (settings, "print-at-time");
++
+       if (strcmp (print_at, "at") == 0)
+-	gtk_print_settings_set (settings, "cups-job-hold-until", print_at_time);
++        {
++          gchar *utc_time = NULL;
++          
++          utc_time = convert_localtime_to_utctime (print_at_time);
++
++          if (utc_time != NULL)
++            {
++              gtk_print_settings_set (settings, "cups-job-hold-until", utc_time);
++              g_free (utc_time);
++            }
++          else
++            gtk_print_settings_set (settings, "cups-job-hold-until", print_at_time);
++        }
+       else if (strcmp (print_at, "on-hold") == 0)
+ 	gtk_print_settings_set (settings, "cups-job-hold-until", "indefinite");
+     }

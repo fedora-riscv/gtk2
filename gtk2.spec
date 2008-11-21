@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.12/gtk+-%{version}.tar.bz2
@@ -50,6 +50,9 @@ Patch10: printer-state.patch
 Patch13: printer-paper-size.patch
 
 Patch14: empty-modmap-crash.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=471419
+Patch15: print-at-local-time.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -132,6 +135,7 @@ docs for the GTK+ widget toolkit.
 %patch4 -p1 -b .im-setting
 %patch10 -p0 -b .printer-state
 %patch13 -p0 -b .printer-paper-size
+%patch15 -p0 -b .print-at-local-time
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -324,6 +328,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Nov 21 2008 Marek Kasik <mkasik@redhat.com> - 2.12.12-2
+- "Print at" takes local time from now.
+- Resolves: #471419
+
 * Sat Sep 13 2008 Matthias Clasen <mclasen@redhat.com> - 2.12.12-1
 - Update to 2.12.12
 

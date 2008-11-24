@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -123,12 +123,8 @@ docs for the GTK+ widget toolkit.
 %patch3 -p1 -b .randr-fix
 %patch4 -p0 -b .fallback-file-icon
 
-for i in config.guess config.sub ; do
-  test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
-done
-
 %build
-libtoolize --force
+libtoolize --force --copy
 
 # Patch0 modifies gdk-pixbuf/Makefile.am
 aclocal-1.7
@@ -143,6 +139,9 @@ fi
 
 %configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png 
 
+# fight unused direct deps
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
 ## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
 ## past gtk 2.1.2
 make #%{?_smp_mflags}
@@ -153,7 +152,7 @@ make #%{?_smp_mflags}
 # problems in our ia64 multilib infrastructure
 # See https://bugzilla.redhat.com/show_bug.cgi?id=253726 for more details
 echo 'int main (void) { return 0; }' > relocation-tag.c
-gcc -Os relocation-tag.c -o .relocation-tag
+gcc -Os relocation-tag.c -o relocation-tag
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -239,7 +238,7 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 # we need to install a binary in the immodules directory to make sure
 # that it gets properly relocated to /emul for ia64 emulation of x86
 # See https://bugzilla.redhat.com/show_bug.cgi?id=253726
-install -m 0644 .relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
+install -m 0755 relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 
 #
 # We need the substitution of $host so we use an external
@@ -257,8 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/update-gdk-pixbuf-loaders %{_host}
 /usr/bin/update-gtk-immodules %{_host}
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files -f gtk20.lang
 %defattr(-, root, root)
@@ -282,7 +280,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
-%{_sysconfdir}/gtk-2.0/im-multipress.conf
+%config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
 %files devel -f gtk20-properties.lang
 %defattr(-, root, root)
@@ -303,6 +301,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sun Nov 23 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.4-4
+- Reduce rpmlint warnings produced by the ia64 multilib hack
+- Fight unnecessary library dependencies
+
 * Fri Oct 24 2008 Alexander Larsson <alexl@redhat.com> - 2.14.4-3
 - Manually check for fallback file icon since we're not
   always returning that from gio anymore (from upstream)

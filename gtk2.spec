@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -30,10 +30,6 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
-# from upstream
-Patch3: randr-fix.patch
-# from upstream
-Patch4: gtk+-2.14.4-fallback-file-icon.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -90,7 +86,7 @@ projects ranging from small one-off tools to complete application
 suites.
 
 %package devel
-Summary: Development tools for GTK+ applications
+Summary: Development files for GTK+
 Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 Requires: pango-devel >= %{pango_version}
@@ -111,8 +107,9 @@ Provides: gail-devel = %{version}-%{release}
 Obsoletes: gail-devel < 2.13.0-1
 
 %description devel
-The gtk+-devel package contains the header files and developer
-docs for the GTK+ widget toolkit.  
+This package contains the libraries, header files and developer
+documentation that are needed for writing applications with the 
+GTK+ widget toolkit.  
 
 %prep
 %setup -q -n gtk+-%{version}
@@ -120,8 +117,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .randr-fix
-%patch4 -p0 -b .fallback-file-icon
 
 %build
 libtoolize --force --copy
@@ -301,8 +296,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
-* Mon Nov 24 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.5-2
+* Mon Nov 24 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.5-3
 - Update to 2.14.5
+- Drop obsolete patches
+- Update descriptions
 
 * Sun Nov 23 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.4-4
 - Reduce rpmlint warnings produced by the ia64 multilib hack

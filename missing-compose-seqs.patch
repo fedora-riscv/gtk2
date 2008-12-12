@@ -1,6 +1,6 @@
-diff -up gtk+-2.14.5/gtk/gtkimcontextsimple.c.compose-seqs gtk+-2.14.5/gtk/gtkimcontextsimple.c
---- gtk+-2.14.5/gtk/gtkimcontextsimple.c.compose-seqs	2008-11-27 19:07:04.000000000 -0500
-+++ gtk+-2.14.5/gtk/gtkimcontextsimple.c	2008-11-27 19:07:26.000000000 -0500
+diff -up gtk+-2.14.5/gtk/gtkimcontextsimple.c.missing-compose-seqs gtk+-2.14.5/gtk/gtkimcontextsimple.c
+--- gtk+-2.14.5/gtk/gtkimcontextsimple.c.missing-compose-seqs	2008-11-24 01:35:35.000000000 -0500
++++ gtk+-2.14.5/gtk/gtkimcontextsimple.c	2008-12-12 17:14:35.000000000 -0500
 @@ -53,7 +53,7 @@ struct _GtkComposeTableCompact
   */
  #include "gtkimcontextsimpleseqs.h"
@@ -19,18 +19,9 @@ diff -up gtk+-2.14.5/gtk/gtkimcontextsimple.c.compose-seqs gtk+-2.14.5/gtk/gtkim
    6
  };
  
-@@ -415,7 +415,7 @@ check_normalize_nfc (gunichar* combinati
-  * In future versions it will be just the keysym (no +1).
-  */
- #define IS_DEAD_KEY(k) \
--    ((k) >= GDK_dead_grave && (k) <= (GDK_dead_dasia+1))
-+    ((k) >= GDK_dead_stroke && (k) <= (GDK_dead_dasia+1))
- 
- static gboolean
- check_algorithmically (GtkIMContextSimple    *context_simple,
-diff -up gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h.compose-seqs gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h
---- gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h.compose-seqs	2008-11-27 19:07:16.000000000 -0500
-+++ gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h	2008-11-27 19:07:29.000000000 -0500
+diff -up gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h.missing-compose-seqs gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h
+--- gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h.missing-compose-seqs	2008-11-24 01:35:36.000000000 -0500
++++ gtk+-2.14.5/gtk/gtkimcontextsimpleseqs.h	2008-12-12 16:58:16.000000000 -0500
 @@ -18,9 +18,10 @@
   */
  

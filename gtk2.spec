@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -300,6 +300,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Nov 27 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.5-3
+- Make dead keys work again
+
 * Thu Nov 27 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.5-2
 - Re-add compose sequences that went missing due to the table
   syncing with X.org

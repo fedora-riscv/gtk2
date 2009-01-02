@@ -10,7 +10,7 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.14.6
+%define base_version 2.15.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -19,14 +19,12 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules 
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-# Fedora patch
-Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
@@ -115,7 +113,6 @@ GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 
 %build
@@ -137,8 +134,6 @@ fi
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
-## past gtk 2.1.2
 make #%{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
@@ -296,6 +291,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Jan  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.0-1
+- Update to 2.15.0
+
 * Tue Dec 16 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.6-1
 - Update to 2.14.6
 

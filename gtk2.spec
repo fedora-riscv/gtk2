@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch2: workaround.patch
 # from upstream
 Patch3: missing-compose-seqs.patch
+#
+Patch4: wmspec-recheck.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -119,6 +121,7 @@ docs for the GTK+ widget toolkit.
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
 %patch3 -p1 -b .missing-compose-seqs
+%patch4 -p0 -b .wmspec-recheck
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -300,6 +303,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sat Jan  3 2009 Matthias Clasen <mclasen@redhat.com> - 2.14.5-4
+- Recheck _NET_SUPPORTING_WM_CHECK every now and then
+
 * Thu Nov 27 2008 Matthias Clasen <mclasen@redhat.com> - 2.14.5-3
 - Make dead keys work again
 

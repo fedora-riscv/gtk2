@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.14.5
+%define base_version 2.14.7
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -30,10 +30,6 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
-# from upstream
-Patch3: missing-compose-seqs.patch
-#
-Patch4: wmspec-recheck.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -120,8 +116,6 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p1 -b .missing-compose-seqs
-%patch4 -p0 -b .wmspec-recheck
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -303,6 +297,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Jan  7 2009 Matthias Clasen <mclasen@redhat.com> - 2.14.7-1
+- Upate to 2.14.7
+
 * Sat Jan  3 2009 Matthias Clasen <mclasen@redhat.com> - 2.14.5-4
 - Recheck _NET_SUPPORTING_WM_CHECK every now and then
 

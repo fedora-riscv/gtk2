@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -28,6 +28,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 # a workaround for some brokenness in the flash plugin
 # see http://bugzilla.gnome.org/show_bug.cgi?id=463773
 Patch2: workaround.patch
+# http://bugzilla.redhat.com/show_bug.cgi?id=478400
+Patch3: default_printer.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -114,6 +116,7 @@ GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
+%patch3 -p0 -b default-printer
 
 %build
 libtoolize --force --copy
@@ -291,6 +294,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Jan 19 2009 Marek Kasik <mkasik@redhat.com> - 2.15.0-2
+- fix a problem with default printer in a network
+- Resolves: #478400
+
 * Thu Jan  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.0-1
 - Update to 2.15.0
 

@@ -1,0 +1,12 @@
+--- modules/printbackends/cups/gtkprintbackendcups.c	2009-01-01 20:41:58.000000000 +0100
++++ modules/printbackends/cups/gtkprintbackendcups.c	2009-01-19 13:31:59.000000000 +0100
+@@ -1303,7 +1303,8 @@ cups_request_printer_list_cb (GtkPrintBa
+         else if (strcmp (attr->name, "printer-type") == 0)
+           {
+             got_printer_type = TRUE;
+-            if (attr->values[0].integer & 0x00020000)
++            if ((attr->values[0].integer & 0x00020000) &&
++               !(attr->values[0].integer & 0x00000002))
+               default_printer = TRUE;
+             else
+               default_printer = FALSE;

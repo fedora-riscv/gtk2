@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.15.0
+%define base_version 2.15.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -294,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Jan 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-1
+- Update to 2.15.1
+
 * Mon Jan 19 2009 Marek Kasik <mkasik@redhat.com> - 2.15.0-2
 - fix a problem with default printer in a network
 - Resolves: #478400

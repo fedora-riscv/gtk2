@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch2: workaround.patch
 Patch3: default_printer.patch
 # fixed upstream
 Patch4: activatable-toolitem.patch
+# fixed upstream
+Patch5: imcontext-reset.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -120,6 +122,7 @@ GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .activatable-toolitem
+%patch5 -p0 -b .imcontext-reset
 
 %build
 libtoolize --force --copy
@@ -297,6 +300,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sat Jan 24 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-3
+- Avoid triggering an assertion that makes the gdm greeter nonfunctional
+
 * Sat Jan 24 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-2
 - Fix blank toolbuttons in the evolution composer
 

@@ -1,0 +1,70 @@
+Index: gtk/gtktextview.c
+===================================================================
+--- gtk/gtktextview.c	(revision 22213)
++++ gtk/gtktextview.c	(working copy)
+@@ -2076,8 +2076,7 @@
+    */
+   area.width = 0;
+ 
+-  if (GTK_WIDGET_REALIZED (text_view))
+-    gtk_im_context_set_cursor_location (text_view->im_context, &area);
++  gtk_im_context_set_cursor_location (text_view->im_context, &area);
+ }
+ 
+ static gboolean
+@@ -3840,7 +3839,7 @@
+     }
+ 
+   /* Ensure updating the spot location. */
+-  gtk_text_view_update_im_spot_location(text_view);
++  gtk_text_view_update_im_spot_location (text_view);
+ }
+ 
+ static void
+Index: gtk/gtkimmulticontext.c
+===================================================================
+--- gtk/gtkimmulticontext.c	(revision 22213)
++++ gtk/gtkimmulticontext.c	(working copy)
+@@ -226,7 +226,7 @@
+   if (!multicontext->slave)
+     {
+       GtkIMContext *slave;
+-
++      
+       g_free (multicontext->context_id);
+        
+       if (multicontext->priv->context_id)
+@@ -258,18 +258,14 @@
+ 				       GdkWindow    *window)
+ {
+   GtkIMMulticontext *multicontext = GTK_IM_MULTICONTEXT (context);
+-  GtkIMContext *slave; 
+   GdkScreen *screen; 
+   GtkSettings *settings;
+   gboolean connected;
+ 
+   multicontext->priv->client_window = window;
+ 
+-  slave = gtk_im_multicontext_get_slave (multicontext);
++  gtk_im_multicontext_set_slave (multicontext, NULL, FALSE);
+ 
+-  if (slave)
+-    gtk_im_context_set_client_window (slave, window);
+-
+   if (window == NULL) 
+     return;
+    
+Index: gtk/gtkimmodule.c
+===================================================================
+--- gtk/gtkimmodule.c	(revision 22213)
++++ gtk/gtkimmodule.c	(working copy)
+@@ -671,9 +671,6 @@
+   GdkScreen *screen;
+   GtkSettings *settings;
+       
+-  /* assertion to make sure all of the unexpected invocation is really gone. */
+-  g_return_val_if_fail (client_window != NULL, SIMPLE_ID);
+-
+   if (!contexts_hash)
+     gtk_im_module_initialize ();
+ 

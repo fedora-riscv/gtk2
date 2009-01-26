@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,10 +30,12 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
+
 # fixed upstream
 Patch4: activatable-toolitem.patch
-# fixed upstream
 Patch5: imcontext-reset.patch
+Patch6: radio-proxy.patch
+Patch7: tool-proxy.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -123,6 +125,8 @@ GTK+ widget toolkit.
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .activatable-toolitem
 %patch5 -p0 -b .imcontext-reset
+%patch6 -p1 -b .radio-proxy
+%patch7 -p1 -b .tool-proxy
 
 %build
 libtoolize --force --copy
@@ -300,6 +304,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Sun Jan 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-4
+- Draw radio action proxies as radio menuitems
+- Fix issues with toolitem action proxies and overflow
+
 * Sat Jan 24 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-3
 - Avoid triggering an assertion that makes the gdm greeter nonfunctional
 

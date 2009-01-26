@@ -1,0 +1,12 @@
+diff -up gtk+-2.15.1/gtk/gtkradioaction.c.radio-proxy gtk+-2.15.1/gtk/gtkradioaction.c
+--- gtk+-2.15.1/gtk/gtkradioaction.c.radio-proxy	2009-01-25 19:00:44.000000000 -0500
++++ gtk+-2.15.1/gtk/gtkradioaction.c	2009-01-25 19:01:09.000000000 -0500
+@@ -176,6 +176,8 @@ gtk_radio_action_init (GtkRadioAction *a
+   action->private_data = GTK_RADIO_ACTION_GET_PRIVATE (action);
+   action->private_data->group = g_slist_prepend (NULL, action);
+   action->private_data->value = 0;
++
++  gtk_toggle_action_set_draw_as_radio (GTK_TOGGLE_ACTION (action), TRUE);
+ }
+ 
+ /**

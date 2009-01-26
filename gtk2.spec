@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,6 +30,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=569240
+Patch8: gtk-2.15.1-scale-marks-crasher.patch
 
 # fixed upstream
 Patch4: activatable-toolitem.patch
@@ -127,6 +129,7 @@ GTK+ widget toolkit.
 %patch5 -p0 -b .imcontext-reset
 %patch6 -p1 -b .radio-proxy
 %patch7 -p0 -b .tool-proxy
+%patch8 -p0 -b .scale-marks
 
 %build
 libtoolize --force --copy
@@ -304,6 +307,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Jan 26 2009 - Bastien Nocera <bnocera@redhat.com> - 2.15.1-5
+- Add patch to avoid crashes when destroying a GtkScale with marks
+
 * Sun Jan 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.1-4
 - Draw radio action proxies as radio menuitems
 - Fix issues with toolitem action proxies and overflow

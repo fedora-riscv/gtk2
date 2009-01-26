@@ -126,7 +126,7 @@ GTK+ widget toolkit.
 %patch4 -p0 -b .activatable-toolitem
 %patch5 -p0 -b .imcontext-reset
 %patch6 -p1 -b .radio-proxy
-%patch7 -p1 -b .tool-proxy
+%patch7 -p0 -b .tool-proxy
 
 %build
 libtoolize --force --copy

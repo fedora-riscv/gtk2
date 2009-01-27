@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.15.1
+%define base_version 2.15.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,14 +30,6 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=569240
-Patch8: gtk-2.15.1-scale-marks-crasher.patch
-
-# fixed upstream
-Patch4: activatable-toolitem.patch
-Patch5: imcontext-reset.patch
-Patch6: radio-proxy.patch
-Patch7: tool-proxy.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,11 +117,6 @@ GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
-%patch4 -p0 -b .activatable-toolitem
-%patch5 -p0 -b .imcontext-reset
-%patch6 -p1 -b .radio-proxy
-%patch7 -p0 -b .tool-proxy
-%patch8 -p0 -b .scale-marks
 
 %build
 libtoolize --force --copy
@@ -307,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue Jan 27 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.2-1
+- Update to 2.15.2
+
 * Mon Jan 26 2009 - Bastien Nocera <bnocera@redhat.com> - 2.15.1-5
 - Add patch to avoid crashes when destroying a GtkScale with marks
 

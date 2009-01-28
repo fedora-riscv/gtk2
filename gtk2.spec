@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch1: gtk+-2.11.1-set-invisible-char-to-bullet.patch
 Patch2: workaround.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=478400
 Patch3: default_printer.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=471419
+Patch4: print_at_local_time.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -300,6 +302,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-4
+- Add conversion from local time to utc time for scheduled printing
+
 * Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-3
 - modify default_printer.patch to show a network default printer
   in the case of no local default printer

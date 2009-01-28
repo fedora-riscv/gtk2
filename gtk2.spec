@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -300,6 +300,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-3
+- modify default_printer.patch to show a network default printer
+  in the case of no local default printer
+- Resolves: #478400
+
 * Mon Jan 19 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-2
 - fix a problem with default printer in a network
 - Resolves: #478400

@@ -1,0 +1,168 @@
+--- gtk/gtkprintunixdialog.c	2009-01-07 17:32:57.000000000 +0100
++++ gtk/gtkprintunixdialog.c	2009-01-28 16:01:21.000000000 +0100
+@@ -2691,6 +2691,8 @@ create_job_page (GtkPrintUnixDialog *dia
+   GtkWidget *main_table, *label;
+   GtkWidget *frame, *table, *radio;
+   GtkWidget *entry, *widget;
++  const gchar *at_tooltip;
++  const gchar *on_hold_tooltip;
+ 
+   main_table = gtk_table_new (2, 2, FALSE);
+   gtk_container_set_border_width (GTK_CONTAINER (main_table), 12);
+@@ -2760,6 +2762,12 @@ create_job_page (GtkPrintUnixDialog *dia
+    */
+   radio = gtk_radio_button_new_with_mnemonic (gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio)),
+ 					      _("A_t:"));
++
++  /* Translators: Ability to parse the am/pm format depends on actual locale.
++   * You can remove the am/pm values below for your locale if they are not supported. 
++   */ 
++  at_tooltip = _("Specify the time of print,\n e.g. 15:30, 2:35 pm, 14:15:20, 11:46:30 am, 4 pm");
++  gtk_widget_set_tooltip_text (radio, at_tooltip);
+   priv->print_at_radio = radio;
+   gtk_widget_show (radio);
+   gtk_table_attach (GTK_TABLE (table), radio,
+@@ -2767,6 +2775,7 @@ create_job_page (GtkPrintUnixDialog *dia
+ 		    0, 0);
+ 
+   entry = gtk_entry_new ();
++  gtk_widget_set_tooltip_text (entry, at_tooltip);
+   priv->print_at_entry = entry;
+   gtk_widget_show (entry);
+   gtk_table_attach (GTK_TABLE (table), entry,
+@@ -2779,6 +2788,8 @@ create_job_page (GtkPrintUnixDialog *dia
+    */
+   radio = gtk_radio_button_new_with_mnemonic (gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio)),
+ 					      _("On _hold"));
++  on_hold_tooltip = _("Hold the job until it is explicitly released");
++  gtk_widget_set_tooltip_text (radio, on_hold_tooltip);
+   priv->print_hold_radio = radio;
+   gtk_widget_show (radio);
+   gtk_table_attach (GTK_TABLE (table), radio,
+--- modules/printbackends/cups/gtkprintbackendcups.c	2009-01-28 15:52:31.000000000 +0100
++++ modules/printbackends/cups/gtkprintbackendcups.c	2009-01-28 15:57:23.000000000 +0100
+@@ -19,12 +19,17 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
++#ifdef __linux__
++#define _GNU_SOURCE
++#endif
++
+ #include "config.h"
+ #include <ctype.h>
+ #include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <stdlib.h>
++#include <time.h>
+ 
+ #include <cups/cups.h>
+ #include <cups/language.h>
+@@ -3437,6 +3442,83 @@ foreach_option_get_settings (GtkPrinterO
+     gtk_print_settings_set (settings, option->name, value);
+ }
+ 
++static gboolean
++supports_am_pm (void)
++{
++  struct tm tmp_tm = { 0 };
++  char   time[8];
++  int    length;
++
++  length = strftime (time, sizeof (time), "%p", &tmp_tm);
++
++  return length != 0;
++}
++
++/* Converts local time to UTC time. Local time has to be in HH:MM format or
++ * in HH:MM:SS format or in HH:MM:SS {am, pm} format or in HH:MM {am, pm} format
++ * or in HH {am, pm} format.
++ * Returns a newly allocated string holding UTC time in HH:MM:SS format
++ * or NULL.
++ */
++gchar *
++localtime_to_utctime (const char *local_time)
++{
++  const char *formats_0[] = {" %I : %M : %S %p ", " %H : %M : %S ", " %I : %M %p ", " %H : %M ", " %I %p "};
++  const char *formats_1[] = {" %H : %M : %S ", " %H : %M "};
++  const char *end = NULL;
++  struct tm  *actual_local_time;
++  struct tm  *actual_utc_time;
++  struct tm   local_print_time;
++  struct tm   utc_print_time;
++  struct tm   diff_time;
++  gchar      *utc_time = NULL;
++  int         i, n;
++
++  if (local_time == NULL || local_time[0] == '\0')
++    return NULL;
++
++  n = supports_am_pm () ? G_N_ELEMENTS (formats_0) : G_N_ELEMENTS (formats_1);
++
++  for (i = 0; i < n; i++)
++    {
++      local_print_time.tm_hour = 0;
++      local_print_time.tm_min  = 0;
++      local_print_time.tm_sec  = 0;
++
++      if (supports_am_pm ())
++        end = strptime (local_time, formats_0[i], &local_print_time);
++      else
++        end = strptime (local_time, formats_1[i], &local_print_time);
++
++      if (end != NULL && end[0] == '\0')
++        break;
++    }
++
++  if (end != NULL && end[0] == '\0')
++    {
++      time_t rawtime;
++      time (&rawtime);
++
++      actual_utc_time = g_memdup (gmtime (&rawtime), sizeof (struct tm));
++      actual_local_time = g_memdup (localtime (&rawtime), sizeof (struct tm));
++
++      diff_time.tm_hour = actual_utc_time->tm_hour - actual_local_time->tm_hour;
++      diff_time.tm_min  = actual_utc_time->tm_min  - actual_local_time->tm_min;
++      diff_time.tm_sec  = actual_utc_time->tm_sec  - actual_local_time->tm_sec;
++
++      utc_print_time.tm_hour = ((local_print_time.tm_hour + diff_time.tm_hour) + 24) % 24;
++      utc_print_time.tm_min  = ((local_print_time.tm_min  + diff_time.tm_min)  + 60) % 60;
++      utc_print_time.tm_sec  = ((local_print_time.tm_sec  + diff_time.tm_sec)  + 60) % 60;
++
++      utc_time = g_strdup_printf ("%02d:%02d:%02d",
++                                  utc_print_time.tm_hour,
++                                  utc_print_time.tm_min,
++                                  utc_print_time.tm_sec);
++    }
++
++  return utc_time;
++}
++
+ static void
+ cups_printer_get_settings_from_options (GtkPrinter          *printer,
+ 					GtkPrinterOptionSet *options,
+@@ -3467,8 +3549,21 @@ cups_printer_get_settings_from_options (
+ 
+       print_at = gtk_print_settings_get (settings, "print-at");
+       print_at_time = gtk_print_settings_get (settings, "print-at-time");
++
+       if (strcmp (print_at, "at") == 0)
+-	gtk_print_settings_set (settings, "cups-job-hold-until", print_at_time);
++        {
++          gchar *utc_time = NULL;
++          
++          utc_time = localtime_to_utctime (print_at_time);
++
++          if (utc_time != NULL)
++            {
++              gtk_print_settings_set (settings, "cups-job-hold-until", utc_time);
++              g_free (utc_time);
++            }
++          else
++            gtk_print_settings_set (settings, "cups-job-hold-until", print_at_time);
++        }
+       else if (strcmp (print_at, "on-hold") == 0)
+ 	gtk_print_settings_set (settings, "cups-job-hold-until", "indefinite");
+     }

@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -120,7 +120,8 @@ docs for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .set-invisible-char-to-bullet
 %patch2 -p1 -b .workaround
-%patch3 -p0 -b default-printer
+%patch3 -p0 -b .default-printer
+%patch4 -p0 -b .print-at-local-time
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -302,6 +303,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Jan 29 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-6
+- Modify spec file to apply print_at_local_time.patch
+
 * Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-5
 - Add print_at_local_time.patch
 

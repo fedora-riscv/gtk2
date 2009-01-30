@@ -77,9 +77,6 @@ Requires(post): pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
 Requires(post): libtiff >= 3.6.1
 
-%define _unpackaged_files_terminate_build      1
-%define _missing_doc_files_terminate_build     1
-
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -244,10 +241,12 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 
+%if 0
 # we need to install a binary in the immodules directory to make sure
 # that it gets properly relocated to /emul for ia64 emulation of x86
 # See https://bugzilla.redhat.com/show_bug.cgi?id=253726
 install -m 0755 relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
+%endif
 
 #
 # We need the substitution of $host so we use an external

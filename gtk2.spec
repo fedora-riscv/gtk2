@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -86,6 +86,16 @@ GTK+ is a multi-platform toolkit for creating graphical user
 interfaces. Offering a complete set of widgets, GTK+ is suitable for
 projects ranging from small one-off tools to complete application
 suites.
+
+%package immodules
+Summary: Input methods for GTK+ 
+Group: System Environment/Libraries
+Requires: gtk2 = %{version}-%{release}
+
+%description immodules
+The gtk2-immodules package contains input methods that are shipped as part 
+of GTK+. 
+
 
 %package devel
 Summary: Development files for GTK+
@@ -254,6 +264,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -p /sbin/ldconfig
 
+%post immodules
+/usr/bin/update-gtk-immodules %{_host}
+
+
 %files -f gtk20.lang
 %defattr(-, root, root)
 
@@ -269,14 +283,24 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
 %{_libdir}/libgailutil.so.*
 %dir %{_libdir}/gtk-2.0
-%{_libdir}/gtk-2.0/%{bin_version}
-%{_libdir}/gtk-2.0/immodules
+%dir %{_libdir}/gtk-2.0/%{bin_version}
+%{_libdir}/gtk-2.0/%{bin_version}/engines
+%{_libdir}/gtk-2.0/%{bin_version}/filesystems
+%dir %{_libdir}/gtk-2.0/%{bin_version}/immodules
+%{_libdir}/gtk-2.0/%{bin_version}/loaders
+%{_libdir}/gtk-2.0/%{bin_version}/printbackends
 %{_libdir}/gtk-2.0/modules
+%{_libdir}/gtk-2.0/immodules
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
+
+%files immodules
+%defattr(-, root, root)
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/*.so
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
+
 
 %files devel -f gtk20-properties.lang
 %defattr(-, root, root)
@@ -297,6 +321,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Thu Jan 29 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.2-4
+- Split of an immodules subpackage (#444814)
+
 * Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.15.2-3
 - modify default_printer.patch to show a network default printer
   in the case of no local default printer

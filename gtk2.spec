@@ -157,8 +157,10 @@ make #%{?_smp_mflags}
 # create a dummy binary for /usr/lib/gtk-2.0/immodules to work around
 # problems in our ia64 multilib infrastructure
 # See https://bugzilla.redhat.com/show_bug.cgi?id=253726 for more details
+%if 0
 echo 'int main (void) { return 0; }' > relocation-tag.c
 gcc -Os relocation-tag.c -o relocation-tag
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -231,6 +233,7 @@ cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/*/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/*/*.la
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
@@ -323,6 +326,8 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Thu Jan 29 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.2-4
 - Split of an immodules subpackage (#444814)
+- Disable ia64 hack thats not needed in Fedora
+- Remove some .la files that crept in
 
 * Wed Jan 28 2009 Marek Kasik <mkasik@redhat.com> - 2.15.2-3
 - modify default_printer.patch to show a network default printer

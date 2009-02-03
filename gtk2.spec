@@ -10,13 +10,13 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 
-%define base_version 2.15.2
+%define base_version 2.15.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,8 +30,6 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
-# fixed upstream
-Patch4: togglebutton-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -126,7 +124,6 @@ GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
-%patch4 -p0 -b .togglebutton-crash
 
 %build
 libtoolize --force --copy
@@ -323,6 +320,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Mon Feb  2 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.3-1
+- Update to 2.15.3
+
 * Thu Jan 29 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.2-4
 - Split of an immodules subpackage (#444814)
 - Disable ia64 hack thats not needed in Fedora

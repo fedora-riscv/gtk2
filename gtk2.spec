@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,6 +30,9 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
+
+# fixed upstream
+Patch4: polkit-action.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -124,6 +127,7 @@ GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
+%patch4 -p1 -b .polkit-action
 
 %build
 libtoolize --force --copy
@@ -320,6 +324,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Feb  6 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.3-2
+- Fix PolicyKit-gnome's use of actions
+
 * Mon Feb  2 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.3-1
 - Update to 2.15.3
 

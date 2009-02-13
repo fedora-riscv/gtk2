@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -34,6 +34,8 @@ Patch2: workaround.patch
 Patch3: default_printer.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=471419
 Patch4: print_at_local_time.patch
+# fixed upstream
+Patch5: gtk2-register-randr-events.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -122,6 +124,7 @@ docs for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .print-at-local-time
+%patch5 -p1 -b .register-randr-events
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -303,6 +306,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Fri Feb 13 2009 Matthias Clasen  <mclasen@redhat.com> - 2.14.7-7
+- Register randr events, so that we actually pick up screen size changes
+
 * Thu Jan 29 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-6
 - Modify spec file to apply print_at_local_time.patch
 

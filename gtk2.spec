@@ -126,7 +126,8 @@ Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 # for /usr/share/gtk-doc/html
 Requires: gtk-doc
-BuildArch: noarch
+# not enabled in koji yet
+#BuildArch: noarch
 
 %description devel-docs
 This package contains developer documentation for the GTK+ widget toolkit. 

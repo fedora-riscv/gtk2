@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -110,16 +110,26 @@ Requires: libpng-devel
 Requires: pkgconfig
 # for /usr/share/aclocal
 Requires: automake
-# for /usr/share/gtk-doc/html
-Requires: gtk-doc
 
 Provides: gail-devel = %{version}-%{release}
 Obsoletes: gail-devel < 2.13.0-1
 
 %description devel
-This package contains the libraries, header files and developer
-documentation that are needed for writing applications with the 
-GTK+ widget toolkit.  
+This package contains the libraries amd header files that are needed 
+for writing applications with the GTK+ widget toolkit. If you plan
+to develop applications with GTK+, consider installing the gtk2-devel-docs
+package.
+
+%package devel-docs
+Summary: Developer documentation for GTK+
+Group: Development/Libraries
+Requires: gtk2 = %{version}-%{release}
+# for /usr/share/gtk-doc/html
+Requires: gtk-doc
+BuildArch: noarch
+
+%description devel-docs
+This package contains developer documentation for the GTK+ widget toolkit. 
 
 %prep
 %setup -q -n gtk+-%{version}
@@ -307,23 +317,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel -f gtk20-properties.lang
 %defattr(-, root, root)
-
 %{_libdir}/lib*.so
 %{_libdir}/gtk-2.0/include
-%{_datadir}/gtk-doc/html/*
-%{_mandir}/man1/*
 %{_includedir}/*
 %{_datadir}/aclocal/*
 %{_bindir}/gdk-pixbuf-csource
 %{_bindir}/gtk-builder-convert
 %{_libdir}/pkgconfig/*
-%doc tmpdocs/tutorial
-%doc tmpdocs/faq
-%doc tmpdocs/examples
 %{_bindir}/gtk-demo
 %{_datadir}/gtk-2.0
 
+%files devel-docs
+%defattr(-, root, root)
+%{_datadir}/gtk-doc/html/*
+%{_mandir}/man1/*
+%doc tmpdocs/tutorial
+%doc tmpdocs/faq
+%doc tmpdocs/examples
+
+
 %changelog
+* Sat Feb 14 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.3-3
+- Split off a noarch devel-docs subpackage
+
 * Fri Feb  6 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.3-2
 - Fix PolicyKit-gnome's use of actions
 

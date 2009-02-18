@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -30,6 +30,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
+# from upstream
+Patch4: disconnected-monitors.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -135,6 +137,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
+%patch4 -p1 -b .disconnected-monitors
 
 %build
 libtoolize --force --copy
@@ -334,6 +337,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-2
+- Ignore disconnected monitors
+
 * Tue Feb 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-1
 - Update to 2.15.4
 

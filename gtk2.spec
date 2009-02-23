@@ -16,12 +16,12 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
-Source2: update-gtk-immodules 
+Source2: update-gtk-immodules
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
@@ -85,13 +85,13 @@ projects ranging from small one-off tools to complete application
 suites.
 
 %package immodules
-Summary: Input methods for GTK+ 
+Summary: Input methods for GTK+
 Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
 
 %description immodules
-The gtk2-immodules package contains input methods that are shipped as part 
-of GTK+. 
+The gtk2-immodules package contains input methods that are shipped as part
+of GTK+.
 
 
 %package devel
@@ -114,7 +114,7 @@ Provides: gail-devel = %{version}-%{release}
 Obsoletes: gail-devel < 2.13.0-1
 
 %description devel
-This package contains the libraries amd header files that are needed 
+This package contains the libraries amd header files that are needed
 for writing applications with the GTK+ widget toolkit. If you plan
 to develop applications with GTK+, consider installing the gtk2-devel-docs
 package.
@@ -125,11 +125,10 @@ Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 # for /usr/share/gtk-doc/html
 Requires: gtk-doc
-# not enabled in koji yet
-#BuildArch: noarch
+BuildArch: noarch
 
 %description devel-docs
-This package contains developer documentation for the GTK+ widget toolkit. 
+This package contains developer documentation for the GTK+ widget toolkit.
 
 %prep
 %setup -q -n gtk+-%{version}
@@ -153,7 +152,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png 
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -186,7 +185,7 @@ esac
 # autoconf uses powerpc not ppc
 host=`echo $host | sed "s/^ppc/powerpc/"`
 
-# Make sure that the host value that is passed to the compile 
+# Make sure that the host value that is passed to the compile
 # is the same as the host that we're using in the spec file
 #
 compile_host=`grep 'host_triplet =' gtk/Makefile | sed "s/.* = //"`
@@ -197,7 +196,7 @@ fi
 
 make install DESTDIR=$RPM_BUILD_ROOT        \
              RUN_QUERY_IMMODULES_TEST=false \
-             RUN_QUERY_LOADER_TEST=false 
+             RUN_QUERY_LOADER_TEST=false
 
 %find_lang gtk20
 %find_lang gtk20-properties
@@ -337,6 +336,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Feb 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-3
+- Make the devel-docs subpackage noarch
+
 * Wed Feb 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-2
 - Ignore disconnected monitors
 
@@ -599,10 +601,10 @@ rm -rf $RPM_BUILD_ROOT
 
 * Tue Sep 25 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-4
 - Fix a crash in simple search
-- Drop obsolete Obsoletes and Conflicts 
+- Drop obsolete Obsoletes and Conflicts
 
 * Thu Sep 20 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-3
-- Fix a problem with swt and tooltips 
+- Fix a problem with swt and tooltips
 
 * Tue Sep 18 2007 Matthias Clasen <mclasen@redhat.com> - 2.12.0-2
 - Adapt to tracker ABI changes
@@ -622,7 +624,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Aug  8 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-6
 - Improve tooltip compatibility to make acroread work again
- 
+
 * Sun Aug  5 2007 Matthias Clasen <mclasen@redhat.com> - 2.11.6-5
 - Really move gtk-demo over
 
@@ -707,7 +709,7 @@ rm -rf $RPM_BUILD_ROOT
 - Clean up the autotools calls in %%prep.
 
 * Fri Feb  2 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.9-3
-- Fix update-gtk-immodules and update-gdk-pixbuf-loaders 
+- Fix update-gtk-immodules and update-gdk-pixbuf-loaders
   being swapped  (#227134)
 
 * Tue Jan 30 2007 Matthias Clasen <mclasen@redhat.com> - 2.10.9-2
@@ -800,7 +802,7 @@ rm -rf $RPM_BUILD_ROOT
 - Stop cursor blinking after a while, to save energy
 
 * Mon Aug 28 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-4.fc6
-- Use a reasonable timeout when polling for printer 
+- Use a reasonable timeout when polling for printer
   list updates  (#203585)
 
 * Wed Aug 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-3.fc6
@@ -1074,7 +1076,7 @@ rm -rf $RPM_BUILD_ROOT
   fix the crash.  (#137922)
 
 * Thu Oct 28 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.13-5
-- Include an upstream bugfix in the 
+- Include an upstream bugfix in the
   gtk+-2.4.9-treeview-activate.patch. This fixes
   a crasher bug (#137461)
 
@@ -1085,7 +1087,7 @@ rm -rf $RPM_BUILD_ROOT
 - Fix up backspace-deletes-character patches to actually work
   (#135656.)
 
-* Wed Oct 20 2004 Matthias Clasen <mclasen@redhat.com> 
+* Wed Oct 20 2004 Matthias Clasen <mclasen@redhat.com>
 - Fix the translation of default:LTR in pa.po  (#136431)
 
 * Tue Oct 12 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.13-1
@@ -1144,7 +1146,7 @@ rm -rf $RPM_BUILD_ROOT
 - patch to make '/' do the search popup
 
 * Fri Aug 20 2004 Owen Taylor <otaylor@redhat.com> - 2.4.7-2.2
-- Fix problem with infinite loop on bad BMP data (#130450, 
+- Fix problem with infinite loop on bad BMP data (#130450,
   test BMP from Chris Evans, fix from Manish Singh)
 
 * Sat Aug 14 2004 Matthias Clasen <mclasen@redhat.com> 2.4.7-1
@@ -1162,7 +1164,7 @@ rm -rf $RPM_BUILD_ROOT
 - Use -64 suffix on powerpc64.  (#128605)
 
 * Fri Jul 16 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-2
-- Fix permissions of gdk-pixbuf-csource script. 
+- Fix permissions of gdk-pixbuf-csource script.
 - Escape macros in %%changelog
 
 * Fri Jul  9 2004 Matthias Clasen <mclasen@redhat.com> - 2.4.4-1
@@ -1232,7 +1234,7 @@ rm -rf $RPM_BUILD_ROOT
 - Fix an infinite loop that can occur in the panel (#104524)
 
 * Fri Sep  5 2003 Owen Taylor <otaylor@redhat.com> 2.2.4-2.1
-- Fix up tutorial in packaging (#90197), add FAQ 
+- Fix up tutorial in packaging (#90197), add FAQ
 - Back out change to make KP_Decimal interpretation dependent on locale
   (#101046)
 
@@ -1248,7 +1250,7 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Jul  9 2003 Owen Taylor <otaylor@redhat.com> 2.2.2-2.1
 - XFlush() rather than XSync() at the end of process_all_updates()
   (big remote X anaconda speedup)
-- Add patch to fix frequent Red Hat 9 crash 
+- Add patch to fix frequent Red Hat 9 crash
   http://bugzilla.gnome.org/show_bug.cgi?id=105745
 
 * Mon Jun  9 2003 Owen Taylor <otaylor@redhat.com>
@@ -1315,7 +1317,7 @@ rm -rf $RPM_BUILD_ROOT
 - remove extranotify patch, now upstream
 - add gdk-pixbuf-query-loaders to file list
 - remove gdk-pixbuf.loaders and gtk.immodules in postun as they are
-  not owned by the package (these should probably live in /var since they 
+  not owned by the package (these should probably live in /var since they
   aren't config files and we overwrite them all the time)
 
 * Thu Oct  3 2002 Owen Taylor <otaylor@redhat.com>
@@ -1401,7 +1403,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu Apr 11 2002 Owen Taylor <otaylor@redhat.com>
 - Add reference docs to -devel package (#61184)
-- Use GTK2_RC_FILES, not GTK_RC_FILES, since KDE points GTK_RC_FILES 
+- Use GTK2_RC_FILES, not GTK_RC_FILES, since KDE points GTK_RC_FILES
   to gtk-1.2 ~/.gtkrc
 
 * Wed Apr  3 2002 Alex Larsson <alexl@redhat.com>
@@ -1528,7 +1530,7 @@ rm -rf $RPM_BUILD_ROOT
 - Version 1.3.1
 - move back to /usr
 - Remove gtk-config.1 manpage from build since
-  it conflicts with gtk+-devel. When we go to 
+  it conflicts with gtk+-devel. When we go to
   gtk+ gtk+1.2 setup, we should add it back
 
 * Fri Jun 30 2000 Owen Taylor <otaylor@redhat.com>
@@ -1637,7 +1639,7 @@ rm -rf $RPM_BUILD_ROOT
 - up to 1.1.7 for GNOME freeze
 
 * Sun Oct 25 1998 Shawn T. Amundson <amundson@gtk.org>
-- Fixed Source: to point to v1.1 
+- Fixed Source: to point to v1.1
 
 * Tue Aug 04 1998 Michael Fulbright <msf@redhat.com>
 - change %%postun to %%preun
@@ -1681,4 +1683,4 @@ rm -rf $RPM_BUILD_ROOT
   Trond Eivind Glomsrod <teg@pvv.ntnu.no>
   Michael K. Johnson <johnsonm@redhat.com>
   Otto Hammersmith <otto@redhat.com>
-  
+

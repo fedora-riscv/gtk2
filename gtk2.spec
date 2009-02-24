@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -32,6 +32,7 @@ Patch2: workaround.patch
 Patch3: default_printer.patch
 # from upstream
 Patch4: disconnected-monitors.patch
+Patch5: monitor-sizes.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -137,6 +138,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
 %patch4 -p1 -b .disconnected-monitors
+%patch5 -p1 -b .monitor-sizes
+
 
 %build
 libtoolize --force --copy
@@ -157,7 +160,7 @@ fi
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-make #%{?_smp_mflags}
+make %{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
 
@@ -336,6 +339,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 24 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-5
+- Drop accidental debug things
+
+* Mon Feb 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-4
+- More xrandr handling fixes
+
 * Sun Feb 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.4-3
 - Make the devel-docs subpackage noarch
 

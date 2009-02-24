@@ -146,9 +146,7 @@ fi
 
 %configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png 
 
-## smp_mflags doesn't work for now due to gdk-pixbuf.loaders, may be fixed 
-## past gtk 2.1.2
-make #%{?_smp_mflags}
+make %{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
 

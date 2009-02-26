@@ -9,6 +9,7 @@
 %define cairo_base_version 1.6.0
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
+%define xrandr_version 1.2.99.4-2
 
 %define base_version 2.15.4
 %define bin_version 2.10.0
@@ -16,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -47,7 +48,7 @@ BuildRequires: gettext
 BuildRequires: gtk-doc
 BuildRequires: cups-devel
 BuildRequires: cairo-devel >= %{cairo_version}
-BuildRequires: libXrandr-devel
+BuildRequires: libXrandr-devel >= %{xrandr_version}
 BuildRequires: libXrender-devel
 BuildRequires: libXcursor-devel
 BuildRequires: libXfixes-devel
@@ -77,7 +78,7 @@ Requires(post): atk >= %{atk_version}
 Requires(post): pango >= %{pango_version}
 # and these for gdk-pixbuf-query-loaders
 Requires(post): libtiff >= 3.6.1
-
+Requires: libXrandr >= %{xrandr_version}
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -339,6 +340,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 26 2009 - Bastien Nocera <bnocera@redhat.com> - 2.15.4-7
+- Require a newer libXrandr to build and run
+
 * Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.15.4-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 

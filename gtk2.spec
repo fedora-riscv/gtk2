@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.15.4
+%define base_version 2.15.5
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 7%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
@@ -31,9 +31,6 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
-# from upstream
-Patch4: disconnected-monitors.patch
-Patch5: monitor-sizes.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -138,8 +135,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
-%patch4 -p1 -b .disconnected-monitors
-%patch5 -p1 -b .monitor-sizes
 
 
 %build
@@ -340,6 +335,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Mar  2 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.5-1
+- Update to 2.15.5
+
 * Thu Feb 26 2009 - Bastien Nocera <bnocera@redhat.com> - 2.15.4-7
 - Require a newer libXrandr to build and run
 

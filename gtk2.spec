@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.17.7
+%define glib2_base_version 2.19.7
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.20.0
 %define pango_version %{pango_base_version}-1
@@ -11,7 +11,7 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.15.5
+%define base_version 2.16.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -20,7 +20,7 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.15/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 
@@ -335,6 +335,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 13 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.0-1
+- Update to 2.16.0
+
 * Mon Mar  2 2009 Matthias Clasen <mclasen@redhat.com> - 2.15.5-1
 - Update to 2.15.5
 

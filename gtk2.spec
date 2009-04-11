@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.16.0
+%define base_version 2.16.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -126,7 +126,7 @@ Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 # for /usr/share/gtk-doc/html
 Requires: gtk-doc
-BuildArch: noarch
+#BuildArch: noarch
 
 %description devel-docs
 This package contains developer documentation for the GTK+ widget toolkit.
@@ -342,6 +342,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1
+- Update to 2.16.1
+
 * Tue Apr  7 2009 Marek Kasik <mkasik@redhat.com> - 2.16.0-2
 - Add authentication support to GtkPrintBackend.
 

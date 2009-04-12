@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -190,6 +190,8 @@ esac
 
 # autoconf uses powerpc not ppc
 host=`echo $host | sed "s/^ppc/powerpc/"`
+# autoconf uses ibm-linux not redhat-linux (s390x)
+host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 
 # Make sure that the host value that is passed to the compile
 # is the same as the host that we're using in the spec file
@@ -342,6 +344,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 12 2009 Karsten Hopp <karsten@redhat.com> 2.16.1-2
+- autoconf uses ibm-linux not redhat-linux (s390x), 
+  fix host similar to ppc
+
 * Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1
 - Update to 2.16.1
 

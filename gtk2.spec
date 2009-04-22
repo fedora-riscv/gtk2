@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -33,6 +33,8 @@ Patch2: workaround.patch
 Patch3: default_printer.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=384940
 Patch4: print_authentication.patch
+# 
+Patch5: double-browser.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -138,6 +140,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .print-authentication
+%patch5 -p1 -b .double-browser
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -344,11 +347,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-3
+- Don't open double browser windows from about dialog
+
 * Sun Apr 12 2009 Karsten Hopp <karsten@redhat.com> 2.16.1-2
 - autoconf uses ibm-linux not redhat-linux (s390x), 
   fix host similar to ppc
 
-* Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1
+* Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1 
 - Update to 2.16.1
 
 * Tue Apr  7 2009 Marek Kasik <mkasik@redhat.com> - 2.16.0-2

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -93,9 +93,16 @@ Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
 
 %description immodules
-The gtk2-immodules package contains input methods that are shipped as part
-of GTK+.
+The gtk2-immodules package contains standalone input methods that are shipped
+as part of GTK+.
 
+%package immodule-xim
+Summary: XIM support for GTK+
+Group: System Environment/Libraries
+Requires: gtk2 = %{version}-%{release}
+
+%description immodule-xim
+The gtk2-immodule-xim package contains XIM support for GTK+.
 
 %package devel
 Summary: Development files for GTK+
@@ -290,6 +297,14 @@ rm -rf $RPM_BUILD_ROOT
 %post immodules
 /usr/bin/update-gtk-immodules %{_host}
 
+%postun immodules
+/usr/bin/update-gtk-immodules %{_host}
+
+%post immodule-xim
+/usr/bin/update-gtk-immodules %{_host}
+
+%postun immodule-xim
+/usr/bin/update-gtk-immodules %{_host}
 
 %files -f gtk20.lang
 %defattr(-, root, root)
@@ -321,9 +336,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %files immodules
 %defattr(-, root, root)
-%{_libdir}/gtk-2.0/%{bin_version}/immodules/*.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-am-et.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cedilla.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cyrillic-translit.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-inuktitut.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ipa.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-multipress.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-thai.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-er.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-et.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-viqr.so
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
+%files immodule-xim
+%defattr(-, root, root)
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-xim.so
 
 %files devel -f gtk20-properties.lang
 %defattr(-, root, root)
@@ -347,6 +374,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Apr 30 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-4
+- Ship the xim immodule separately
+
 * Wed Apr 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-3
 - Don't open double browser windows from about dialog
 

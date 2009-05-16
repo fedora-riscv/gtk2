@@ -334,7 +334,8 @@ rm -rf $RPM_BUILD_ROOT
 %files devel-docs
 %defattr(-, root, root)
 %{_datadir}/gtk-doc/html/*
-%{_mandir}/man1/*
+# manpages went missing by accident
+#%{_mandir}/man1/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples

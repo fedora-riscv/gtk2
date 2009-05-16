@@ -11,16 +11,16 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.16.1
+%define base_version 2.17.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 
@@ -344,8 +344,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri May 15 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.0-1
+- Update to 2.17.0
+
 * Sun Apr 12 2009 Karsten Hopp <karsten@redhat.com> 2.16.1-2
-- autoconf uses ibm-linux not redhat-linux (s390x), 
+- autoconf uses ibm-linux not redhat-linux (s390x),
   fix host similar to ppc
 
 * Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1

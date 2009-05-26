@@ -298,10 +298,7 @@ rm -rf $RPM_BUILD_ROOT
 %post immodule-xim
 /usr/bin/update-gtk-immodules %{_host}
 
-%postun
-/sbin/ldconfig
-/usr/bin/update-gdk-pixbuf-loaders %{_host}
-/usr/bin/update-gtk-immodules %{_host}
+%postun -p /sbin/ldconfig
 
 %postun immodules
 /usr/bin/update-gtk-immodules %{_host}

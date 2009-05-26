@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -260,6 +260,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun
 /sbin/ldconfig
+if [ $1 -gt 0 ]; then
+  /usr/bin/update-gdk-pixbuf-loaders %{_host}
+  /usr/bin/update-gtk-immodules %{_host}
+fi
 
 %files -f gtk20.lang
 %defattr(-, root, root)
@@ -304,6 +308,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-2.0
 
 %changelog
+* Tue May 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.14.7-8
+- Update the immodules files in %%postun (#502420)
+
 * Fri Feb 13 2009 Matthias Clasen  <mclasen@redhat.com> - 2.14.7-7
 - Register randr events, so that we actually pick up screen size changes
 

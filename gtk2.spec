@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -292,15 +292,18 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/update-gdk-pixbuf-loaders %{_host}
 /usr/bin/update-gtk-immodules %{_host}
 
-%postun -p /sbin/ldconfig
-
 %post immodules
 /usr/bin/update-gtk-immodules %{_host}
 
-%postun immodules
+%post immodule-xim
 /usr/bin/update-gtk-immodules %{_host}
 
-%post immodule-xim
+%postun
+/sbin/ldconfig
+/usr/bin/update-gdk-pixbuf-loaders %{_host}
+/usr/bin/update-gtk-immodules %{_host}
+
+%postun immodules
 /usr/bin/update-gtk-immodules %{_host}
 
 %postun immodule-xim
@@ -374,6 +377,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-5
+- Update the immodules files in %%postun (#502420)
+
 * Thu Apr 30 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-4
 - Ship the xim immodule separately
 

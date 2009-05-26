@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -89,9 +89,16 @@ Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
 
 %description immodules
-The gtk2-immodules package contains input methods that are shipped as part
-of GTK+.
+The gtk2-immodules package contains standalone input methods that are shipped
+as part of GTK+.
 
+%package immodule-xim
+Summary: XIM support for GTK+
+Group: System Environment/Libraries
+Requires: gtk2 = %{version}-%{release}
+
+%description immodule-xim
+The gtk2-immodule-xim package contains XIM support for GTK+.
 
 %package devel
 Summary: Development files for GTK+
@@ -279,11 +286,24 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/update-gdk-pixbuf-loaders %{_host}
 /usr/bin/update-gtk-immodules %{_host}
 
-%postun -p /sbin/ldconfig
-
 %post immodules
 /usr/bin/update-gtk-immodules %{_host}
 
+%post immodule-xim
+/usr/bin/update-gtk-immodules %{_host}
+
+%postun
+/sbin/ldconfig
+if [ $1 -gt 0 ]; then
+  /usr/bin/update-gdk-pixbuf-loaders %{_host}
+  /usr/bin/update-gtk-immodules %{_host}
+fi
+
+%postun immodules
+/usr/bin/update-gtk-immodules %{_host}
+
+%postun immodule-xim
+/usr/bin/update-gtk-immodules %{_host}
 
 %files -f gtk20.lang
 %defattr(-, root, root)
@@ -315,9 +335,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %files immodules
 %defattr(-, root, root)
-%{_libdir}/gtk-2.0/%{bin_version}/immodules/*.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-am-et.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cedilla.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cyrillic-translit.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-inuktitut.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ipa.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-multipress.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-thai.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-er.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-et.so
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-viqr.so
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
+%files immodule-xim
+%defattr(-, root, root)
+%{_libdir}/gtk-2.0/%{bin_version}/immodules/im-xim.so
 
 %files devel -f gtk20-properties.lang
 %defattr(-, root, root)
@@ -334,14 +366,17 @@ rm -rf $RPM_BUILD_ROOT
 %files devel-docs
 %defattr(-, root, root)
 %{_datadir}/gtk-doc/html/*
-# manpages went missing by accident
-#%{_mandir}/man1/*
+%{_mandir}/man1/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples
 
 
 %changelog
+* Tue May 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.0-2
+- Update the immodules files in %%postun (#502420)
+- Ship the xim immodule separately
+
 * Fri May 15 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.0-1
 - Update to 2.17.0
 
@@ -349,7 +384,7 @@ rm -rf $RPM_BUILD_ROOT
 - autoconf uses ibm-linux not redhat-linux (s390x),
   fix host similar to ppc
 
-* Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1
+* Sat Apr 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-1 
 - Update to 2.16.1
 
 * Tue Apr  7 2009 Marek Kasik <mkasik@redhat.com> - 2.16.0-2

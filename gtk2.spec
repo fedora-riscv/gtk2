@@ -365,7 +365,8 @@ fi
 %files devel-docs
 %defattr(-, root, root)
 %{_datadir}/gtk-doc/html/*
-%{_mandir}/man1/*
+# got omitted by accident
+# %{_mandir}/man1/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples

@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.16.1
+%define base_version 2.16.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -26,15 +26,10 @@ Source2: update-gtk-immodules
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-# a workaround for some brokenness in the flash plugin
-# see http://bugzilla.gnome.org/show_bug.cgi?id=463773
-Patch2: workaround.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch3: default_printer.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=384940
 Patch4: print_authentication.patch
-# 
-Patch5: double-browser.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -144,10 +139,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch2 -p1 -b .workaround
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .print-authentication
-%patch5 -p1 -b .double-browser
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -379,6 +372,10 @@ fi
 
 
 %changelog
+* Mon Jun  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.2-1
+- Update to 2.16.2
+- http://download.gnome.org/sources/gtk+/2.16/gtk+-2.16.2.news
+
 * Tue May 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.1-6
 - Update the immodules files in %%postun (#502420)
 

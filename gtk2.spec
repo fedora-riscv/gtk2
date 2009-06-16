@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -373,7 +373,7 @@ fi
 
 
 %changelog
-* Tue Jun 16 2009 Matthias Clasen <mclasen@redhat.com> - 2.27.2-3
+* Tue Jun 16 2009 Matthias Clasen <mclasen@redhat.com> - 2.27.2-4
 - Fix an entry completion crash
 
 * Mon Jun 15 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.2-1

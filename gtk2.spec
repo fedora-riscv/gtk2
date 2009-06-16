@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -27,7 +27,9 @@ Source2: update-gtk-immodules
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
-Patch3: default_printer.patch
+Patch1: default_printer.patch
+# upstream
+Patch2: dont-use-deprecated-api.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -137,7 +139,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch3 -p0 -b .default-printer
+%patch1 -p0 -b .default-printer
+%patch2 -p1 -b .deprecated-api
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -370,6 +373,9 @@ fi
 
 
 %changelog
+* Tue Jun 16 2009 Matthias Clasen <mclasen@redhat.com> - 2.27.2-2
+- Fix an entry completion crash
+
 * Mon Jun 15 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.2-1
 - Update to 2.17.2
 

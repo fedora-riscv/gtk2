@@ -1,0 +1,13 @@
+diff --git a/gtk/gtkentrybuffer.h b/gtk/gtkentrybuffer.h
+index cf2ddda..275aaa1 100644
+--- a/gtk/gtkentrybuffer.h
++++ b/gtk/gtkentrybuffer.h
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
++#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
+ #error "Only <gtk/gtk.h> can be included directly."
+ #endif
+ 

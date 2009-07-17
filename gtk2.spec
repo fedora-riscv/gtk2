@@ -164,7 +164,11 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png
+%configure --with-xinput=xfree 		\
+	   --disable-gtk-doc 		\
+	   --disable-rebuilds 		\
+	   --with-jasper		\
+	   --with-included-loaders=png
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

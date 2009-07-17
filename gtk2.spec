@@ -167,7 +167,7 @@ fi
 %configure --with-xinput=xfree 		\
 	   --disable-gtk-doc 		\
 	   --disable-rebuilds 		\
-	   --with-jasper		\
+	   --with-libjasper		\
 	   --with-included-loaders=png
 
 # fight unused direct deps

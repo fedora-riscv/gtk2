@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.17.4
+%define base_version 2.17.5
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -29,8 +29,6 @@ Source3: im-cedilla.conf
 Patch0: gtk+-2.13.5-lib64.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
 Patch1: default_printer.patch
-# from upstream
-Patch2: entry-include-fix.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -143,7 +141,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch1 -p0 -b .default-printer
-%patch2 -p1 -b .entry-include-fix
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -383,6 +380,9 @@ fi
 
 
 %changelog
+* Fri Jul 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.5-1
+- Update to 2.17.5
+
 * Mon Jul 13 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.4-2
 - Fix a problem with gtkentry.h
 

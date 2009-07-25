@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.17.5
+%define base_version 2.17.6
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -380,6 +380,9 @@ fi
 
 
 %changelog
+* Sat Jul 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.5-3
+- 2.17.6
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.17.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 

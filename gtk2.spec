@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -181,6 +181,11 @@ make %{?_smp_mflags}
 echo 'int main (void) { return 0; }' > relocation-tag.c
 gcc -Os relocation-tag.c -o relocation-tag
 %endif
+
+# truncate NEWS
+awk '/^Overview of Changes/ { seen+=1 }
+{ if (seen < 2) print }
+{ if (seen == 2) { print "For older news, see http://git.gnome.org/cgit/gtk+/plain/NEWS"; exit } }' NEWS > tmp; mv tmp NEWS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -380,7 +385,10 @@ fi
 
 
 %changelog
-* Sat Jul 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.5-3
+* Sun Aug  2 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.6-4
+- Save some space
+
+* Sat Jul 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.6-3
 - 2.17.6
 
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.17.5-2

@@ -1,8 +1,7 @@
-diff --git a/gdk/gdkwindow.c b/gdk/gdkwindow.c
-index 0b8b84b..90ebfc5 100644
---- a/gdk/gdkwindow.c
-+++ b/gdk/gdkwindow.c
-@@ -7108,7 +7108,10 @@ gdk_window_set_cursor (GdkWindow *window,
+diff -up gtk+-2.17.6/gdk/gdkwindow.c.set-cursor gtk+-2.17.6/gdk/gdkwindow.c
+--- gtk+-2.17.6/gdk/gdkwindow.c.set-cursor	2009-08-11 14:26:41.041772299 -0400
++++ gtk+-2.17.6/gdk/gdkwindow.c	2009-08-11 14:27:40.703522466 -0400
+@@ -6982,7 +6982,10 @@ gdk_window_set_cursor (GdkWindow *window
        if (cursor)
  	private->cursor = gdk_cursor_ref (cursor);
  
@@ -12,5 +11,5 @@ index 0b8b84b..90ebfc5 100644
 +        GDK_WINDOW_IMPL_GET_IFACE (private->impl)->set_cursor (window, cursor);
 +      else if (_gdk_window_event_parent_of (window, display->pointer_info.window_under_pointer))
  	update_cursor (display);
- 
-       g_object_notify (G_OBJECT (window), "cursor");
+     }
+ }

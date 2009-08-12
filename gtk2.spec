@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.17.6
+%define base_version 2.17.7
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -28,10 +28,7 @@ Source3: im-cedilla.conf
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=478400
-Patch1: default_printer.patch
-
-Patch2: gdm-background.patch
-Patch3: set-cursor.patch
+# Patch1: default_printer.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -143,9 +140,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch1 -p0 -b .default-printer
-%patch2 -p1 -b .gdm-background
-%patch3 -p1 -b .set-cursor
+# %patch1 -p0 -b .default-printer
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -390,6 +385,9 @@ fi
 
 
 %changelog
+* Tue Aug 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.7-1
+- 2.17.7
+
 * Tue Aug 11 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.6-6
 - Fix setting root cursors
 

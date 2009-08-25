@@ -11,7 +11,7 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.17.8
+%define base_version 2.17.9
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -27,8 +27,6 @@ Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-# http://bugzilla.redhat.com/show_bug.cgi?id=478400
-# Patch1: default_printer.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -140,7 +138,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-# %patch1 -p0 -b .default-printer
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -385,6 +382,9 @@ fi
 
 
 %changelog
+* Mon Aug 24 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.9-1
+- Update to 2.17.9
+
 * Tue Aug 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.8-1
 - Update to 2.17.8
 

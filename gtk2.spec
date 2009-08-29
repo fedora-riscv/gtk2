@@ -11,7 +11,7 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.16.5
+%define base_version 2.16.6
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -161,7 +161,7 @@ if ! pkg-config --exists pangoxft ; then
         exit 1
 fi
 
-%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --with-included-loaders=png
+%configure --with-xinput=xfree --disable-gtk-doc --disable-rebuilds --enable-debug --with-included-loaders=png
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -373,6 +373,9 @@ fi
 
 
 %changelog
+* Sat Aug 29 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.6-1
+- Update to 2.16.6
+
 * Sat Jul 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.5-1
 - Update to 2.16.5
 

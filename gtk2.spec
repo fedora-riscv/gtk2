@@ -17,12 +17,13 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
+Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
@@ -86,6 +87,8 @@ suites.
 Summary: Input methods for GTK+
 Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
+# for /etc/X11/xinit/xinput.d
+Requires: imsettings
 
 %description immodules
 The gtk2-immodules package contains standalone input methods that are shipped
@@ -249,6 +252,11 @@ esac
 cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 
+
+# Input method frameworks want this
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/X11/xinit/xinput.d
+cp %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xinit/xinput.d
+
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/*/*.la
@@ -344,6 +352,7 @@ fi
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-er.so
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-et.so
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-viqr.so
+%{_sysconfdir}/X11/xinit/xinput.d/im-cedilla.conf
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
 %files immodule-xim
@@ -373,6 +382,9 @@ fi
 
 
 %changelog
+* Thu Sep  3 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.6-2
+- Add im-cedilla.conf to gtk2-immodules (#510666)
+
 * Sat Aug 29 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.6-1
 - Update to 2.16.6
 

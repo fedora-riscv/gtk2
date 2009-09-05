@@ -28,6 +28,8 @@ Source3: im-cedilla.conf
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
 
+Patch1: gtk2-fix-install.patch
+
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -138,6 +140,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
+%patch1 -p1 -b .fix-install
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -215,17 +218,17 @@ make install DESTDIR=$RPM_BUILD_ROOT        \
 %find_lang gtk20
 %find_lang gtk20-properties
 
-./mkinstalldirs $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0
 #
 # Make cleaned-up versions of tutorials, examples, and faq for installation
 #
-./mkinstalldirs tmpdocs
+mkdir -p tmpdocs
 cp -aR docs/tutorial/html tmpdocs/tutorial
 cp -aR docs/faq/html tmpdocs/faq
 
 for dir in examples/* ; do
   if [ -d $dir ] ; then
-     ./mkinstalldirs tmpdocs/$dir
+     mkdir -p tmpdocs/$dir
      for file in $dir/* ; do
        install -m 0644 $file tmpdocs/$dir
      done

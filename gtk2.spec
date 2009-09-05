@@ -36,7 +36,7 @@ BuildRequires: libjpeg-devel
 BuildRequires: jasper-devel
 BuildRequires: libXi-devel
 BuildRequires: libpng-devel >= %{libpng_version}
-BuildRequires: automake17 autoconf libtool pkgconfig
+BuildRequires: automake autoconf libtool pkgconfig
 BuildRequires: gettext
 BuildRequires: gtk-doc
 BuildRequires: cups-devel
@@ -148,10 +148,7 @@ rm --force ./gtk/gtkmarshalers.h
 libtoolize --force --copy
 
 # Patch0 modifies gdk-pixbuf/Makefile.am
-aclocal-1.7
-automake-1.7
-autoconf
-autoheader
+autoreconf
 
 if ! pkg-config --exists pangoxft ; then
         echo "No pangoxft.pc!"

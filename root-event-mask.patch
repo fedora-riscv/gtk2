@@ -1,0 +1,17 @@
+diff -up gtk+-2.17.11/gdk/x11/gdkwindow-x11.c.event-mask gtk+-2.17.11/gdk/x11/gdkwindow-x11.c
+--- gtk+-2.17.11/gdk/x11/gdkwindow-x11.c.event-mask	2009-09-06 21:31:08.926764157 -0400
++++ gtk+-2.17.11/gdk/x11/gdkwindow-x11.c	2009-09-06 21:32:03.142614346 -0400
+@@ -455,8 +455,12 @@ _gdk_windowing_window_init (GdkScreen * 
+   private->width = WidthOfScreen (screen_x11->xscreen);
+   private->height = HeightOfScreen (screen_x11->xscreen);
+   private->viewable = TRUE;
++
++  /* see init_randr_support() in gdkscreen-x11.c */
++  private->event_mask = GDK_STRUCTURE_MASK;
++
+   _gdk_window_update_size (screen_x11->root_window);
+-  
++
+   _gdk_xid_table_insert (screen_x11->display,
+ 			 &screen_x11->xroot_window,
+ 			 screen_x11->root_window);

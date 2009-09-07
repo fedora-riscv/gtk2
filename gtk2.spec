@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.17/gtk+-%{version}.tar.bz2
@@ -28,7 +28,9 @@ Source3: im-cedilla.conf
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
 
+# from upstream
 Patch1: gtk2-fix-install.patch
+Patch2: root-event-mask.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -141,6 +143,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .fix-install
+%patch2 -p1 -b .root-event-mask
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -382,6 +385,9 @@ fi
 
 
 %changelog
+* Sun Sep  6 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.11-2
+- Fix the initial event mask for the root window (#521137)
+
 * Sat Sep  5 2009 Matthias Clasen <mclasen@redhat.com> - 2.17.11-1
 - Update to 2.17.11
 

@@ -1,0 +1,12 @@
+diff -up gtk+-2.17.11/gdk/x11/gdkdisplay-x11.c.bell gtk+-2.17.11/gdk/x11/gdkdisplay-x11.c
+--- gtk+-2.17.11/gdk/x11/gdkdisplay-x11.c.bell	2009-09-13 23:20:20.540275068 -0400
++++ gtk+-2.17.11/gdk/x11/gdkdisplay-x11.c	2009-09-13 23:20:39.649290396 -0400
+@@ -691,7 +691,7 @@ gdk_display_beep (GdkDisplay *display)
+ {
+   g_return_if_fail (GDK_IS_DISPLAY (display));
+   
+-  XBell (GDK_DISPLAY_XDISPLAY (display), 0);
++  XkbBell (GDK_DISPLAY_XDISPLAY (display), None, 0, None);
+ }
+ 
+ /**

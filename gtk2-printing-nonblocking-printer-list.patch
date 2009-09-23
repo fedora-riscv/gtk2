@@ -1,0 +1,212 @@
+diff -up gtk+-2.18.0/gtk/gtkprintunixdialog.c.printing-nonblocking-printer-list gtk+-2.18.0/gtk/gtkprintunixdialog.c
+--- gtk+-2.18.0/gtk/gtkprintunixdialog.c.printing-nonblocking-printer-list	2009-09-11 22:58:38.000000000 -0400
++++ gtk+-2.18.0/gtk/gtkprintunixdialog.c	2009-09-23 01:28:27.595033076 -0400
+@@ -596,7 +596,7 @@ gtk_print_unix_dialog_destroy (GtkPrintU
+ }
+ 
+ static void
+-disconnect_printer_details_request (GtkPrintUnixDialog *dialog)
++disconnect_printer_details_request (GtkPrintUnixDialog *dialog, gboolean details_failed)
+ {
+   GtkPrintUnixDialogPrivate *priv = dialog->priv;
+ 
+@@ -606,12 +606,20 @@ disconnect_printer_details_request (GtkP
+                                    priv->request_details_tag);
+       priv->request_details_tag = 0;
+       set_busy_cursor (dialog, FALSE);
+-      gtk_list_store_set (GTK_LIST_STORE (priv->printer_list),
+-                          g_object_get_data (G_OBJECT (priv->request_details_printer),
+-                                             "gtk-print-tree-iter"),
+-                          PRINTER_LIST_COL_STATE,
+-                          gtk_printer_get_state_message (priv->request_details_printer),
+-                          -1);
++      if (details_failed)
++        gtk_list_store_set (GTK_LIST_STORE (priv->printer_list),
++                            g_object_get_data (G_OBJECT (priv->request_details_printer),
++                                               "gtk-print-tree-iter"),
++                            PRINTER_LIST_COL_STATE,
++                             _("Getting printer information failed"),
++                            -1);
++      else
++        gtk_list_store_set (GTK_LIST_STORE (priv->printer_list),
++                            g_object_get_data (G_OBJECT (priv->request_details_printer),
++                                               "gtk-print-tree-iter"),
++                            PRINTER_LIST_COL_STATE,
++                            gtk_printer_get_state_message (priv->request_details_printer),
++                            -1);
+       g_object_unref (priv->request_details_printer);
+       priv->request_details_printer = NULL;
+     }
+@@ -626,7 +634,7 @@ gtk_print_unix_dialog_finalize (GObject 
+   GList *node;
+ 
+   unschedule_idle_mark_conflicts (dialog);
+-  disconnect_printer_details_request (dialog);
++  disconnect_printer_details_request (dialog, FALSE);
+ 
+   if (priv->current_printer)
+     {
+@@ -1781,7 +1789,7 @@ printer_details_acquired (GtkPrinter    
+ {
+   GtkPrintUnixDialogPrivate *priv = dialog->priv;
+ 
+-  disconnect_printer_details_request (dialog);
++  disconnect_printer_details_request (dialog, !success);
+ 
+   if (success)
+     {
+@@ -1809,7 +1817,7 @@ selected_printer_changed (GtkTreeSelecti
+       priv->waiting_for_printer = NULL;
+     }
+ 
+-  disconnect_printer_details_request (dialog);
++  disconnect_printer_details_request (dialog, FALSE);
+ 
+   printer = NULL;
+   if (gtk_tree_selection_get_selected (selection, NULL, &filter_iter))
+diff -up gtk+-2.18.0/modules/printbackends/cups/gtkprintbackendcups.c.printing-nonblocking-printer-list gtk+-2.18.0/modules/printbackends/cups/gtkprintbackendcups.c
+--- gtk+-2.18.0/modules/printbackends/cups/gtkprintbackendcups.c.printing-nonblocking-printer-list	2009-09-23 01:28:27.557052405 -0400
++++ gtk+-2.18.0/modules/printbackends/cups/gtkprintbackendcups.c	2009-09-23 01:28:27.600060112 -0400
+@@ -156,7 +156,7 @@ static GList *              cups_printer
+ static GtkPageSetup *       cups_printer_get_default_page_size     (GtkPrinter                        *printer);
+ static void                 cups_printer_request_details           (GtkPrinter                        *printer);
+ static gboolean             cups_request_default_printer           (GtkPrintBackendCups               *print_backend);
+-static void                 cups_request_ppd                       (GtkPrinter                        *printer);
++static gboolean             cups_request_ppd                       (GtkPrinter                        *printer);
+ static void                 cups_printer_get_hard_margins          (GtkPrinter                        *printer,
+ 								    double                            *top,
+ 								    double                            *bottom,
+@@ -1906,6 +1906,8 @@ cups_request_printer_list_cb (GtkPrintBa
+       else
+ 	g_object_ref (printer);
+ 
++      GTK_PRINTER_CUPS (printer)->remote = remote_printer;
++
+       gtk_printer_set_is_paused (printer, is_paused);
+       gtk_printer_set_is_accepting_jobs (printer, is_accepting_jobs);
+ 
+@@ -2206,7 +2208,7 @@ done:
+   GDK_THREADS_LEAVE ();
+ }
+ 
+-static void
++static gboolean
+ cups_request_ppd (GtkPrinter *printer)
+ {
+   GError *error;
+@@ -2226,6 +2228,26 @@ cups_request_ppd (GtkPrinter *printer)
+   GTK_NOTE (PRINTING,
+             g_print ("CUPS Backend: %s\n", G_STRFUNC));
+ 
++  if (cups_printer->remote)
++    {
++      GtkCupsConnectionState state;
++
++      state = gtk_cups_connection_test_get_state (cups_printer->remote_cups_connection_test);
++
++      if (state == GTK_CUPS_CONNECTION_IN_PROGRESS)
++        return TRUE;
++
++      gtk_cups_connection_test_free (cups_printer->remote_cups_connection_test);
++      cups_printer->remote_cups_connection_test = NULL;
++      cups_printer->get_remote_ppd_poll = 0;
++
++      if (state == GTK_CUPS_CONNECTION_NOT_AVAILABLE)
++        {
++          g_signal_emit_by_name (printer, "details-acquired", FALSE);
++          return FALSE;
++        }
++    }
++
+   http = httpConnectEncrypt (cups_printer->hostname, 
+ 			     cups_printer->port,
+ 			     cupsEncryption ());
+@@ -2255,7 +2277,7 @@ cups_request_ppd (GtkPrinter *printer)
+       g_free (data);
+ 
+       g_signal_emit_by_name (printer, "details-acquired", FALSE);
+-      return;
++      return FALSE;
+     }
+     
+   data->http = http;
+@@ -2293,6 +2315,8 @@ cups_request_ppd (GtkPrinter *printer)
+ 
+   g_free (resource);
+   g_free (ppd_filename);
++
++  return FALSE;
+ }
+ 
+ /* Ordering matters for default preference */
+@@ -2590,7 +2614,22 @@ cups_printer_request_details (GtkPrinter
+   cups_printer = GTK_PRINTER_CUPS (printer);
+   if (!cups_printer->reading_ppd && 
+       gtk_printer_cups_get_ppd (cups_printer) == NULL)
+-    cups_request_ppd (printer); 
++    {
++      if (cups_printer->remote)
++        {
++          if (cups_printer->get_remote_ppd_poll == 0)
++            {
++              cups_printer->remote_cups_connection_test = gtk_cups_connection_test_new (cups_printer->hostname);
++
++              if (cups_request_ppd (printer))
++                cups_printer->get_remote_ppd_poll = gdk_threads_add_timeout (200,
++                                                    (GSourceFunc) cups_request_ppd,
++                                                    printer);
++            }
++        }
++      else
++        cups_request_ppd (printer);
++    }
+ }
+ 
+ static char *
+diff -up gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.c.printing-nonblocking-printer-list gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.c
+--- gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.c.printing-nonblocking-printer-list	2009-09-23 01:28:27.558041288 -0400
++++ gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.c	2009-09-23 01:30:55.841053044 -0400
+@@ -78,6 +78,9 @@ gtk_printer_cups_init (GtkPrinterCups *p
+   printer->default_cover_before = NULL;
+   printer->default_cover_after = NULL;
+   printer->auth_info_required = NULL;
++  printer->remote = FALSE;
++  printer->get_remote_ppd_poll = 0;
++  printer->remote_cups_connection_test = NULL;
+ }
+ 
+ static void
+@@ -100,6 +103,11 @@ gtk_printer_cups_finalize (GObject *obje
+   if (printer->ppd_file)
+     ppdClose (printer->ppd_file);
+ 
++  if (printer->get_remote_ppd_poll > 0)
++    g_source_remove (printer->get_remote_ppd_poll);
++
++  gtk_cups_connection_test_free (printer->remote_cups_connection_test);
++
+   G_OBJECT_CLASS (gtk_printer_cups_parent_class)->finalize (object);
+ }
+ 
+diff -up gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.h.printing-nonblocking-printer-list gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.h
+--- gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.h.printing-nonblocking-printer-list	2009-09-23 01:28:27.559041206 -0400
++++ gtk+-2.18.0/modules/printbackends/cups/gtkprintercups.h	2009-09-23 01:31:02.087036708 -0400
+@@ -23,6 +23,7 @@
+ #include <glib-object.h>
+ #include <cups/cups.h>
+ #include <cups/ppd.h>
++#include "gtkcupsutils.h"
+ 
+ #include <gtk/gtkunixprint.h>
+ 
+@@ -56,6 +57,10 @@ struct _GtkPrinterCups
+ 
+   gchar  *default_cover_before;
+   gchar  *default_cover_after;
++
++  gboolean remote;
++  guint get_remote_ppd_poll;
++  GtkCupsConnectionTest *remote_cups_connection_test;
+ };
+ 
+ struct _GtkPrinterCupsClass

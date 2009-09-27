@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch1: gtk2-printing-smb-auth.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=586207
 Patch2: gtk2-printing-nonblocking-printer-list.patch
+# from upstream
+Patch3: fix-anchors.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -145,6 +147,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .printing-smb-auth
 %patch2 -p1 -b .printing-nonblocking-printer-list
+%patch3 -p1 -b .fix-anchors
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -386,6 +389,9 @@ fi
 
 
 %changelog
+* Sun Sep 27 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.0-2
+- Fix anchor handling in text views (#525910)
+
 * Wed Sep 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.0-1
 - Update to 2.18.0
 - Add some patches for improved printing support

@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.0
+%define base_version 2.18.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -27,15 +27,6 @@ Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=566522
-Patch1: gtk2-printing-smb-auth.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=586207
-Patch2: gtk2-printing-nonblocking-printer-list.patch
-# from upstream
-Patch3: fix-anchors.patch
-# from upstream
-Patch4: iconview-crash.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -147,15 +138,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .printing-smb-auth
-%patch2 -p1 -b .printing-nonblocking-printer-list
-%patch3 -p1 -b .fix-anchors
-%patch4 -p1 -b .iconview-crash
-
-# make sure that gtkmarshalers.{c, h} get regenerated during the build
-#  - caused by print_authentication.patch
-rm --force ./gtk/gtkmarshalers.c
-rm --force ./gtk/gtkmarshalers.h
 
 %build
 libtoolize --force --copy
@@ -392,6 +374,9 @@ fi
 
 
 %changelog
+* Wed Sep 30 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.1-1
+- Update to 2.18.1
+
 * Mon Sep 28 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.0-3
 - Fix a crash in the appearance capplet
 

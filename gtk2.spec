@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -27,6 +27,9 @@ Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
+
+# from upstream
+Patch1: select-final-char.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -138,6 +141,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
+%patch1 -p1 -b .select-final-char
 
 %build
 libtoolize --force --copy
@@ -374,6 +378,9 @@ fi
 
 
 %changelog
+* Fri Oct  9 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-2
+- Make selecting the final char work again (#528072)
+
 * Mon Oct  5 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-1
 - Update to 2.18.2
 

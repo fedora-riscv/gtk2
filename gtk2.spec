@@ -31,6 +31,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 # from upstream
 Patch1: select-final-char.patch
 
+Patch2: system-python.patch
+
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -142,6 +144,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .select-final-char
+%patch2 -p1 -b .system-python
 
 %build
 libtoolize --force --copy
@@ -378,6 +381,9 @@ fi
 
 
 %changelog
+* Tue Oct 13 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-3
+- Make gtk-builder-convert use system python
+
 * Fri Oct  9 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-2
 - Make selecting the final char work again (#528072)
 

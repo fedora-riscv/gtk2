@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.2
+%define base_version 2.18.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -27,11 +27,7 @@ Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-
-# from upstream
-Patch1: select-final-char.patch
-
-Patch2: system-python.patch
+Patch1: system-python.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -143,8 +139,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .select-final-char
-%patch2 -p1 -b .system-python
+%patch1 -p1 -b .system-python
 
 %build
 libtoolize --force --copy
@@ -381,6 +376,9 @@ fi
 
 
 %changelog
+* Sat Oct 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-1
+- Update to 2.18.3
+
 * Tue Oct 13 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-3
 - Make gtk-builder-convert use system python
 

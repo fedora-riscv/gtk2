@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -30,6 +30,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
+# from upstream
+Patch3: image-size-alloc.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -143,6 +145,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
+%patch3 -p1 -b .image-size-alloc
 
 %build
 libtoolize --force --copy
@@ -379,6 +382,9 @@ fi
 
 
 %changelog
+* Sun Oct 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-3
+- Fix a size allocation problem uncovered by the previous patch
+
 * Sat Oct 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-2
 - Support padding around status icons
 

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -32,6 +32,8 @@ Patch1: system-python.patch
 Patch2: icon-padding.patch
 # from upstream
 Patch3: image-size-alloc.patch
+#
+Patch4: fresh-tooltips.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -146,6 +148,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
 %patch3 -p1 -b .image-size-alloc
+%patch4 -p1 -b .fresh-tooltips
 
 %build
 libtoolize --force --copy
@@ -382,6 +385,9 @@ fi
 
 
 %changelog
+* Tue Oct 20 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-4
+- Make tooltips look nicer
+
 * Sun Oct 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-3
 - Fix a size allocation problem uncovered by the previous patch
 

@@ -1,6 +1,6 @@
 diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.c
 --- gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips	2009-10-16 10:35:45.000000000 -0400
-+++ gtk+-2.18.3/gtk/gtktooltip.c	2009-10-21 10:24:42.022179427 -0400
++++ gtk+-2.18.3/gtk/gtktooltip.c	2009-10-21 16:46:25.035809299 -0400
 @@ -95,6 +95,7 @@ static void       gtk_tooltip_display_cl
  						    GtkTooltip      *tooltip);
  static void       gtk_tooltip_set_last_window      (GtkTooltip      *tooltip,
@@ -76,7 +76,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
  {
    g_return_if_fail (GTK_IS_TOOLTIP (tooltip));
  
-@@ -471,27 +492,163 @@ static void
+@@ -471,27 +492,184 @@ static void
  gtk_tooltip_window_style_set (GtkTooltip *tooltip)
  {
    gtk_alignment_set_padding (GTK_ALIGNMENT (tooltip->alignment),
@@ -137,6 +137,8 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
 +  cairo_arc (cr,
 +             x + radius, y + radius, radius,
 +             180.0f * G_PI / 180.0f, 270.0f * G_PI / 180.0f);
++
++  cairo_close_path (cr);
 +}
 +
 +static void
@@ -156,22 +158,21 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
 +  radius = MIN (widget->style->xthickness, widget->style->ythickness);
 +  radius = MAX (radius, 1);
 +
++  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
++  cairo_paint (cr);
++  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
++
 +  draw_round_rect (cr,
-+                   1.0, 0, 0, radius,
-+                   widget->allocation.width,
-+                   widget->allocation.height);
++                   1.0, 1, 1, radius,
++                   widget->allocation.width - 2,
++                   widget->allocation.height - 2);
 +
 +  color = widget->style->bg [GTK_STATE_NORMAL];
 +  r = (float)color.red / 65535.0;
 +  g = (float)color.green / 65535.0;
 +  b = (float)color.blue / 65535.0;
 +  cairo_set_source_rgba (cr, r, g, b, background_alpha);
-+  cairo_fill (cr);
-+
-+  draw_round_rect (cr,
-+                   1.0, 1, 1, radius,
-+                   widget->allocation.width - 2,
-+                   widget->allocation.height - 2);
++  cairo_fill_preserve (cr);
 +
 +  color = widget->style->bg [GTK_STATE_SELECTED];
 +  r = (float) color.red / 65535.0;
@@ -179,7 +180,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
 +  b = (float) color.blue / 65535.0;
 +
 +  cairo_set_source_rgba (cr, r, g, b, background_alpha);
-+  cairo_set_line_width (cr, 0.3);
++  cairo_set_line_width (cr, 1.0);
 +  cairo_stroke (cr);
 +}
 +
@@ -190,13 +191,33 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
 +  cairo_t *cr;
 +  gint width, height;
 +
++  gtk_window_get_size (GTK_WINDOW (tooltip->window), &width, &height);
++
 +  if (gdk_screen_is_composited (gtk_widget_get_screen (tooltip->window)))
 +    {
++      GdkRectangle rect;
++      GdkRegion *region;
++
++#if 0
 +      gtk_widget_shape_combine_mask (tooltip->window, NULL, 0, 0);
++     return;
++#endif
++      /* This is a hack to keep the metacity compositor from slapping a
++       * non-shaped shadow around the shaped tooltip
++       */
++      if (tooltip->window->window)
++        {
++          rect.x = 0;
++          rect.y = 0;
++          rect.width = width;
++          rect.height = height;
++          region = gdk_region_rectangle (&rect);
++          gdk_window_shape_combine_region (tooltip->window->window, region, 0, 0);
++          gdk_region_destroy (region);
++        }
 +      return;
 +    }
 +
-+  gtk_window_get_size (tooltip->window, &width, &height);
 +  mask = (GdkBitmap *) gdk_pixmap_new (NULL, width, height, 1);
 +  cr = gdk_cairo_create (mask);
 +  if (cairo_status (cr) == CAIRO_STATUS_SUCCESS)
@@ -254,7 +275,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
  
    return FALSE;
  }
-@@ -631,7 +788,7 @@ find_widget_under_pointer (GdkWindow *wi
+@@ -631,7 +809,7 @@ find_widget_under_pointer (GdkWindow *wi
  
  #ifdef DEBUG_TOOLTIP
    g_print ("event window %p (belonging to %p (%s))  (%d, %d)\n",

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -34,6 +34,8 @@ Patch2: icon-padding.patch
 Patch3: image-size-alloc.patch
 #
 Patch4: fresh-tooltips.patch
+#
+Patch5: zerosize.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -149,6 +151,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .icon-padding
 %patch3 -p1 -b .image-size-alloc
 %patch4 -p1 -b .fresh-tooltips
+%patch5 -p1 -b .zerosize
 
 %build
 libtoolize --force --copy
@@ -385,6 +388,10 @@ fi
 
 
 %changelog
+* Wed Oct 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-7
+- Try to catch some nm-applet problems by rejecting requests to
+  load icons at size 0
+
 * Wed Oct 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-6
 - Hack around metacity compositor limitations
 

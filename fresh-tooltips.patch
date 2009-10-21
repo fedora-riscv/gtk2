@@ -1,6 +1,6 @@
 diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.c
 --- gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips	2009-10-16 10:35:45.000000000 -0400
-+++ gtk+-2.18.3/gtk/gtktooltip.c	2009-10-20 15:14:00.479415361 -0400
++++ gtk+-2.18.3/gtk/gtktooltip.c	2009-10-21 10:24:42.022179427 -0400
 @@ -95,6 +95,7 @@ static void       gtk_tooltip_display_cl
  						    GtkTooltip      *tooltip);
  static void       gtk_tooltip_set_last_window      (GtkTooltip      *tooltip,
@@ -76,7 +76,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
  {
    g_return_if_fail (GTK_IS_TOOLTIP (tooltip));
  
-@@ -471,27 +492,166 @@ static void
+@@ -471,27 +492,163 @@ static void
  gtk_tooltip_window_style_set (GtkTooltip *tooltip)
  {
    gtk_alignment_set_padding (GTK_ALIGNMENT (tooltip->alignment),
@@ -145,44 +145,41 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
 +{
 +  GdkColor color;
 +  gdouble  r, g, b;
-+  gint     padding;
 +  gint     radius;
 +  gdouble  background_alpha;
 +
 +  if (gdk_screen_is_composited (gtk_widget_get_screen (widget)))
-+    {
-+      padding = 1;
-+      background_alpha = 0.90;
-+    }
++    background_alpha = 0.90;
 +  else
-+    {
-+      padding = 0;
-+      background_alpha = 1.0;
-+    }
++    background_alpha = 1.0;
 +
 +  radius = MIN (widget->style->xthickness, widget->style->ythickness);
-+  radius = MAX (radius, padding);
++  radius = MAX (radius, 1);
 +
 +  draw_round_rect (cr,
-+                   1.0, padding, padding, radius,
-+                   widget->allocation.width - 2 * padding,
-+                   widget->allocation.height - 2 * padding);
++                   1.0, 0, 0, radius,
++                   widget->allocation.width,
++                   widget->allocation.height);
 +
 +  color = widget->style->bg [GTK_STATE_NORMAL];
 +  r = (float)color.red / 65535.0;
 +  g = (float)color.green / 65535.0;
 +  b = (float)color.blue / 65535.0;
 +  cairo_set_source_rgba (cr, r, g, b, background_alpha);
-+  cairo_fill_preserve (cr);
++  cairo_fill (cr);
 +
-+#if 1
-+  color = widget->style->text_aa [GTK_STATE_NORMAL];
++  draw_round_rect (cr,
++                   1.0, 1, 1, radius,
++                   widget->allocation.width - 2,
++                   widget->allocation.height - 2);
++
++  color = widget->style->bg [GTK_STATE_SELECTED];
 +  r = (float) color.red / 65535.0;
 +  g = (float) color.green / 65535.0;
 +  b = (float) color.blue / 65535.0;
-+#endif
-+  cairo_set_source_rgba (cr, r, g, b, background_alpha / 2);
-+  cairo_set_line_width (cr, 1);
++
++  cairo_set_source_rgba (cr, r, g, b, background_alpha);
++  cairo_set_line_width (cr, 0.3);
 +  cairo_stroke (cr);
 +}
 +
@@ -257,7 +254,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.fresh-tooltips gtk+-2.18.3/gtk/gtktooltip.
  
    return FALSE;
  }
-@@ -631,7 +791,7 @@ find_widget_under_pointer (GdkWindow *wi
+@@ -631,7 +788,7 @@ find_widget_under_pointer (GdkWindow *wi
  
  #ifdef DEBUG_TOOLTIP
    g_print ("event window %p (belonging to %p (%s))  (%d, %d)\n",

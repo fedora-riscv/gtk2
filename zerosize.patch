@@ -34,7 +34,7 @@ diff -up gtk+-2.18.3/gtk/gtkicontheme.c.zerosize gtk+-2.18.3/gtk/gtkicontheme.c
    gpointer key;
  
    g_return_if_fail (icon_name != NULL);
-+  g_return_if_fail (size > 0, NULL);
++  g_return_if_fail (size > 0);
    g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
    
    if (!icon_theme_builtin_icons)

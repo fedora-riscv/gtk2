@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -37,6 +37,7 @@ Patch4: fresh-tooltips.patch
 Patch5: zerosize.patch
 Patch6: compose-sequences.patch
 Patch7: symbolic-color-parsing.patch
+Patch8: tooltip-positioning.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -155,6 +156,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch5 -p1 -b .zerosize
 %patch6 -p1 -b .compose-sequences
 %patch7 -p1 -b .symbolic-color-parsing
+%patch8 -p1 -b .tooltip-positioning
 
 %build
 libtoolize --force --copy
@@ -391,6 +393,10 @@ fi
 
 
 %changelog
+* Fri Oct 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-10
+- Tweak tooltip positioning
+- Make new tooltip style an opt-in theme choice
+
 * Thu Oct 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-9
 - Fix a problem with parsing symbolic colors in rc files (#528662)
 

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -38,6 +38,8 @@ Patch5: zerosize.patch
 Patch6: compose-sequences.patch
 Patch7: symbolic-color-parsing.patch
 Patch8: tooltip-positioning.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=581150
+Patch9: iconview-hang.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -157,6 +159,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch6 -p1 -b .compose-sequences
 %patch7 -p1 -b .symbolic-color-parsing
 %patch8 -p1 -b .tooltip-positioning
+%patch9 -p1 -b .iconview-hang
 
 %build
 libtoolize --force --copy
@@ -393,6 +396,9 @@ fi
 
 
 %changelog
+* Fri Oct 23 2009 Matthew Barnes <mbarnes@redhat.com> - 2.18.3-11
+- Fix a GtkIconView hang
+
 * Fri Oct 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-10
 - Tweak tooltip positioning
 - Make new tooltip style an opt-in theme choice

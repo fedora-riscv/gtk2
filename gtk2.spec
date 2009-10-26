@@ -32,11 +32,14 @@ Patch1: system-python.patch
 Patch2: icon-padding.patch
 # from upstream
 Patch3: image-size-alloc.patch
-#
+# https://bugzilla.gnome.org/show_bug.cgi?id=599617
 Patch4: fresh-tooltips.patch
 Patch5: zerosize.patch
+# from upstream
 Patch6: compose-sequences.patch
+# from upstream
 Patch7: symbolic-color-parsing.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=581150
 Patch9: iconview-hang.patch

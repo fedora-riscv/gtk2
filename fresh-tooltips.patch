@@ -55,10 +55,10 @@
 +  if (rgba)
 +    gtk_widget_set_colormap (tooltip->window, rgba);
 +
-+#if 0
++
    gtk_window_set_type_hint (GTK_WINDOW (tooltip->window),
  			    GDK_WINDOW_TYPE_HINT_TOOLTIP);
-+#endif
++
 +
    gtk_widget_set_app_paintable (tooltip->window, TRUE);
    gtk_window_set_resizable (GTK_WINDOW (tooltip->window), FALSE);
@@ -350,3 +350,20 @@
  	   *x, *y);
  #endif
  
+--- gtk+-2.18.3/gtk/gtkwidget.c	2009-10-09 01:00:44.000000000 -0400
++++ hacked/gtk/gtkwidget.c	2009-10-28 10:53:01.569855420 -0400
+@@ -2386,6 +2386,14 @@
+                                                              P_("The length of vertical scroll arrows"),
+                                                              1, G_MAXINT, 16,
+                                                              GTK_PARAM_READABLE));
++
++  gtk_widget_class_install_style_property (klass,
++                                           g_param_spec_boolean ("new-tooltip-style",
++                                                                 NULL,
++                                                                 NULL,
++                                                                 FALSE,
++                                                                 GTK_PARAM_READABLE));
++
+ }
+ 
+ static void

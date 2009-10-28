@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -34,6 +34,8 @@ Patch2: icon-padding.patch
 Patch3: image-size-alloc.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599617
 Patch4: fresh-tooltips.patch
+# from upstream
+Patch5: allow-set-hint.patch
 # from upstream
 Patch6: compose-sequences.patch
 # from upstream
@@ -159,6 +161,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .icon-padding
 %patch3 -p1 -b .image-size-alloc
 %patch4 -p1 -b .fresh-tooltips
+%patch5 -p1 -b .allow-set-hint
 %patch6 -p1 -b .compose-sequences
 %patch7 -p1 -b .symbolic-color-parsing
 %patch8 -p1 -b .tooltip-positioning
@@ -400,7 +403,7 @@ fi
 
 
 %changelog
-* Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-13
+* Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-14
 - Make the new tooltips sharp
 - Improve the Metacity compositor workaround for new tooltips
 

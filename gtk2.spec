@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.16/gtk+-%{version}.tar.bz2
@@ -31,6 +31,8 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch3: default_printer.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=384940
 Patch4: print_authentication.patch
+# http://bugzilla.redhat.com/show_bug.cgi?id=529364
+Patch5: gtk2-remove-connecting-reason.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -144,6 +146,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .print-authentication
+%patch5 -p0 -b .remove-connecting-reason
 
 # make sure that gtkmarshalers.{c, h} get regenerated during the build
 #  - caused by print_authentication.patch
@@ -382,6 +385,9 @@ fi
 
 
 %changelog
+* Wed Oct 28 2009 Marek Kasik <mkasik@redhat.com> - 2.16.6-3
+- Remove handling of "connecting-to-device" reason (#529364)
+
 * Thu Sep  3 2009 Matthias Clasen <mclasen@redhat.com> - 2.16.6-2
 - Add im-cedilla.conf to gtk2-immodules (#510666)
 

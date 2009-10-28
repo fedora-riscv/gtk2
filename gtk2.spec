@@ -16,7 +16,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.14/gtk+-%{version}.tar.bz2
@@ -36,6 +36,8 @@ Patch3: default_printer.patch
 Patch4: print_at_local_time.patch
 # fixed upstream
 Patch5: gtk2-register-randr-events.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=529364
+Patch6: gtk2-remove-connecting-reason.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -125,6 +127,7 @@ docs for the GTK+ widget toolkit.
 %patch3 -p0 -b .default-printer
 %patch4 -p0 -b .print-at-local-time
 %patch5 -p1 -b .register-randr-events
+%patch6 -p0 -b .remove-connecting-reason
 
 for i in config.guess config.sub ; do
   test -f %{_datadir}/libtool/$i && cp %{_datadir}/libtool/$i .
@@ -308,6 +311,9 @@ fi
 %{_datadir}/gtk-2.0
 
 %changelog
+* Wed Oct 28 2009 Marek Kasik <mkasik@redhat.com> - 2.14.7-9
+- Remove handling of "connecting-to-device" reason (#529364)
+
 * Tue May 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.14.7-8
 - Update the immodules files in %%postun (#502420)
 

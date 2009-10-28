@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -403,6 +403,9 @@ fi
 
 
 %changelog
+* Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-15
+- Work around a bug in the X automatic compositor (#531443)
+
 * Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-14
 - Make the new tooltips sharp
 - Improve the Metacity compositor workaround for new tooltips

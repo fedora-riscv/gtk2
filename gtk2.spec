@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -48,6 +48,8 @@ Patch9: iconview-hang.patch
 Patch10: toolbutton-assert.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=529364
 Patch11: gtk2-remove-connecting-reason.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=592582
+Patch12: gtk2-preview.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -170,6 +172,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch9 -p1 -b .iconview-hang
 %patch10 -p1 -b .toolbutton-assert
 %patch11 -p1 -b .remove-connecting-reason
+%patch12 -p1 -b .preview
 
 %build
 libtoolize --force --copy
@@ -406,6 +409,9 @@ fi
 
 
 %changelog
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-18
+- Show correct print preview (gnome bug #592582)
+
 * Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-17
 - Remove handling of "connecting-to-device" reason (#529364)
 

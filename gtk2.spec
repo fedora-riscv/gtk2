@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.0
+%define base_version 2.18.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 5%{?dist}
+Release: 16%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -27,15 +27,25 @@ Source3: im-cedilla.conf
 
 # Biarch changes
 Patch0: gtk+-2.13.5-lib64.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=566522
-Patch1: gtk2-printing-smb-auth.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=586207
-Patch2: gtk2-printing-nonblocking-printer-list.patch
+Patch1: system-python.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=583273
+Patch2: icon-padding.patch
 # from upstream
-Patch3: fix-anchors.patch
+Patch3: image-size-alloc.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=599617
+Patch4: fresh-tooltips.patch
 # from upstream
-Patch4: iconview-crash.patch
+Patch5: allow-set-hint.patch
+# from upstream
+Patch6: compose-sequences.patch
+# from upstream
+Patch7: symbolic-color-parsing.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=599618
+Patch8: tooltip-positioning.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=581150
+Patch9: iconview-hang.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=599446
+Patch10: toolbutton-assert.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -147,15 +157,16 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %setup -q -n gtk+-%{version}
 
 %patch0 -p1 -b .lib64
-%patch1 -p1 -b .printing-smb-auth
-%patch2 -p1 -b .printing-nonblocking-printer-list
-%patch3 -p1 -b .fix-anchors
-%patch4 -p1 -b .iconview-crash
-
-# make sure that gtkmarshalers.{c, h} get regenerated during the build
-#  - caused by print_authentication.patch
-rm --force ./gtk/gtkmarshalers.c
-rm --force ./gtk/gtkmarshalers.h
+%patch1 -p1 -b .system-python
+%patch2 -p1 -b .icon-padding
+%patch3 -p1 -b .image-size-alloc
+%patch4 -p1 -b .fresh-tooltips
+%patch5 -p1 -b .allow-set-hint
+%patch6 -p1 -b .compose-sequences
+%patch7 -p1 -b .symbolic-color-parsing
+%patch8 -p1 -b .tooltip-positioning
+%patch9 -p1 -b .iconview-hang
+%patch10 -p1 -b .toolbutton-assert
 
 %build
 libtoolize --force --copy
@@ -392,6 +403,67 @@ fi
 
 
 %changelog
+* Sat Oct 31 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-16
+- Handle screen changes for tooltips (#531568)
+
+* Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-15
+- Work around a bug in the X automatic compositor (#531443)
+
+* Wed Oct 28 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-14
+- Make the new tooltips sharp
+- Improve the Metacity compositor workaround for new tooltips
+
+* Mon Oct 26 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-12
+- Fix a possible assertion failure in GtkToolButton
+
+* Fri Oct 23 2009 Matthew Barnes <mbarnes@redhat.com> - 2.18.3-11
+- Fix a GtkIconView hang
+
+* Fri Oct 23 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-10
+- Tweak tooltip positioning
+- Make new tooltip style an opt-in theme choice
+
+* Thu Oct 22 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-9
+- Fix a problem with parsing symbolic colors in rc files (#528662)
+
+* Thu Oct 22 2009 Peter Hutterer <peter.hutterer@redhat.com> - 2.18.3-8
+- compose-sequences.patch: update compose sequences to what's currently in
+  libX11 git.
+
+* Wed Oct 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-7
+- Try to catch some nm-applet problems by rejecting requests to
+  load icons at size 0
+
+* Wed Oct 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-6
+- Hack around metacity compositor limitations
+
+* Wed Oct 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-5
+- Tweak tooltip appearance
+
+* Tue Oct 20 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-4
+- Make tooltips look nicer
+
+* Sun Oct 18 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-3
+- Fix a size allocation problem uncovered by the previous patch
+
+* Sat Oct 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-2
+- Support padding around status icons
+
+* Sat Oct 17 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-1
+- Update to 2.18.3
+
+* Tue Oct 13 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-3
+- Make gtk-builder-convert use system python
+
+* Fri Oct  9 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-2
+- Make selecting the final char work again (#528072)
+
+* Mon Oct  5 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.2-1
+- Update to 2.18.2
+
+* Wed Sep 30 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.1-1
+- Update to 2.18.1
+
 * Mon Sep 28 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.0-3
 - Fix a crash in the appearance capplet
 

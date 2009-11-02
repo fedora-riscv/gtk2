@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -46,6 +46,8 @@ Patch8: tooltip-positioning.patch
 Patch9: iconview-hang.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599446
 Patch10: toolbutton-assert.patch
+# http://bugzilla.redhat.com/show_bug.cgi?id=529364
+Patch11: gtk2-remove-connecting-reason.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -167,6 +169,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 %patch9 -p1 -b .iconview-hang
 %patch10 -p1 -b .toolbutton-assert
+%patch11 -p1 -b .remove-connecting-reason
 
 %build
 libtoolize --force --copy
@@ -403,6 +406,9 @@ fi
 
 
 %changelog
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-17
+- Remove handling of "connecting-to-device" reason (#529364)
+
 * Sat Oct 31 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-16
 - Handle screen changes for tooltips (#531568)
 

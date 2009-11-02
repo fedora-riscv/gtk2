@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -50,6 +50,7 @@ Patch10: toolbutton-assert.patch
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
 Patch12: gtk2-preview.patch
+Patch13: gtk2-rotate-layout.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -173,6 +174,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch10 -p1 -b .toolbutton-assert
 %patch11 -p1 -b .remove-connecting-reason
 %patch12 -p1 -b .preview
+%patch13 -p1 -b .rotate-layout
 
 %build
 libtoolize --force --copy
@@ -409,6 +411,9 @@ fi
 
 
 %changelog
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-19
+- Correct rotation of number-up layout when printing landscape
+
 * Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-18
 - Show correct print preview (gnome bug #592582)
 

@@ -423,7 +423,7 @@ fi
 
 
 %changelog
-* Tue Nov 10 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-21
+* Tue Nov 10 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-21
 - Fix refcounting issues in the filechooser that lead
   to crashes with device hotplug (gnome #600992)
 

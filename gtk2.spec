@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 16%{?dist}
+Release: 21%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -46,6 +46,14 @@ Patch8: tooltip-positioning.patch
 Patch9: iconview-hang.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599446
 Patch10: toolbutton-assert.patch
+# http://bugzilla.redhat.com/show_bug.cgi?id=529364
+Patch11: gtk2-remove-connecting-reason.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=592582
+Patch12: gtk2-preview.patch
+Patch13: gtk2-rotate-layout.patch
+Patch14: gtk2-landscape-pdf-print.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=600992
+Patch15: filesystemref.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -167,6 +175,11 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 %patch9 -p1 -b .iconview-hang
 %patch10 -p1 -b .toolbutton-assert
+%patch11 -p1 -b .remove-connecting-reason
+%patch12 -p1 -b .preview
+%patch13 -p1 -b .rotate-layout
+%patch14 -p1 -b .landscape-pdf-print
+%patch15 -p1 -b .filesystemref
 
 %build
 libtoolize --force --copy
@@ -180,6 +193,7 @@ if ! pkg-config --exists pangoxft ; then
 fi
 
 %configure --with-xinput=xfree 		\
+	   --enable-debug		\
 	   --disable-gtk-doc 		\
 	   --disable-rebuilds 		\
 	   --with-libjasper		\
@@ -403,6 +417,23 @@ fi
 
 
 %changelog
+* Tue Nov 10 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-21
+- Fix refcounting issues in the filechooser that lead
+  to crashes with device hotplug (gnome #600992)
+
+* Thu Nov  5 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-20
+- Do not rotate page when printing to landscape PDF, just
+- set correct width and height
+
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-19
+- Correct rotation of number-up layout when printing landscape
+
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-18
+- Show correct print preview (gnome bug #592582)
+
+* Mon Nov  2 2009 Marek Kasik <mkasik@redhat.com> - 2.18.3-17
+- Remove handling of "connecting-to-device" reason (#529364)
+
 * Sat Oct 31 2009 Matthias Clasen <mclasen@redhta.com> - 2.18.3-16
 - Handle screen changes for tooltips (#531568)
 

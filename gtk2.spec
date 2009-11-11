@@ -46,17 +46,14 @@ Patch8: tooltip-positioning.patch
 Patch9: iconview-hang.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599446
 Patch10: toolbutton-assert.patch
-<<<<<<< gtk2.spec
-# https://bugzilla.gnome.org/show_bug.cgi?id=600992
-Patch11: filesystemref.patch
-=======
 # http://bugzilla.redhat.com/show_bug.cgi?id=529364
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
 Patch12: gtk2-preview.patch
 Patch13: gtk2-rotate-layout.patch
 Patch14: gtk2-landscape-pdf-print.patch
->>>>>>> 1.433
+# https://bugzilla.gnome.org/show_bug.cgi?id=600992
+Patch15: filesystemref.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -178,14 +175,11 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 %patch9 -p1 -b .iconview-hang
 %patch10 -p1 -b .toolbutton-assert
-<<<<<<< gtk2.spec
-%patch11 -p1 -b .filesystemref
-=======
 %patch11 -p1 -b .remove-connecting-reason
 %patch12 -p1 -b .preview
 %patch13 -p1 -b .rotate-layout
 %patch14 -p1 -b .landscape-pdf-print
->>>>>>> 1.433
+%patch15 -p1 -b .filesystemref
 
 %build
 libtoolize --force --copy

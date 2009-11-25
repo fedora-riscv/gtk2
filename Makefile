@@ -1,10 +1,10 @@
 # Makefile for source rpm: gtk2
-# $Id: Makefile,v 1.2 2005/10/19 12:08:00 mclasen Exp $
+# $Id: Makefile,v 1.3 2007/10/15 18:51:07 notting Exp $
 NAME := gtk2
 SPECFILE = $(firstword $(wildcard *.spec))
 
 define find-makefile-common
-for d in common ../common ../../common ; do if [ -f $$d/Makefile.common ] ; then if [ -f $$d/CVS/Root -a -w $$/Makefile.common ] ; then cd $$d ; cvs -Q update ; fi ; echo "$$d/Makefile.common" ; break ; fi ; done
+for d in common ../common ../../common ; do if [ -f $$d/Makefile.common ] ; then if [ -f $$d/CVS/Root -a -w $$d/Makefile.common ] ; then cd $$d ; cvs -Q update ; fi ; echo "$$d/Makefile.common" ; break ; fi ; done
 endef
 
 MAKEFILE_COMMON := $(shell $(find-makefile-common))

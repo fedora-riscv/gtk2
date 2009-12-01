@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -46,6 +46,8 @@ Patch14: gtk2-landscape-pdf-print.patch
 Patch15: filesystemref.patch
 # from upstream
 Patch16: o-minus.patch
+# from upstream
+Patch17: strftime-format.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -168,6 +170,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
 %patch16 -p1 -b .o-minus
+%patch17 -p1 -b .strftime-format
 
 %build
 %configure --with-xinput=xfree 		\
@@ -395,6 +398,9 @@ fi
 
 
 %changelog
+* Tue Dec  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.4-3
+- Fix a misttranslated format string in no_NO (#500067)
+
 * Tue Dec  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.4-2
 - Make compose sequences for āō consistent (#510741)
 

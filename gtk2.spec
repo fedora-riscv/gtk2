@@ -26,7 +26,7 @@ Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 
 # Biarch changes
-Patch0: gtk+-2.13.5-lib64.patch
+Patch0: gtk-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
@@ -160,16 +160,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .filesystemref
 
 %build
-libtoolize --force --copy
-
-# Patch0 modifies gdk-pixbuf/Makefile.am
-autoreconf
-
-if ! pkg-config --exists pangoxft ; then
-        echo "No pangoxft.pc!"
-        exit 1
-fi
-
 %configure --with-xinput=xfree 		\
 	   --enable-debug		\
 	   --disable-gtk-doc 		\

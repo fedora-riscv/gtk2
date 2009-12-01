@@ -4,7 +4,7 @@
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.20.0
 %define pango_version %{pango_base_version}-1
-%define atk_base_version 1.13.0
+%define atk_base_version 1.29.2
 %define atk_version %{atk_base_version}-1
 %define cairo_base_version 1.6.0
 %define cairo_version %{cairo_base_version}-1

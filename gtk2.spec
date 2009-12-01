@@ -404,6 +404,7 @@ fi
 %changelog
 * Tue Dec  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.4-1
 - Update to 2.18.4
+- See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.4.news
 
 * Wed Nov 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-22
 - Make level3 keys work again (#537567)

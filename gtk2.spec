@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.3
+%define base_version 2.19.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 22%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -30,32 +30,16 @@ Patch0: gtk+-2.13.5-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
-# from upstream
-Patch3: image-size-alloc.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599617
 Patch4: fresh-tooltips.patch
-# from upstream
-Patch5: allow-set-hint.patch
-# from upstream
-Patch6: compose-sequences.patch
-# from upstream
-Patch7: symbolic-color-parsing.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=581150
-Patch9: iconview-hang.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=599446
-Patch10: toolbutton-assert.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=529364
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
-Patch12: gtk2-preview.patch
-Patch13: gtk2-rotate-layout.patch
 Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
-# fixed upstream
-Patch16: 0001-Make-level3-keys-work-again.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -169,20 +153,11 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
-%patch3 -p1 -b .image-size-alloc
 %patch4 -p1 -b .fresh-tooltips
-%patch5 -p1 -b .allow-set-hint
-%patch6 -p1 -b .compose-sequences
-%patch7 -p1 -b .symbolic-color-parsing
 %patch8 -p1 -b .tooltip-positioning
-%patch9 -p1 -b .iconview-hang
-%patch10 -p1 -b .toolbutton-assert
 %patch11 -p1 -b .remove-connecting-reason
-%patch12 -p1 -b .preview
-%patch13 -p1 -b .rotate-layout
 %patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
-%patch16 -p1 -b .level3
 
 %build
 libtoolize --force --copy

@@ -1,0 +1,12 @@
+diff -up gtk+-2.18.5/gdk/gdkwindow.c.stackoverflow gtk+-2.18.5/gdk/gdkwindow.c
+--- gtk+-2.18.5/gdk/gdkwindow.c.stackoverflow	2009-12-21 19:27:58.326795233 -0500
++++ gtk+-2.18.5/gdk/gdkwindow.c	2009-12-21 19:28:14.602795116 -0500
+@@ -1754,7 +1754,7 @@ temporary_disable_extension_events (GdkW
+       child = l->data;
+ 
+       if (window->impl_window == child->impl_window)
+-	res |= temporary_disable_extension_events (window);
++	res |= temporary_disable_extension_events (child);
+     }
+ 
+   return res;

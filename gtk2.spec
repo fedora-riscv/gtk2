@@ -346,6 +346,7 @@ fi
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
+%{_libdir}/girepository-1.0
 
 %files immodules
 %defattr(-, root, root)
@@ -377,6 +378,7 @@ fi
 %{_libdir}/pkgconfig/*
 %{_bindir}/gtk-demo
 %{_datadir}/gtk-2.0
+%{_datadir}/gir-1.0
 
 %files devel-docs
 %defattr(-, root, root)

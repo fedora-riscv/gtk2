@@ -63,6 +63,7 @@ BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
+BuildRequires: gir-repository-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

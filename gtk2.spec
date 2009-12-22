@@ -10,8 +10,9 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
+%define gobject_introspection_version 0.6.7
 
-%define base_version 2.19.1
+%define base_version 2.19.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -61,6 +62,7 @@ BuildRequires: libXfixes-devel
 BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
+BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -164,6 +166,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 	   --enable-debug		\
 	   --disable-gtk-doc 		\
 	   --disable-rebuilds 		\
+	   --enable-introspection	\
 	   --with-libjasper		\
 	   --with-included-loaders=png
 
@@ -385,6 +388,9 @@ fi
 
 
 %changelog
+* Mon Dec 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.19.2-1
+- Update to 2.19.2
+
 * Wed Nov 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.3-22
 - Make level3 keys work again (#537567)
 

@@ -38,7 +38,7 @@ Patch8: tooltip-positioning.patch
 # http://bugzilla.redhat.com/show_bug.cgi?id=529364
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
-Patch14: gtk2-landscape-pdf-print.patch
+#Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
 
@@ -158,7 +158,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch4 -p1 -b .fresh-tooltips
 %patch8 -p1 -b .tooltip-positioning
 %patch11 -p1 -b .remove-connecting-reason
-%patch14 -p1 -b .landscape-pdf-print
+#%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
 
 %build

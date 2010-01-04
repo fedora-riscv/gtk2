@@ -4,13 +4,14 @@
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.20.0
 %define pango_version %{pango_base_version}-1
-%define atk_base_version 1.29.2
-%define atk_version %{atk_base_version}-1
+%define atk_base_version 1.29.4
+%define atk_version %{atk_base_version}-2
 %define cairo_base_version 1.6.0
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 %define gobject_introspection_version 0.6.7
+%define gir_repository_version 0.6.5-5
 
 %define base_version 2.19.2
 %define bin_version 2.10.0
@@ -18,10 +19,10 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
@@ -41,6 +42,8 @@ Patch11: gtk2-remove-connecting-reason.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
+# from upstream
+Patch16: gtk2-2.19.3-install-Gdk-2.0.gir.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -63,7 +66,7 @@ BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
-BuildRequires: gir-repository-devel
+BuildRequires: gir-repository-devel >= %{gir_repository_version}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -161,8 +164,17 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
+%patch16 -p1 -b .gdk-gir
 
 %build
+
+# needed for Patch16, remove it when rebasing to 2.19.3
+gtkdocize || :
+libtoolize --force  || :
+aclocal  || :
+autoheader  || :
+automake  || :
+autoconf  || :
 %configure --with-xinput=xfree 		\
 	   --enable-debug		\
 	   --disable-gtk-doc 		\
@@ -391,6 +403,9 @@ fi
 
 
 %changelog
+* Mon Jan  4 2010 Tomas Bzatek <tbzatek@redhat.com> - 2.19.2-2
+- Install missing Gdk-2.0.gir
+
 * Mon Dec 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.19.2-1
 - Update to 2.19.2
 

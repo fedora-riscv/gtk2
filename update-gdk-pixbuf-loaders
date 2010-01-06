@@ -18,6 +18,8 @@ esac
 
 # autoconf uses powerpc not ppc
 host=`echo $host | sed "s/^ppc/powerpc/"`
+# autoconf uses ibm-linux not redhat-linux (s390x)
+host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 
 # We have had problems in the past with build systems
 # changing host from i386 to i686 and appending/dropping

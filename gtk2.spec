@@ -13,13 +13,13 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.19.2
+%define base_version 2.19.3
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
@@ -42,8 +42,6 @@ Patch11: gtk2-remove-connecting-reason.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
-# from upstream
-Patch16: gtk2-2.19.3-install-Gdk-2.0.gir.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -164,7 +162,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
-%patch16 -p1 -b .gdk-gir
 
 %build
 
@@ -403,6 +400,9 @@ fi
 
 
 %changelog
+* Mon Jan 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.3-1
+- Update to 2.19.3
+
 * Mon Jan  4 2010 Tomas Bzatek <tbzatek@redhat.com> - 2.19.2-2
 - Install missing Gdk-2.0.gir
 

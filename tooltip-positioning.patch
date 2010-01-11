@@ -45,7 +45,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.positioning gtk+-2.18.3/gtk/gtktooltip.c
 +  if (y + requisition.height <= monitor.y + monitor.height)
      {
 -      gdk_window_get_origin (new_tooltip_widget->window, &x, &y);
--      if (GTK_WIDGET_NO_WINDOW (new_tooltip_widget))
+-      if (!gtk_widget_get_has_window (new_tooltip_widget))
 +      if (tooltip->keyboard_mode_enabled)
 +        goto found;
 +

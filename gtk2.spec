@@ -11,13 +11,13 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.5
+%define base_version 2.18.6
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -46,10 +46,7 @@ Patch14: gtk2-landscape-pdf-print.patch
 Patch15: filesystemref.patch
 # from upstream
 Patch16: o-minus.patch
-# from upstream
 Patch17: strftime-format.patch
-# from upstream
-Patch18: stackoverflow.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -173,7 +170,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .filesystemref
 %patch16 -p1 -b .o-minus
 %patch17 -p1 -b .strftime-format
-%patch18 -p1 -b .stackoverflow
 
 %build
 %configure --with-xinput=xfree 		\
@@ -401,6 +397,10 @@ fi
 
 
 %changelog
+* Mon Jan 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.6-1
+- Update to 2.18.6
+- See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.6.news
+
 * Mon Dec 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.18.5-4
 - Fix an infinite recursion (#548849)
 

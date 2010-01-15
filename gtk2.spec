@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -47,6 +47,7 @@ Patch15: filesystemref.patch
 # from upstream
 Patch16: o-minus.patch
 Patch17: strftime-format.patch
+Patch18: 0001-Avoid-drawing-implicit-paints-to-destroyed-windows.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -170,6 +171,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .filesystemref
 %patch16 -p1 -b .o-minus
 %patch17 -p1 -b .strftime-format
+%patch18 -p1 -b .panel-crash
 
 %build
 %configure --with-xinput=xfree 		\
@@ -397,6 +399,9 @@ fi
 
 
 %changelog
+* Fri Jan 15 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.6-2
+- Fix a CSW bug that leads to panel crashes
+
 * Mon Jan 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.6-1
 - Update to 2.18.6
 - See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.6.news

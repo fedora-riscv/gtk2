@@ -43,6 +43,9 @@ Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
 
+# upstream fix
+Patch16: 0001-Avoid-drawing-implicit-paints-to-destroyed-windows.patch
+
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -162,6 +165,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
+%patch16 -p1 -b .panel-crash
 
 %build
 
@@ -400,6 +404,9 @@ fi
 
 
 %changelog
+* Fri Jan 15 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.3-2
+- Fix a CSW issue that leads to panel crashes
+
 * Mon Jan 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.3-1
 - Update to 2.19.3
 

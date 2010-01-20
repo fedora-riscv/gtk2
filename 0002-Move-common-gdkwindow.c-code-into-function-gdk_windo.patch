@@ -1,0 +1,78 @@
+From 1c5b9ffb2bb88864e9a6946c19904ee733b1c447 Mon Sep 17 00:00:00 2001
+From: Alexander Larsson <alexl@redhat.com>
+Date: Tue, 19 Jan 2010 16:36:49 +0100
+Subject: [PATCH 2/4] Move common gdkwindow.c code into function gdk_window_drop_cairo_surface
+
+This code is duplicated in several places, and more to come, so put
+it all in one place.
+(cherry picked from commit 46d25437a1f44f76ef37318ad8c70b6591932992)
+---
+ gdk/gdkwindow.c |   31 ++++++++++++++++---------------
+ 1 files changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/gdk/gdkwindow.c b/gdk/gdkwindow.c
+index 11c3e3f..746380c 100644
+--- a/gdk/gdkwindow.c
++++ b/gdk/gdkwindow.c
+@@ -276,6 +276,7 @@ static cairo_surface_t *gdk_window_ref_cairo_surface (GdkDrawable *drawable);
+ static cairo_surface_t *gdk_window_create_cairo_surface (GdkDrawable *drawable,
+ 							 int width,
+ 							 int height);
++static void             gdk_window_drop_cairo_surface (GdkWindowObject *private);
+ static void             gdk_window_set_cairo_clip    (GdkDrawable *drawable,
+ 						      cairo_t *cr);
+ 
+@@ -1587,14 +1588,9 @@ gdk_window_reparent (GdkWindow *window,
+   if (is_parent_of (window, new_parent))
+     return;
+ 
+-  if (private->cairo_surface)
+-    {
+-      /* This might be wrong in the new parent, e.g. for non-native surfaces.
+-	 To make sure we're ok, just wipe it. */
+-      cairo_surface_finish (private->cairo_surface);
+-      cairo_surface_set_user_data (private->cairo_surface, &gdk_window_cairo_key,
+-				   NULL, NULL);
+-    }
++  /* This might be wrong in the new parent, e.g. for non-native surfaces.
++     To make sure we're ok, just wipe it. */
++  gdk_window_drop_cairo_surface (private);
+ 
+   impl_iface = GDK_WINDOW_IMPL_GET_IFACE (private->impl);
+   old_parent = private->parent;
+@@ -2054,13 +2050,7 @@ _gdk_window_destroy_hierarchy (GdkWindow *window,
+ 
+ 	  _gdk_window_clear_update_area (window);
+ 
+-	  if (private->cairo_surface)
+-	    {
+-	      cairo_surface_finish (private->cairo_surface);
+-	      cairo_surface_set_user_data (private->cairo_surface, &gdk_window_cairo_key,
+-					   NULL, NULL);
+-	    }
+-
++	  gdk_window_drop_cairo_surface (private);
+ 
+ 	  impl_iface = GDK_WINDOW_IMPL_GET_IFACE (private->impl);
+ 
+@@ -4835,6 +4825,17 @@ gdk_window_copy_to_image (GdkDrawable     *drawable,
+ }
+ 
+ static void
++gdk_window_drop_cairo_surface (GdkWindowObject *private)
++{
++  if (private->cairo_surface)
++    {
++      cairo_surface_finish (private->cairo_surface);
++      cairo_surface_set_user_data (private->cairo_surface, &gdk_window_cairo_key,
++				   NULL, NULL);
++    }
++}
++
++static void
+ gdk_window_cairo_surface_destroy (void *data)
+ {
+   GdkWindowObject *private = (GdkWindowObject*) data;
+-- 
+1.6.6
+

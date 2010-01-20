@@ -1,0 +1,30 @@
+From 9967831b8d09df76aa6e79836d118d5f5797d39b Mon Sep 17 00:00:00 2001
+From: Alexander Larsson <alexl@redhat.com>
+Date: Tue, 19 Jan 2010 16:37:42 +0100
+Subject: [PATCH 3/4] Drop outstanding cairo surfaces when window is made native
+
+Any old cairo_surface referencing the old impl window will be wrong
+when we make a window native, so drop it.
+
+This fixes bug #599511
+(cherry picked from commit e31a6d1fea3834b5d0831e6337e6ed0774189d47)
+---
+ gdk/gdkwindow.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/gdk/gdkwindow.c b/gdk/gdkwindow.c
+index 746380c..25785c6 100644
+--- a/gdk/gdkwindow.c
++++ b/gdk/gdkwindow.c
+@@ -1842,6 +1842,8 @@ gdk_window_ensure_native (GdkWindow *window)
+   if (impl_window->input_window)
+     disabled_extension_events = temporary_disable_extension_events (private);
+ 
++  gdk_window_drop_cairo_surface (private);
++
+   screen = gdk_drawable_get_screen (window);
+   visual = gdk_drawable_get_visual (window);
+ 
+-- 
+1.6.6
+

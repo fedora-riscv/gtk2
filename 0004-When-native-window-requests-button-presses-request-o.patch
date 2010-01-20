@@ -1,0 +1,41 @@
+From d86702621917fddc91c1403365de18b07e548f7f Mon Sep 17 00:00:00 2001
+From: Alexander Larsson <alexl@redhat.com>
+Date: Wed, 20 Jan 2010 15:37:16 +0100
+Subject: [PATCH 4/4] When native window requests button presses request other button related events
+
+We need to do this because otherwise the implicit button grab for this
+(native) window will not deliver the button events not selected for
+by this window. This is a problem because non-native child windows may
+select using a wider event mask, and we can't emulate these events if we
+don't get the native events.
+
+Fixes bug #607508
+(cherry picked from commit 3d9d002bed4ec90505a5a65665f5d6de36ad6f67)
+---
+ gdk/gdkwindow.c |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
+
+diff --git a/gdk/gdkwindow.c b/gdk/gdkwindow.c
+index 25785c6..4780db4 100644
+--- a/gdk/gdkwindow.c
++++ b/gdk/gdkwindow.c
+@@ -1206,8 +1206,15 @@ get_native_event_mask (GdkWindowObject *private)
+        * important thing, because in X only one client can do
+        * so, and we don't want to unexpectedly prevent another
+        * client from doing it.
++       *
++       * We also need to do the same if the app selects for button presses
++       * because then we will get implicit grabs for this window, and the
++       * event mask used for that grab is based on the rest of the mask
++       * for the window, but we might need more events than this window
++       * lists due to some non-native child window.
+        */
+-      if (gdk_window_is_toplevel (private))
++      if (gdk_window_is_toplevel (private) ||
++	  mask & GDK_BUTTON_PRESS_MASK)
+ 	mask |=
+ 	  GDK_POINTER_MOTION_MASK |
+ 	  GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+-- 
+1.6.6
+

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.18/gtk+-%{version}.tar.bz2
@@ -48,6 +48,11 @@ Patch15: filesystemref.patch
 Patch16: o-minus.patch
 Patch17: strftime-format.patch
 Patch18: 0001-Avoid-drawing-implicit-paints-to-destroyed-windows.patch
+Patch19: 0001-Track-direct-window-cairo-access-and-avoid-tricks-wh.patch
+Patch20: 0002-Move-common-gdkwindow.c-code-into-function-gdk_windo.patch
+Patch21: 0003-Drop-outstanding-cairo-surfaces-when-window-is-made-.patch
+Patch22: 0004-When-native-window-requests-button-presses-request-o.patch
+
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -172,6 +177,10 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch16 -p1 -b .o-minus
 %patch17 -p1 -b .strftime-format
 %patch18 -p1 -b .panel-crash
+%patch19 -p1 -b .track-direct
+%patch20 -p1 -b .move-common
+%patch21 -p1 -b .drop-outstanding
+%patch22 -p1 -b .native-button-press
 
 %build
 %configure --with-xinput=xfree 		\
@@ -399,6 +408,9 @@ fi
 
 
 %changelog
+* Wed Jan 20 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.6-3
+- Fix more CSW regressions (gnome bz 606009, 599511, 607508)
+
 * Fri Jan 15 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.6-2
 - Fix a CSW bug that leads to panel crashes
 

@@ -13,7 +13,7 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.19.3
+%define base_version 2.19.4
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -42,9 +42,6 @@ Patch11: gtk2-remove-connecting-reason.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
-
-# upstream fix
-Patch16: 0001-Avoid-drawing-implicit-paints-to-destroyed-windows.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -165,7 +162,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
-%patch16 -p1 -b .panel-crash
 
 %build
 
@@ -404,6 +400,9 @@ fi
 
 
 %changelog
+* Tue Jan 26 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.4-1
+- Update to 2.19.4
+
 * Fri Jan 15 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.3-2
 - Fix a CSW issue that leads to panel crashes
 

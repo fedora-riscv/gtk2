@@ -13,13 +13,13 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.19.4
+%define base_version 2.19.5
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
@@ -400,6 +400,9 @@ fi
 
 
 %changelog
+* Thu Feb 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.5-1
+- Update to 2.19.5
+
 * Tue Jan 26 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.4-1
 - Update to 2.19.4
 

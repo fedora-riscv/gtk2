@@ -19,7 +19,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
@@ -42,6 +42,8 @@ Patch11: gtk2-remove-connecting-reason.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=600992
 Patch15: filesystemref.patch
+# already upstream
+Patch16: 0001-Drop-duplicate-declarations.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -162,6 +164,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .filesystemref
+%patch16 -p1 -b .dup-prototypes
 
 %build
 
@@ -398,8 +401,11 @@ fi
 %doc tmpdocs/faq
 %doc tmpdocs/examples
 
-
 %changelog
+* Thu Feb 18 2010 Richard Hughes <rhughes@redhat.com> - 2.19.5-2
+- Apply a patch from upstream to remove two duplicate prototypes that
+  breaks the build for many GTK projects.
+
 * Thu Feb 11 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.5-1
 - Update to 2.19.5
 

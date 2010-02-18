@@ -1,0 +1,30 @@
+From 6f566057e85dc0d542f26db1d7964a774a5f88a4 Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Wed, 10 Feb 2010 16:07:43 -0500
+Subject: [PATCH 01/12] Drop duplicate declarations
+
+---
+ gtk/gtkwidget.h |    7 -------
+ 1 files changed, 0 insertions(+), 7 deletions(-)
+
+diff --git a/gtk/gtkwidget.h b/gtk/gtkwidget.h
+index 757be3f..164c0e1 100644
+--- a/gtk/gtkwidget.h
++++ b/gtk/gtkwidget.h
+@@ -916,13 +916,6 @@ gboolean              gtk_widget_get_has_window         (GtkWidget    *widget);
+ 
+ gboolean              gtk_widget_is_toplevel            (GtkWidget    *widget);
+ gboolean              gtk_widget_is_drawable            (GtkWidget    *widget);
+-void                  gtk_widget_set_realized           (GtkWidget    *widget,
+-                                                         gboolean      realized);
+-gboolean              gtk_widget_get_realized           (GtkWidget    *widget);
+-void                  gtk_widget_set_mapped             (GtkWidget    *widget,
+-                                                         gboolean      mapped);
+-gboolean              gtk_widget_get_mapped             (GtkWidget    *widget);
+-
+ void                  gtk_widget_set_app_paintable      (GtkWidget    *widget,
+ 							 gboolean      app_paintable);
+ gboolean              gtk_widget_get_app_paintable      (GtkWidget    *widget);
+-- 
+1.7.0
+

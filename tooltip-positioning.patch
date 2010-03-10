@@ -26,7 +26,7 @@ diff -up gtk+-2.18.3/gtk/gtktooltip.c.positioning gtk+-2.18.3/gtk/gtktooltip.c
 +  gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 +
 +  gdk_window_get_origin (new_tooltip_widget->window, &wx, &wy);
-+  if (GTK_WIDGET_NO_WINDOW (new_tooltip_widget))
++  if (!gtk_widget_get_has_window (new_tooltip_widget))
 +    {
 +      wx += new_tooltip_widget->allocation.x;
 +      wy += new_tooltip_widget->allocation.y;

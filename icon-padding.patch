@@ -1,8 +1,7 @@
-diff --git a/gtk/gtkstatusicon.c b/gtk/gtkstatusicon.c
-index 1cdb0c1..62b3913 100644
---- a/gtk/gtkstatusicon.c
-+++ b/gtk/gtkstatusicon.c
-@@ -170,6 +170,7 @@ static void     gtk_status_icon_screen_changed   (GtkStatusIcon  *status_icon,
+diff -up gtk+-2.19.7/gtk/gtkstatusicon.c.icon-padding gtk+-2.19.7/gtk/gtkstatusicon.c
+--- gtk+-2.19.7/gtk/gtkstatusicon.c.icon-padding	2010-03-08 08:42:22.000000000 -0500
++++ gtk+-2.19.7/gtk/gtkstatusicon.c	2010-03-10 00:40:11.165527903 -0500
+@@ -170,6 +170,7 @@ static void     gtk_status_icon_screen_c
  						  GdkScreen      *old_screen);
  static void     gtk_status_icon_embedded_changed (GtkStatusIcon *status_icon);
  static void     gtk_status_icon_orientation_changed (GtkStatusIcon *status_icon);
@@ -10,7 +9,7 @@ index 1cdb0c1..62b3913 100644
  static gboolean gtk_status_icon_scroll           (GtkStatusIcon  *status_icon,
  						  GdkEventScroll *event);
  static gboolean gtk_status_icon_query_tooltip    (GtkStatusIcon *status_icon,
-@@ -850,6 +851,8 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
+@@ -850,6 +851,8 @@ gtk_status_icon_init (GtkStatusIcon *sta
  			    G_CALLBACK (gtk_status_icon_embedded_changed), status_icon);
    g_signal_connect_swapped (priv->tray_icon, "notify::orientation",
  			    G_CALLBACK (gtk_status_icon_orientation_changed), status_icon);
@@ -19,7 +18,7 @@ index 1cdb0c1..62b3913 100644
    g_signal_connect_swapped (priv->tray_icon, "button-press-event",
  			    G_CALLBACK (gtk_status_icon_button_press), status_icon);
    g_signal_connect_swapped (priv->tray_icon, "button-release-event",
-@@ -975,6 +978,8 @@ gtk_status_icon_finalize (GObject *object)
+@@ -975,6 +978,8 @@ gtk_status_icon_finalize (GObject *objec
    g_signal_handlers_disconnect_by_func (priv->tray_icon,
  			                gtk_status_icon_orientation_changed, status_icon);
    g_signal_handlers_disconnect_by_func (priv->tray_icon,
@@ -28,7 +27,7 @@ index 1cdb0c1..62b3913 100644
  			                gtk_status_icon_button_press, status_icon);
    g_signal_handlers_disconnect_by_func (priv->tray_icon,
  			                gtk_status_icon_button_release, status_icon);
-@@ -1679,14 +1684,32 @@ gtk_status_icon_screen_changed (GtkStatusIcon *status_icon,
+@@ -1679,14 +1684,32 @@ gtk_status_icon_screen_changed (GtkStatu
  #ifdef GDK_WINDOWING_X11
  
  static void
@@ -61,7 +60,7 @@ index 1cdb0c1..62b3913 100644
    g_object_notify (G_OBJECT (status_icon), "orientation");
  }
  
-@@ -1804,7 +1827,7 @@ gtk_status_icon_reset_image_data (GtkStatusIcon *status_icon)
+@@ -1804,7 +1827,7 @@ gtk_status_icon_reset_image_data (GtkSta
  
        g_object_notify (G_OBJECT (status_icon), "stock");
        break;
@@ -70,10 +69,22 @@ index 1cdb0c1..62b3913 100644
      case GTK_IMAGE_ICON_NAME:
        g_free (priv->image_data.icon_name);
        priv->image_data.icon_name = NULL;
-diff --git a/gtk/gtktrayicon-x11.c b/gtk/gtktrayicon-x11.c
-index 32c3140..74413df 100644
---- a/gtk/gtktrayicon-x11.c
-+++ b/gtk/gtktrayicon-x11.c
+diff -up gtk+-2.19.7/gtk/gtktrayicon.h.icon-padding gtk+-2.19.7/gtk/gtktrayicon.h
+--- gtk+-2.19.7/gtk/gtktrayicon.h.icon-padding	2009-10-18 01:35:45.000000000 -0400
++++ gtk+-2.19.7/gtk/gtktrayicon.h	2010-03-10 00:40:11.169528392 -0500
+@@ -69,7 +69,8 @@ void           _gtk_tray_icon_cancel_mes
+ 					       guint        id);
+ 
+ GtkOrientation _gtk_tray_icon_get_orientation (GtkTrayIcon *icon);
+-					    
++gint           _gtk_tray_icon_get_padding     (GtkTrayIcon *icon);
++
+ G_END_DECLS
+ 
+ #endif /* __GTK_TRAY_ICON_H__ */
+diff -up gtk+-2.19.7/gtk/gtktrayicon-x11.c.icon-padding gtk+-2.19.7/gtk/gtktrayicon-x11.c
+--- gtk+-2.19.7/gtk/gtktrayicon-x11.c.icon-padding	2010-03-08 21:01:28.000000000 -0500
++++ gtk+-2.19.7/gtk/gtktrayicon-x11.c	2010-03-10 00:49:48.229509604 -0500
 @@ -43,23 +43,26 @@
  
  enum {
@@ -103,7 +114,7 @@ index 32c3140..74413df 100644
  };
  
  static void gtk_tray_icon_constructed   (GObject     *object);
-@@ -113,6 +116,16 @@ gtk_tray_icon_class_init (GtkTrayIconClass *class)
+@@ -113,6 +116,16 @@ gtk_tray_icon_class_init (GtkTrayIconCla
  						      GTK_ORIENTATION_HORIZONTAL,
  						      GTK_PARAM_READABLE));
  
@@ -128,7 +139,7 @@ index 32c3140..74413df 100644
  
    gtk_widget_set_app_paintable (GTK_WIDGET (icon), TRUE);
    gtk_widget_add_events (GTK_WIDGET (icon), GDK_PROPERTY_CHANGE_MASK);
-@@ -161,6 +175,10 @@ gtk_tray_icon_constructed (GObject *object)
+@@ -161,6 +175,10 @@ gtk_tray_icon_constructed (GObject *obje
  					 "_NET_SYSTEM_TRAY_VISUAL",
  					 False);
  
@@ -139,7 +150,7 @@ index 32c3140..74413df 100644
    /* Add a root window filter so that we get changes on MANAGER */
    gdk_window_add_filter (root_window,
  			 gtk_tray_icon_manager_filter, icon);
-@@ -212,6 +230,9 @@ gtk_tray_icon_get_property (GObject    *object,
+@@ -212,6 +230,9 @@ gtk_tray_icon_get_property (GObject    *
      case PROP_ORIENTATION:
        g_value_set_enum (value, icon->priv->orientation);
        break;
@@ -149,7 +160,7 @@ index 32c3140..74413df 100644
      default:
        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
        break;
-@@ -372,9 +393,58 @@ gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
+@@ -372,9 +393,58 @@ gtk_tray_icon_get_visual_property (GtkTr
      XFree (prop.prop);
  }
  
@@ -210,7 +221,7 @@ index 32c3140..74413df 100644
  			      gpointer   user_data)
  {
    GtkTrayIcon *icon = user_data;
-@@ -399,6 +469,11 @@ gtk_tray_icon_manager_filter (GdkXEvent *xevent,
+@@ -399,6 +469,11 @@ gtk_tray_icon_manager_filter (GdkXEvent 
  
  	  gtk_tray_icon_get_orientation_property (icon);
  	}
@@ -222,15 +233,15 @@ index 32c3140..74413df 100644
        else if (xev->xany.type == DestroyNotify)
  	{
            GTK_NOTE (PLUGSOCKET,
-@@ -504,6 +579,7 @@ gtk_tray_icon_update_manager_window (GtkTrayIcon *icon)
+@@ -504,6 +579,7 @@ gtk_tray_icon_update_manager_window (Gtk
  
        gtk_tray_icon_get_orientation_property (icon);
        gtk_tray_icon_get_visual_property (icon);
 +      gtk_tray_icon_get_padding_property (icon);
  
-       if (GTK_WIDGET_REALIZED (icon))
+       if (gtk_widget_get_realized (GTK_WIDGET (icon)))
  	{
-@@ -740,6 +816,14 @@ _gtk_tray_icon_get_orientation (GtkTrayIcon *icon)
+@@ -740,6 +816,14 @@ _gtk_tray_icon_get_orientation (GtkTrayI
    return icon->priv->orientation;
  }
  
@@ -245,17 +256,3 @@ index 32c3140..74413df 100644
  
  #define __GTK_TRAY_ICON_X11_C__
  #include "gtkaliasdef.c"
-diff --git a/gtk/gtktrayicon.h b/gtk/gtktrayicon.h
-index 4c1e184..6dc9852 100644
---- a/gtk/gtktrayicon.h
-+++ b/gtk/gtktrayicon.h
-@@ -69,7 +69,8 @@ void           _gtk_tray_icon_cancel_message  (GtkTrayIcon *icon,
- 					       guint        id);
- 
- GtkOrientation _gtk_tray_icon_get_orientation (GtkTrayIcon *icon);
--					    
-+gint           _gtk_tray_icon_get_padding     (GtkTrayIcon *icon);
-+
- G_END_DECLS
- 
- #endif /* __GTK_TRAY_ICON_H__ */

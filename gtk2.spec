@@ -13,7 +13,7 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.19.6
+%define base_version 2.19.7
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -22,6 +22,7 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
+#VCS: git:git://git.gnome.org/gtk+
 Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
@@ -40,8 +41,6 @@ Patch8: tooltip-positioning.patch
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
 #Patch14: gtk2-landscape-pdf-print.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=600992
-Patch15: filesystemref.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -161,17 +160,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
-%patch15 -p1 -b .filesystemref
 
 %build
-
-# needed for Patch16, remove it when rebasing to 2.19.3
-gtkdocize || :
-libtoolize --force  || :
-aclocal  || :
-autoheader  || :
-automake  || :
-autoconf  || :
 %configure --with-xinput=xfree 		\
 	   --enable-debug		\
 	   --disable-gtk-doc 		\
@@ -187,21 +177,12 @@ make %{?_smp_mflags}
 # turn off for now, since floatingtest needs a display
 #make check
 
-# create a dummy binary for /usr/lib/gtk-2.0/immodules to work around
-# problems in our ia64 multilib infrastructure
-# See https://bugzilla.redhat.com/show_bug.cgi?id=253726 for more details
-%if 0
-echo 'int main (void) { return 0; }' > relocation-tag.c
-gcc -Os relocation-tag.c -o relocation-tag
-%endif
-
 # truncate NEWS
 awk '/^Overview of Changes/ { seen+=1 }
 { if (seen < 2) print }
 { if (seen == 2) { print "For older news, see http://git.gnome.org/cgit/gtk+/plain/NEWS"; exit } }' NEWS > tmp; mv tmp NEWS
 
 %install
-rm -rf $RPM_BUILD_ROOT
 # Deriving /etc/gtk-2.0/$host location
 # NOTE: Duplicated below
 #
@@ -285,13 +266,6 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
-
-%if 0
-# we need to install a binary in the immodules directory to make sure
-# that it gets properly relocated to /emul for ia64 emulation of x86
-# See https://bugzilla.redhat.com/show_bug.cgi?id=253726
-install -m 0755 relocation-tag $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
-%endif
 
 #
 # We need the substitution of $host so we use an external
@@ -399,6 +373,11 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Wed Mar 10 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.7-1
+- Update to 2.19.7
+- Add a VCS tag
+- Minor packaging cleanups
+
 * Tue Feb 23 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.6-1
 - Update to 2.19.6
 

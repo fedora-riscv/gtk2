@@ -19,7 +19,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 #VCS: git:git://git.gnome.org/gtk+
@@ -41,6 +41,8 @@ Patch8: tooltip-positioning.patch
 Patch11: gtk2-remove-connecting-reason.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
 #Patch14: gtk2-landscape-pdf-print.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=611313
+Patch15: window-dragging.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -373,6 +375,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Fri Mar 12 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.7-2
+- Support dragging windows from menubars
+
 * Wed Mar 10 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.7-1
 - Update to 2.19.7
 - Add a VCS tag

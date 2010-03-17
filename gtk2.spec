@@ -11,7 +11,7 @@
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 
-%define base_version 2.18.8
+%define base_version 2.18.9
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -399,6 +399,10 @@ fi
 
 
 %changelog
+* Wed Mar 17 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.9-1
+- Update to 2.18.9
+- See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.9.news
+
 * Mon Mar 15 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.8-1
 - Update to 2.18.8
 - See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.8.news

@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-18
@@ -48,7 +48,8 @@ Patch15: filesystemref.patch
 # from upstream
 Patch16: o-minus.patch
 Patch17: strftime-format.patch
-
+# from upstream
+Patch18: 0001-Avoid-spurious-notifications-from-GtkEntry.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -172,6 +173,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .filesystemref
 %patch16 -p1 -b .o-minus
 %patch17 -p1 -b .strftime-format
+%patch18 -p1 -b .spurious-notifications
 
 %build
 %configure --with-xinput=xfree          \
@@ -399,6 +401,9 @@ fi
 
 
 %changelog
+* Fri Mar 19 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.9-2
+- Avoid spurious notifications from GtkEntry
+
 * Wed Mar 17 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.9-1
 - Update to 2.18.9
 - See http://download.gnome.org/sources/gtk+/2.18/gtk+-2.18.9.news

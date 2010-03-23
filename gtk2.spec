@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.21.3
+%define glib2_base_version 2.23.6
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.20.0
 %define pango_version %{pango_base_version}-1
@@ -13,17 +13,17 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.19.7
+%define base_version 2.20.0
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: %{base_version}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 #VCS: git:git://git.gnome.org/gtk+
-Source: http://download.gnome.org/sources/gtk+/2.19/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.20/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
@@ -80,7 +80,7 @@ Obsoletes: gail < 2.13.0-1
 
 URL: http://www.gtk.org
 
-# required for icon themes apis to work
+# required for icon theme apis to work
 Requires: hicolor-icon-theme
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
@@ -162,6 +162,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 %patch11 -p1 -b .remove-connecting-reason
 #%patch14 -p1 -b .landscape-pdf-print
+%patch15 -p1 -b .window-dragging
 
 %build
 %configure --with-xinput=xfree 		\
@@ -375,6 +376,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Tue Mar 23 2010 Matthias Clasen <mclasen@redhat.com> - 2.20.0-1
+- Update to 2.20.0
+
 * Fri Mar 12 2010 Matthias Clasen <mclasen@redhat.com> - 2.19.7-2
 - Support dragging windows from menubars
 

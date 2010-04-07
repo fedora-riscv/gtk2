@@ -50,6 +50,10 @@ Patch16: o-minus.patch
 Patch17: strftime-format.patch
 # from upstream
 Patch18: 0001-Avoid-spurious-notifications-from-GtkEntry.patch
+# from upstream
+Patch19: 0001-Prevent-the-destruction-of-the-menu-label-on-page-re.patch
+# from upstream
+Patch20: 0002-Yet-another-fix-for-shape-handling.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: pango-devel >= %{pango_version}
@@ -174,6 +178,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch16 -p1 -b .o-minus
 %patch17 -p1 -b .strftime-format
 %patch18 -p1 -b .spurious-notifications
+%patch19 -p1 -b .tab-dnd
+%patch20 -p1 -b .shape-input
 
 %build
 %configure --with-xinput=xfree          \
@@ -401,6 +407,10 @@ fi
 
 
 %changelog
+* Wed Apr  7 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.9-3
+- Prevent a possible crash during notebook tab DND
+- Fix a problem with input shapes
+
 * Fri Mar 19 2010 Matthias Clasen <mclasen@redhat.com> - 2.18.9-2
 - Avoid spurious notifications from GtkEntry
 

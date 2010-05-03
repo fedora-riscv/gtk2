@@ -13,7 +13,7 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.20.0
+%define base_version 2.20.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -22,6 +22,7 @@ Version: %{base_version}
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
+URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+
 Source: http://download.gnome.org/sources/gtk+/2.20/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
@@ -77,8 +78,6 @@ Conflicts: redhat-artwork < 0.243-1
 
 Provides: gail = %{version}-%{release}
 Obsoletes: gail < 2.13.0-1
-
-URL: http://www.gtk.org
 
 # required for icon theme apis to work
 Requires: hicolor-icon-theme
@@ -376,6 +375,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Sun May  2 2010 Matthias Clasen <mclasen@redhat.com> - 2.20.1-1
+- Update to 2.20.1
+
 * Tue Mar 23 2010 Matthias Clasen <mclasen@redhat.com> - 2.20.0-1
 - Update to 2.20.0
 

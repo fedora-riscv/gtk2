@@ -13,7 +13,7 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.21.0
+%define base_version 2.21.1
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
@@ -375,6 +375,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Sun May 30 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.1-1
+- Update to 2.21.1
+
 * Fri May  7 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.0-1
 - Update to 2.21.0
 

@@ -22,7 +22,7 @@ Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
-#VCS: git:git://git.gnome.org/gtk+
+#VCS: git:git://git.gnome.org/gtk+#gtk-2.20
 Source: http://download.gnome.org/sources/gtk+/2.21/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules

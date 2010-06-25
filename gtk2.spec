@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.21.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -65,7 +65,6 @@ BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
-BuildRequires: gir-repository-devel >= %{gir_repository_version}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -166,7 +165,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %configure --with-xinput=xfree 		\
 	   --enable-debug		\
 	   --disable-gtk-doc 		\
-	   --disable-rebuilds 		\
+	   --disable-rebuilds		\
 	   --enable-introspection	\
 	   --with-libjasper		\
 	   --with-included-loaders=png
@@ -374,6 +373,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jun 25 2010 Colin Walters <walters@verbum.org> - 2.21.2-1
+- drop gir-repository-devel dep
+
 * Thu Jun 10 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.2-1
 - Update to 2.21.2
 

@@ -13,12 +13,11 @@
 %define gobject_introspection_version 0.6.7
 %define gir_repository_version 0.6.5-5
 
-%define base_version 2.21.2
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: %{base_version}
+Version: 2.21.2
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries

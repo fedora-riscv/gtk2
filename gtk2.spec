@@ -43,6 +43,7 @@ Patch8: tooltip-positioning.patch
 Patch15: window-dragging.patch
 # upstream fix
 Patch16: 0001-Fix-dynamic-module-check.patch
+BuildRequires: automake autoconf libtool
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -161,6 +162,8 @@ This package contains developer documentation for the GTK+ widget toolkit.
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 %patch16 -p1 -b .dynamic-modules
+
+autoreconf -i -f
 
 %build
 %configure --with-xinput=xfree 		\

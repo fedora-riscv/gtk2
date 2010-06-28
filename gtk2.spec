@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.21.2
-Release: 2%{?dist}
+Version: 2.21.3
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -45,8 +45,10 @@ Patch11: gtk2-remove-connecting-reason.patch
 Patch15: window-dragging.patch
 
 BuildRequires: atk-devel >= %{atk_version}
-BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: glib2-devel >= %{glib2_version}
+BuildRequires: cairo-devel
+BuildRequires: gdk-pixbuf2-devel
+BuildRequires: pango-devel >= %{pango_version}
 BuildRequires: libtiff-devel
 BuildRequires: libjpeg-devel
 BuildRequires: jasper-devel
@@ -65,8 +67,6 @@ BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
-
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI
@@ -120,6 +120,7 @@ Requires: gtk2 = %{version}-%{release}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
 Requires: glib2-devel >= %{glib2_version}
+Requires: gdk-pixbuf2-devel
 Requires: cairo-devel >= %{cairo_version}
 Requires: libX11-devel, libXcursor-devel, libXinerama-devel
 Requires: libXext-devel, libXi-devel, libXrandr-devel
@@ -166,9 +167,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 	   --enable-debug		\
 	   --disable-gtk-doc 		\
 	   --disable-rebuilds		\
-	   --enable-introspection	\
-	   --with-libjasper		\
-	   --with-included-loaders=png
+	   --enable-introspection
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -209,8 +208,7 @@ if test "x$compile_host" != "x$host" ; then
 fi
 
 make install DESTDIR=$RPM_BUILD_ROOT        \
-             RUN_QUERY_IMMODULES_TEST=false \
-             RUN_QUERY_LOADER_TEST=false
+             RUN_QUERY_IMMODULES_TEST=false
 
 %find_lang gtk20
 %find_lang gtk20-properties
@@ -238,16 +236,13 @@ done
 case "$host" in
   alpha*|ia64*|powerpc64*|s390x*|x86_64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
-   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-64
    ;;
   *)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-32
-   mv $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders $RPM_BUILD_ROOT%{_bindir}/gdk-pixbuf-query-loaders-32
    ;;
 esac
 
 # Install wrappers for the binaries
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/update-gdk-pixbuf-loaders
 cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 
 # Input method frameworks want this
@@ -261,7 +256,6 @@ rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/*/*.la
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
 touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
-touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
@@ -273,14 +267,12 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 #
 echo %dir %{_sysconfdir}/gtk-2.0/$host >> gtk20.lang
 echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> gtk20.lang
-echo %ghost %{_sysconfdir}/gtk-2.0/$host/gdk-pixbuf.loaders >> gtk20.lang
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-/usr/bin/update-gdk-pixbuf-loaders %{_host}
 /usr/bin/update-gtk-immodules %{_host}
 
 %post immodules
@@ -292,7 +284,6 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 /sbin/ldconfig
 if [ $1 -gt 0 ]; then
-  /usr/bin/update-gdk-pixbuf-loaders %{_host}
   /usr/bin/update-gtk-immodules %{_host}
 fi
 
@@ -306,22 +297,17 @@ fi
 %defattr(-, root, root)
 
 %doc AUTHORS COPYING NEWS README
-%{_bindir}/gdk-pixbuf-query-loaders*
 %{_bindir}/gtk-query-immodules-2.0*
-%{_bindir}/update-gdk-pixbuf-loaders
 %{_bindir}/update-gtk-immodules
 %{_bindir}/gtk-update-icon-cache
 %{_libdir}/libgtk-x11-2.0.so.*
 %{_libdir}/libgdk-x11-2.0.so.*
-%{_libdir}/libgdk_pixbuf-2.0.so.*
-%{_libdir}/libgdk_pixbuf_xlib-2.0.so.*
 %{_libdir}/libgailutil.so.*
 %dir %{_libdir}/gtk-2.0
 %dir %{_libdir}/gtk-2.0/%{bin_version}
 %{_libdir}/gtk-2.0/%{bin_version}/engines
 %{_libdir}/gtk-2.0/%{bin_version}/filesystems
 %dir %{_libdir}/gtk-2.0/%{bin_version}/immodules
-%{_libdir}/gtk-2.0/%{bin_version}/loaders
 %{_libdir}/gtk-2.0/%{bin_version}/printbackends
 %{_libdir}/gtk-2.0/modules
 %{_libdir}/gtk-2.0/immodules
@@ -373,7 +359,10 @@ fi
 %doc tmpdocs/examples
 
 %changelog
-* Fri Jun 25 2010 Colin Walters <walters@verbum.org> - 2.21.2-1
+* Mon Jun 28 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.3-1
+- Update to 2.21.3
+
+* Fri Jun 25 2010 Colin Walters <walters@verbum.org> - 2.21.2-2
 - drop gir-repository-devel dep
 
 * Thu Jun 10 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.2-1

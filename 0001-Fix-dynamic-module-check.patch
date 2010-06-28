@@ -1,0 +1,37 @@
+From 6af981739294d3e30835e5eceee47b969de5f20f Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Mon, 28 Jun 2010 12:38:38 -0400
+Subject: [PATCH] Fix dynamic module check
+
+Also, prevent a stray 'yes' in configure output by putting the
+corresponding AC_MSG_CHECKING call back
+
+Bug 623016
+---
+ configure.in |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 5a65632..dbd04f0 100644
+--- a/configure.in
++++ b/configure.in
+@@ -751,6 +751,7 @@ AC_MSG_RESULT($gtk_uxtheme_h)
+ AC_CHECK_HEADERS(crt_externs.h)
+ AC_CHECK_FUNCS(_NSGetEnviron)
+ 
++AC_MSG_CHECKING(whether to build dynamic modules)
+ 
+ AC_ARG_ENABLE(modules,
+               [AC_HELP_STRING([--disable-modules],
+@@ -773,7 +774,7 @@ else
+     dnl (in a rather ugly way even)
+     if $dynworks; then
+         module_libtool_config="${CONFIG_SHELL-/bin/sh} ./libtool --config"
+-        module_deplibs_check=`$pixbuf_libtool_config | \
++        module_deplibs_check=`$module_libtool_config | \
+             grep '^[[a-z_]]*check[[a-z_]]*_method=[['\''"]]' | \
+             sed 's/.*[['\''"]]\(.*\)[['\''"]]$/\1/'`
+         if test "x$module_deplibs_check" = "xnone" || \
+-- 
+1.7.1
+

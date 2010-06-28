@@ -345,7 +345,6 @@ fi
 %{_libdir}/gtk-2.0/include
 %{_includedir}/*
 %{_datadir}/aclocal/*
-%{_bindir}/gdk-pixbuf-csource
 %{_bindir}/gtk-builder-convert
 %{_libdir}/pkgconfig/*
 %{_bindir}/gtk-demo

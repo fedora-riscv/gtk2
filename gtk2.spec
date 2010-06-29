@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.21.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -55,9 +55,7 @@ BuildRequires: libjpeg-devel
 BuildRequires: jasper-devel
 BuildRequires: libXi-devel
 BuildRequires: libpng-devel >= %{libpng_version}
-BuildRequires: automake autoconf libtool pkgconfig
 BuildRequires: gettext
-BuildRequires: gtk-doc
 BuildRequires: cups-devel
 BuildRequires: cairo-devel >= %{cairo_version}
 BuildRequires: libXrandr-devel >= %{xrandr_version}
@@ -68,6 +66,9 @@ BuildRequires: libXinerama-devel
 BuildRequires: libXcomposite-devel
 BuildRequires: libXdamage-devel
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
+# Bootstrap requirements
+BuildRequires: gtk-doc
+BuildRequires: automake autoconf libtool pkgconfig
 
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI
@@ -166,11 +167,11 @@ This package contains developer documentation for the GTK+ widget toolkit.
 autoreconf -i -f
 
 %build
-%configure --with-xinput=xfree 		\
-	   --enable-debug		\
-	   --disable-gtk-doc 		\
-	   --disable-rebuilds		\
-	   --enable-introspection
+(if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
+ %configure $CONFIGFLAGS \
+	--with-xinput=xfree 		\
+	--enable-debug		\
+)
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -361,6 +362,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jun 29 2010 Colin Walters <walters@verbum.org> - 2.21.3-2
+- Changes to support building from snapshot 
+
 * Mon Jun 28 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.3-1
 - Update to 2.21.3
 

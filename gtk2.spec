@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.21.3
-Release: 3%{?dist}
+Version: 2.21.4
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -41,9 +41,6 @@ Patch8: tooltip-positioning.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-# upstream fix
-Patch16: 0001-Fix-dynamic-module-check.patch
-BuildRequires: automake autoconf libtool
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -162,9 +159,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
-%patch16 -p1 -b .dynamic-modules
-
-autoreconf -i -f
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -177,8 +171,6 @@ autoreconf -i -f
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 make %{?_smp_mflags}
-# turn off for now, since floatingtest needs a display
-#make check
 
 # truncate NEWS
 awk '/^Overview of Changes/ { seen+=1 }
@@ -362,6 +354,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul  6 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.4-1
+- Update to 2.21.4
+
 * Wed Jun 30 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.3-3
 - Rebuild for "Incompatible version 1.0 (supported: 1.1). GRRR
 

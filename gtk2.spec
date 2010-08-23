@@ -142,8 +142,6 @@ package.
 Summary: Developer documentation for GTK+
 Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
-# for /usr/share/gtk-doc/html
-Requires: gtk-doc
 #BuildArch: noarch
 
 %description devel-docs
@@ -264,9 +262,6 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 echo %dir %{_sysconfdir}/gtk-2.0/$host >> gtk20.lang
 echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> gtk20.lang
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
 /sbin/ldconfig
 /usr/bin/update-gtk-immodules %{_host}
@@ -346,7 +341,7 @@ fi
 
 %files devel-docs
 %defattr(-, root, root)
-%{_datadir}/gtk-doc/html/*
+%{_datadir}/gtk-doc
 # oops, man pages went missing
 # %{_mandir}/man1/*
 %doc tmpdocs/tutorial
@@ -354,8 +349,11 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Aug 23 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.6-2
+- Co-own /usr/share/gtk-doc (#604367)
+
 * Tue Aug 17 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.6-1
-- Ipdate to 2.21.6
+- Update to 2.21.6
 
 * Thu Jul 15 2010 Colin Walters <walters@verbum.org> - 2.21.5-2
 - Rebuild with new gobject-introspection

@@ -1,0 +1,34 @@
+From 62c2b4f529334b57323287c8bd04022eaf963ce6 Mon Sep 17 00:00:00 2001
+From: Colin Walters <walters@verbum.org>
+Date: Wed, 15 Sep 2010 19:13:05 +0000
+Subject: introspection: Only use 0.9.3 API
+
+---
+diff --git a/configure.in b/configure.in
+index 63331c4..bf109d9 100644
+--- a/configure.in
++++ b/configure.in
+@@ -1565,7 +1565,7 @@ fi
+ # GObject introspection
+ ##################################################
+ 
+-GOBJECT_INTROSPECTION_CHECK([0.9.5])
++GOBJECT_INTROSPECTION_CHECK([0.9.3])
+ 
+ ##################################################
+ # Checks for gtk-doc and docbook-tools
+diff --git a/gdk/Makefile.am b/gdk/Makefile.am
+index c8b2102..06de1a4 100644
+--- a/gdk/Makefile.am
++++ b/gdk/Makefile.am
+@@ -238,7 +238,7 @@ x11_introspection_files = 		\
+         x11/gdkx.h
+ 
+ GdkX11-2.0.gir: $(gdktargetlib) Gdk-2.0.gir Makefile
+-GdkX11_2_0_gir_SCANNERFLAGS = --warn-all --identifier-prefix=Gdk --symbol-prefix=gdk
++GdkX11_2_0_gir_SCANNERFLAGS = --warn-all --strip-prefix=Gdk
+ GdkX11_2_0_gir_INCLUDES = Gio-2.0 Gdk-2.0 GdkPixbuf-2.0 Pango-1.0 xlib-2.0
+ GdkX11_2_0_gir_LIBS = $(gdktargetlib)
+ GdkX11_2_0_gir_FILES = $(x11_introspection_files)
+--
+cgit v0.8.3.1

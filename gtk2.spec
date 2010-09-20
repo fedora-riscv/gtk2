@@ -33,6 +33,8 @@ Patch0: gtk-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
+# http://git.gnome.org/browse/gtk+/commit/?h=gtk-2-22&id=62c2b4f529334b57323287c8bd04022eaf963ce6
+Patch3: lower-gi-deps.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599617
 Patch4: fresh-tooltips.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
@@ -153,12 +155,16 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
+%patch3 -p1 -b .lower-gi-deps
 %patch4 -p1 -b .fresh-tooltips
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 
 %build
+# For the gobject-introspection patch
+rm -f configure
+
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
 	--with-xinput=xfree 		\

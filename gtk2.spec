@@ -163,7 +163,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 
 %build
 # For the gobject-introspection patch
-rm -f configure
+autoreconf -f
 
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \

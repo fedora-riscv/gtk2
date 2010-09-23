@@ -10,20 +10,20 @@
 %define cairo_version %{cairo_base_version}-1
 %define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
-%define gobject_introspection_version 0.6.7
+%define gobject_introspection_version 0.9.3
 %define gir_repository_version 0.6.5-5
 
 %define bin_version 2.10.0
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.21.8
+Version: 2.22.0
 Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-22
-Source: http://download.gnome.org/sources/gtk+/2.21/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.22/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
@@ -33,9 +33,6 @@ Patch0: gtk-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
-# http://git.gnome.org/browse/gtk+/commit/?h=gtk-2-22&id=62c2b4f529334b57323287c8bd04022eaf963ce6
-Patch3: lower-gi-deps.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=599617
 Patch4: fresh-tooltips.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
@@ -155,7 +152,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
-%patch3 -p1 -b .lower-gi-deps
 %patch4 -p1 -b .fresh-tooltips
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
@@ -355,6 +351,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Thu Sep 23 2010 Matthias Clasen <mclasen@redhat.com> - 2.22.0-1
+- Update to 2.22.0
+
 * Tue Sep 21 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.8-2
 - Rebuild against newer gobject-introspection
 

@@ -17,13 +17,13 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.21.7
+Version: 2.22.0
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-22
-Source: http://download.gnome.org/sources/gtk+/2.21/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.22/gtk+-%{version}.tar.bz2
 Source1: update-gdk-pixbuf-loaders
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
@@ -349,6 +349,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Sep 27 2010 Matthias Clasen <mclasen@redhat.com> - 2.22.0-1
+- Update to 2.22.0
+
 * Tue Aug 31 2010 Matthias Clasen <mclasen@redhat.com> - 2.21.7-1
 - Update to 2.21.7
 

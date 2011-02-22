@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.0
-Release: 2%{?dist}
+Version: 2.24.1
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -350,6 +350,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Feb 21 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.1-1
+- Update to 2.24.1
+
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.24.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 

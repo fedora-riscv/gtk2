@@ -157,9 +157,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .window-dragging
 
 %build
-# For the gobject-introspection patch
-autoreconf -f
-
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
 	--with-xinput=xfree 		\

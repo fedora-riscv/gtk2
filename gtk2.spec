@@ -17,13 +17,13 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.4
-Release: 2%{?dist}
+Version: 2.24.7
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
-Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 
@@ -352,6 +352,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct 17 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.7-1
+- Update to 2.24.7
+
 * Mon Jun 13 2011 Daniel Drake <dsd@laptop.org> - 2.24.4-2
 - Fix unbinding of keycodes on drag-and-drop (olpc#10643)
 

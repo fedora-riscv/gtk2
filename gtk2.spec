@@ -17,7 +17,7 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.6
+Version: 2.24.7
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
@@ -39,6 +39,7 @@ Patch8: tooltip-positioning.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
+Patch16: gtk2-schar.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -155,6 +156,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
+%patch16 -p1 -b .schar
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -341,6 +343,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct 17 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.7-1
+- Update to 2.24.7
+
 * Tue Aug 30 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.6-1
 - Update to 2.24.6
 

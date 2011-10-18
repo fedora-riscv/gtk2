@@ -17,7 +17,7 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.5
+Version: 2.24.7
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
@@ -39,6 +39,7 @@ Patch8: tooltip-positioning.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
+Patch16: gtk2-schar.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -155,6 +156,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
+%patch16 -p1 -b .schar
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -283,8 +285,6 @@ fi
 /usr/bin/update-gtk-immodules %{_host}
 
 %files -f gtk20.lang
-%defattr(-, root, root)
-
 %doc AUTHORS COPYING NEWS README
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gtk-immodules
@@ -307,7 +307,6 @@ fi
 %{_libdir}/girepository-1.0
 
 %files immodules
-%defattr(-, root, root)
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-am-et.so
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cedilla.so
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-cyrillic-translit.so
@@ -322,11 +321,9 @@ fi
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
 %files immodule-xim
-%defattr(-, root, root)
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-xim.so
 
 %files devel -f gtk20-properties.lang
-%defattr(-, root, root)
 %{_libdir}/lib*.so
 %{_libdir}/gtk-2.0/include
 %{_includedir}/*
@@ -338,7 +335,6 @@ fi
 %{_datadir}/gir-1.0
 
 %files devel-docs
-%defattr(-, root, root)
 %{_datadir}/gtk-doc
 # oops, man pages went missing
 # %{_mandir}/man1/*
@@ -347,6 +343,12 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Oct 17 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.7-1
+- Update to 2.24.7
+
+* Tue Aug 30 2011 Matthias Clasen <mclasen@redhat.com> - 2.24.6-1
+- Update to 2.24.6
+
 * Fri Jun 17 2011 Tomas Bzatek <tbzatek@redhat.com> - 2.24.5-1
 - Update to 2.24.5
 

@@ -40,6 +40,9 @@ Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
 Patch16: gtk2-schar.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=662633
+# merged for 2.24.8
+Patch17: 0a0fd5af99f2ae9b0f8cc6b943b98b7be43ed723.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -157,6 +160,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 %patch16 -p1 -b .schar
+%patch17 -p1 -b .toolbar-arrow-button
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -343,6 +347,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Wed Nov 02 2011 Bill Nottingham <notting@redhat.com> - 2.24.7-3
+- add upstream patch for #749541/b.g.o #662633
+
 * Wed Oct 26 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.24.7-2
 - Rebuilt for glibc bug#747377
 

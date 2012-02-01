@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.8
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -41,6 +41,9 @@ Patch8: tooltip-positioning.patch
 Patch15: window-dragging.patch
 # upstream fix
 Patch16: 0001-Revert-iconview-layout-items-immediately-when-settin.patch
+
+# fix dso.
+Patch17: gtk2-fixdso.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -158,6 +161,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 %patch16 -p1
+%patch17 -p1 -b .fixdso
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -344,6 +348,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Tue Feb  1 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.24.8-3
+- Add patch to fix DSO linking. Would have thought these would have long stopped being a problem
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.24.8-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 

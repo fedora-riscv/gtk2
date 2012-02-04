@@ -163,6 +163,9 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch16 -p1
 %patch17 -p1 -b .fixdso
 
+libtoolize
+autoreconf
+
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \

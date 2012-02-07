@@ -17,13 +17,13 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.8
-Release: 3%{?dist}
+Version: 2.24.10
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
-Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
+Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 
@@ -39,8 +39,6 @@ Patch8: tooltip-positioning.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-# upstream fix
-Patch16: 0001-Revert-iconview-layout-items-immediately-when-settin.patch
 
 # fix dso.
 Patch17: gtk2-fixdso.patch
@@ -160,7 +158,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
-%patch16 -p1
 %patch17 -p1 -b .fixdso
 
 libtoolize
@@ -351,6 +348,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Mon Feb  6 2012 Matthias Clasen <mclasen@redhat.com> - 2.24.10-1
+- Update to 2.24.10
+
 * Tue Feb  1 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.24.8-3
 - Add patch to fix DSO linking. Would have thought these would have long stopped being a problem
 

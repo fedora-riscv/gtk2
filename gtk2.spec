@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.10
-Release: 2%{?dist}
+Version: 2.24.11
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -42,8 +42,6 @@ Patch15: window-dragging.patch
 
 # fix dso.
 Patch17: gtk2-fixdso.patch
-# backport patch from gtk-2-24 branch
-Patch18: allow-fallback-for-immodules.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -161,7 +159,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 %patch17 -p1 -b .fixdso
-%patch18 -p1 -b .fallback-immodules
 
 libtoolize
 autoreconf
@@ -351,6 +348,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jul 15 2012 Matthias Clasen <mclasen@redhat.com> - 2.24.11-1
+- Update to 2.24.11
+
 * Fri Jun  8 2012 Akira TAGOH <tagoh@redhat.com> - 2.24.10-2
 - Add the backport patch from gtk-2-24 branch to allow fallback for immodules.
   This would solves the unexpected immodules selection. (#828764)

@@ -32,7 +32,6 @@ Patch0: gtk-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
-Patch4: fresh-tooltips.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=592582
@@ -154,7 +153,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
-%patch4 -p1 -b .fresh-tooltips
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging

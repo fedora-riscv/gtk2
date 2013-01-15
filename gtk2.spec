@@ -38,9 +38,10 @@ Patch8: tooltip-positioning.patch
 #Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-
 # fix dso.
 Patch17: gtk2-fixdso.patch
+# automake 1.13 :-(
+Patch18: gtk-automak.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -157,6 +158,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 %patch17 -p1 -b .fixdso
+%patch18 -p1 -b .automak
 
 libtoolize
 autoreconf

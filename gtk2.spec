@@ -17,7 +17,7 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.13
+Version: 2.24.14
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
@@ -346,6 +346,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jan 15 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.14-1
+- Update to 2.24.14
+
 * Tue Oct  2 2012 Matthias Clasen <mclasen@redhat.com> - 2.24.13-1
 - Update to 2.24.13
 

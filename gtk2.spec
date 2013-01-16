@@ -161,7 +161,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch18 -p1 -b .automak
 
 libtoolize
-autoreconf
+autoreconf -i -f
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;

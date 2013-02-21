@@ -28,12 +28,13 @@ host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 if [ ! -d /etc/gtk-2.0/$host ]; then
    case "$host" in
      i?86*)
-         for d in $(ls -d /etc/gtk-2.0/i?86*); do
+         for d in $(ls -d /etc/gtk-2.0/i?86* 2>/dev/null); do
            host=$(basename $d)
            break
          done
      ;;
    esac
+   [ -d /etc/gtk-2.0/$host ] || exit 0
 fi
 
 FILE=/etc/gtk-2.0/$host/gtk.immodules

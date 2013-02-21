@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.15
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -130,7 +130,7 @@ Provides: gail-devel = %{version}-%{release}
 Obsoletes: gail-devel < 2.13.0-1
 
 %description devel
-This package contains the libraries amd header files that are needed
+This package contains the libraries and header files that are needed
 for writing applications with the GTK+ widget toolkit. If you plan
 to develop applications with GTK+, consider installing the gtk2-devel-docs
 package.
@@ -157,7 +157,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
-	--with-xinput=xfree 		\
+	--with-xinput=xfree	\
 	--enable-debug		\
 )
 
@@ -339,6 +339,10 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Thu Feb 21 2013 Ville Skyttä <ville.skytta@iki.fi> - 2.24.15-2
+- Fix %%postun error on one-arch erase on multilib (#696358).
+- Fix bogus dates in %%changelog, other cosmetic specfile tweaks.
+
 * Sun Feb 10 2013 Kalev Lember <kalevlember@gmail.com> - 2.24.15-1
 - Update to 2.24.15
 - Drop the automake 1.13 and gmodule linking patches; fixed upstream
@@ -362,7 +366,7 @@ fi
 * Mon Feb  6 2012 Matthias Clasen <mclasen@redhat.com> - 2.24.10-1
 - Update to 2.24.10
 
-* Tue Feb  1 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.24.8-3
+* Wed Feb  1 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.24.8-3
 - Add patch to fix DSO linking. Would have thought these would have long stopped being a problem
 
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.24.8-2
@@ -1104,7 +1108,7 @@ fi
 * Tue Nov 21 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-5
 - Change the search patch to check for beagle first
 
-* Sun Nov 20 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-4
+* Mon Nov 20 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-4
 - Some spec file cleanups
 
 * Fri Nov 17 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.6-3
@@ -1144,7 +1148,7 @@ fi
 * Fri Sep  8 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-3.fc6
 - Fix a Sylpheed crash  (#192101)
 
-* Mon Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-2.fc6
+* Tue Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-2.fc6
 - Use fam for recent files
 
 * Tue Sep  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.3-1.fc6
@@ -1164,7 +1168,7 @@ fi
 * Wed Aug 23 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-3.fc6
 - Fix confusion between values and names in printer options (#203588)
 
-* Fri Aug 19 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-2.fc6
+* Fri Aug 18 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-2.fc6
 - Fix some problems with the recent files code
 
 * Fri Aug 18 2006 Matthias Clasen <mclasen@redhat.com> - 2.10.2-1.fc6
@@ -1226,7 +1230,7 @@ fi
 * Mon Jun  5 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.2-1
 - Update to 2.9.2
 
-* Fri Jun  1 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.1-2
+* Fri Jun  2 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.1-2
 - Rebuild
 
 * Tue May 16 2006 Matthias Clasen <mclasen@redhat.com> - 2.9.1-1
@@ -1280,7 +1284,7 @@ fi
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.8.11-7.1
 - bump again for double-long bug on ppc(64)
 
-* Wed Feb  9 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-7
+* Wed Feb  8 2006 Matthias Clasen <mclasen@redhat.com> 2.8.11-7
 - Fix a double free in the file chooser
 
 * Tue Feb  7 2006 Christopher Aillon <caillon@redhat.com> 2.8.11-6
@@ -1317,7 +1321,7 @@ fi
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
 
-* Tue Nov 28 2005 Matthias Clasen <mclasen@redhat.com> 2.8.8-1
+* Mon Nov 28 2005 Matthias Clasen <mclasen@redhat.com> 2.8.8-1
 - Update to 2.8.8
 
 * Tue Nov 15 2005 Matthias Clasen <mclasen@redhat.com> 2.8.7-1
@@ -1399,7 +1403,7 @@ fi
 * Mon Mar 28 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.4-3
 - Fix a double free in the bmp loader
 
-* Wed Mar  1 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.4-2
+* Wed Mar  2 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.4-2
 - Rebuild with gcc4
 
 * Tue Mar  1 2005 Matthias Clasen <mclasen@redhat.com> - 2.6.4-1
@@ -1551,7 +1555,7 @@ fi
 * Wed Mar 10 2004 Mark McLoughlin <markmc@redhat.com> 2.3.6-1
 - Update to 2.3.6
 - Remove 2.3.5 buildfix patch
-- Remove gdk-pixbuf-xlib dependancy fix
+- Remove gdk-pixbuf-xlib dependency fix
 
 * Wed Mar 03 2004 Mark McLoughlin <markmc@redhat.com> 2.3.5-1
 - Update to 2.3.5
@@ -2000,7 +2004,7 @@ fi
 * Tue Aug 04 1998 Michael Fulbright <msf@redhat.com>
 - change %%postun to %%preun
 
-* Mon Jun 27 1998 Shawn T. Amundson
+* Sat Jun 27 1998 Shawn T. Amundson
 - Changed version to 1.1.0
 
 * Thu Jun 11 1998 Dick Porter <dick@cymru.net>
@@ -2009,7 +2013,7 @@ fi
 * Mon Apr 13 1998 Marc Ewing <marc@redhat.com>
 - Split out glib package
 
-* Tue Apr  8 1998 Shawn T. Amundson <amundson@gtk.org>
+* Wed Apr  8 1998 Shawn T. Amundson <amundson@gtk.org>
 - Changed version to 1.0.0
 
 * Tue Apr  7 1998 Owen Taylor <otaylor@gtk.org>
@@ -2027,10 +2031,10 @@ fi
 - Added -k to the SMP make line.
 - Added lib/glib to file list.
 
-* Fri Mar 14 1998 Shawn T. Amundson <amundson@gimp.org>
+* Sat Mar 14 1998 Shawn T. Amundson <amundson@gimp.org>
 - Changed version to 0.99.7
 
-* Fri Mar 14 1998 Shawn T. Amundson <amundson@gimp.org>
+* Sat Mar 14 1998 Shawn T. Amundson <amundson@gimp.org>
 - Updated ftp url and changed version to 0.99.6
 
 * Thu Mar 12 1998 Marc Ewing <marc@redhat.com>

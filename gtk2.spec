@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 
-%define glib2_base_version 2.27.3
+%define glib2_base_version 2.28.0
 %define glib2_version %{glib2_base_version}-1
 %define pango_base_version 1.20.0
 %define pango_version %{pango_base_version}-1
@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.15
-Release: 2%{?dist}
+Version: 2.24.16
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -339,6 +339,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Sat Feb 23 2013 Kalev Lember <kalevlember@gmail.com> - 2.24.16-1
+- Update to 2.24.16
+
 * Thu Feb 21 2013 Ville Skyttä <ville.skytta@iki.fi> - 2.24.15-2
 - Fix %%postun error on one-arch erase on multilib (#696358).
 - Fix bogus dates in %%changelog, other cosmetic specfile tweaks.

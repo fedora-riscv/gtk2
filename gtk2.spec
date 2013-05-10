@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.17
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -123,8 +123,6 @@ Requires: libXext-devel, libXi-devel, libXrandr-devel
 Requires: libXfixes-devel, libXcomposite-devel
 Requires: libpng-devel
 Requires: pkgconfig
-# for /usr/share/aclocal
-Requires: automake
 
 Provides: gail-devel = %{version}-%{release}
 Obsoletes: gail-devel < 2.13.0-1
@@ -339,6 +337,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Fri May 10 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.17-2
+- Drop explicit automake dep (#961674)
+
 * Wed Mar  6 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.17-1
 - Update to 2.24.17
 

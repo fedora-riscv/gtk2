@@ -1,4 +1,4 @@
-# Note that this is NOT a relocatable package
+%global _changelog_trimtime %(date +%s -d "1 year ago")
 
 %define glib2_base_version 2.28.0
 %define glib2_version %{glib2_base_version}-1
@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.19
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -337,6 +337,9 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Sat Jun 22 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.19-2
+- Trim %%changelog
+
 * Sun Jun 16 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.19-1
 - Update to 2.24.19
 

@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.19
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -26,6 +26,7 @@ URL: http://www.gtk.org
 Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
+Source4: update-gtk-immodules.1
 
 # Biarch changes
 Patch0: gtk-lib64.patch
@@ -202,6 +203,26 @@ fi
 make install DESTDIR=$RPM_BUILD_ROOT        \
              RUN_QUERY_IMMODULES_TEST=false
 
+# man pages went missing, so install them manually
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
+
+gzip -c docs/reference/gtk/gtk-query-immodules-2.0.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0.1.gz
+gzip -c docs/reference/gtk/gtk-update-icon-cache.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-update-icon-cache.1.gz
+
+echo ".so man1/gtk-query-immodules-2.0.1" > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0-%{__isa_bits}.1
+
+gzip -c %{SOURCE4} > $RPM_BUILD_ROOT%{_mandir}/man1/update-gtk-immodules.1.gz
+
+# man pages went missing, so install them manually
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
+
+gzip -c docs/reference/gtk/gtk-query-immodules-2.0.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0.1.gz
+gzip -c docs/reference/gtk/gtk-update-icon-cache.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-update-icon-cache.1.gz
+
+echo ".so man1/gtk-query-immodules-2.0.1" > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0-%{__isa_bits}.1
+
+gzip -c %{SOURCE4} > $RPM_BUILD_ROOT%{_mandir}/man1/update-gtk-immodules.1.gz
+
 %find_lang gtk20
 %find_lang gtk20-properties
 
@@ -303,6 +324,9 @@ fi
 %{_datadir}/themes/Raleigh
 %dir %{_sysconfdir}/gtk-2.0
 %{_libdir}/girepository-1.0
+%{_mandir}/man1/gtk-query-immodules-2.0*
+%{_mandir}/man1/update-gtk-immodules.1.gz
+%{_mandir}/man1/gtk-update-icon-cache.1.gz
 
 %files immodules
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-am-et.so
@@ -341,6 +365,10 @@ fi
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jun 26 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.19-4
+- Include man pages again
+- Add a man page for update-gtk-immodules
+
 * Wed Jun 26 2013 Marek Kasik <mkasik@redhat.com> - 2.24.19-3
 - Backport listing of Avahi printers from gtk-3.x
 - Resolves: #973730

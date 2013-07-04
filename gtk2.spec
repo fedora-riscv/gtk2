@@ -287,6 +287,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %{_libdir}/gtk-2.0/%{bin_version}/printbackends
 %{_libdir}/gtk-2.0/modules
 %{_libdir}/gtk-2.0/immodules
+%dir %{_datadir}/gtk-2.0
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
@@ -322,7 +323,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %{_bindir}/gtk-builder-convert
 %{_libdir}/pkgconfig/*
 %{_bindir}/gtk-demo
-%{_datadir}/gtk-2.0
+%{_datadir}/gtk-2.0/demo
 %{_datadir}/gir-1.0
 %{_mandir}/man1/gtk-builder-convert.1.gz
 

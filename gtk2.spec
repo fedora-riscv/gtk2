@@ -40,8 +40,6 @@ Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=973730
-# https://bugzilla.gnome.org/show_bug.cgi?id=702455
-Patch16: 0001-printing-List-Avahi-printers.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -155,7 +153,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch8 -p1 -b .tooltip-positioning
 #%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
-%patch16 -p1 -b .avahi-printers
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;

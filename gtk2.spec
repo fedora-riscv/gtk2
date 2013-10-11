@@ -23,7 +23,7 @@ License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
-Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
+Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 Source4: update-gtk-immodules.1

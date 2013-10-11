@@ -29,14 +29,11 @@ Source3: im-cedilla.conf
 Source4: update-gtk-immodules.1
 
 # Biarch changes
-Patch0: gtk-lib64.patch
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=592582
-#Patch14: gtk2-landscape-pdf-print.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=973730
@@ -147,16 +144,15 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %prep
 %setup -q -n gtk+-%{version}
 
-%patch0 -p1 -b .lib64
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
 %patch8 -p1 -b .tooltip-positioning
-#%patch14 -p1 -b .landscape-pdf-print
 %patch15 -p1 -b .window-dragging
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
+	--enable-man 		\
 	--with-xinput=xfree	\
 	--enable-debug		\
 )
@@ -200,22 +196,6 @@ fi
 make install DESTDIR=$RPM_BUILD_ROOT        \
              RUN_QUERY_IMMODULES_TEST=false
 
-# man pages went missing, so install them manually
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-
-gzip -c docs/reference/gtk/gtk-query-immodules-2.0.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0.1.gz
-gzip -c docs/reference/gtk/gtk-update-icon-cache.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-update-icon-cache.1.gz
-
-echo ".so man1/gtk-query-immodules-2.0.1" > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0-%{__isa_bits}.1
-
-gzip -c %{SOURCE4} > $RPM_BUILD_ROOT%{_mandir}/man1/update-gtk-immodules.1.gz
-
-# man pages went missing, so install them manually
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-
-gzip -c docs/reference/gtk/gtk-query-immodules-2.0.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0.1.gz
-gzip -c docs/reference/gtk/gtk-update-icon-cache.1 > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-update-icon-cache.1.gz
-
 echo ".so man1/gtk-query-immodules-2.0.1" > $RPM_BUILD_ROOT%{_mandir}/man1/gtk-query-immodules-2.0-%{__isa_bits}.1
 
 gzip -c %{SOURCE4} > $RPM_BUILD_ROOT%{_mandir}/man1/update-gtk-immodules.1.gz
@@ -244,7 +224,7 @@ done
 # for places where we have two copies of the GTK+ package installed.
 # (we might have x86_64 and i686 packages on the same system, for example.)
 case "$host" in
-  alpha*|ia64*|powerpc64*|s390x*|x86_64*)
+  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    ;;
   *)
@@ -264,41 +244,33 @@ rm $RPM_BUILD_ROOT%{_libdir}/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/*/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/*/*.la
 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host
-touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-2.0/$host/gtk.immodules
+touch $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/immodules.cache
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 
-#
-# We need the substitution of $host so we use an external
-# file list
-#
-echo %dir %{_sysconfdir}/gtk-2.0/$host >> gtk20.lang
-echo %ghost %{_sysconfdir}/gtk-2.0/$host/gtk.immodules >> gtk20.lang
-
 %post
 /sbin/ldconfig
-/usr/bin/update-gtk-immodules %{_host}
+gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %post immodules
-/usr/bin/update-gtk-immodules %{_host}
+gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %post immodule-xim
-/usr/bin/update-gtk-immodules %{_host}
+gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %postun
 /sbin/ldconfig
 if [ $1 -gt 0 ]; then
-  /usr/bin/update-gtk-immodules %{_host}
+  gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 fi
 
 %postun immodules
-/usr/bin/update-gtk-immodules %{_host}
+gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %postun immodule-xim
-/usr/bin/update-gtk-immodules %{_host}
+gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %files -f gtk20.lang
 %doc AUTHORS COPYING NEWS README
@@ -319,7 +291,7 @@ fi
 %{_datadir}/themes/Default
 %{_datadir}/themes/Emacs
 %{_datadir}/themes/Raleigh
-%dir %{_sysconfdir}/gtk-2.0
+%ghost %{_libdir}/gtk-2.0/%{bin_version}/immodules.cache
 %{_libdir}/girepository-1.0
 %{_mandir}/man1/gtk-query-immodules-2.0*
 %{_mandir}/man1/update-gtk-immodules.1.gz
@@ -337,6 +309,7 @@ fi
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-ti-et.so
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-viqr.so
 %{_sysconfdir}/X11/xinit/xinput.d/im-cedilla.conf
+%dir %{_sysconfdir}/gtk-2.0
 %config(noreplace) %{_sysconfdir}/gtk-2.0/im-multipress.conf
 
 %files immodule-xim
@@ -352,6 +325,7 @@ fi
 %{_bindir}/gtk-demo
 %{_datadir}/gtk-2.0
 %{_datadir}/gir-1.0
+%{_mandir}/man1/gtk-builder-convert.1.gz
 
 %files devel-docs
 %{_datadir}/gtk-doc
@@ -364,6 +338,8 @@ fi
 %changelog
 * Fri Oct 11 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.22-1
 - Update to 2.24.22
+- Make immodule cache handling the same as in gtk3. The cache
+  file is now in $libdir, no longer in /etc
 
 * Wed Jun 26 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.19-4
 - Include man pages again

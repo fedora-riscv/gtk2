@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.22
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -224,7 +224,7 @@ done
 # for places where we have two copies of the GTK+ package installed.
 # (we might have x86_64 and i686 packages on the same system, for example.)
 case "$host" in
-  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*)
+  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*|aarch64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    ;;
   *)
@@ -336,6 +336,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Mon Nov 11 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.22-2
+- Fix build on aarch64
+
 * Fri Oct 11 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.22-1
 - Update to 2.24.22
 - Make immodule cache handling the same as in gtk3. The cache

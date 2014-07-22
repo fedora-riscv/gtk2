@@ -17,8 +17,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.23
-Release: 3%{?dist}
+Version: 2.24.24
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -35,8 +35,6 @@ Patch2: icon-padding.patch
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-# Backported from upstream
-Patch16: 0001-pixbuf-engine-Fix-the-build-with-Werror-format-secur.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -148,7 +146,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .icon-padding
 %patch8 -p1 -b .tooltip-positioning
 %patch15 -p1 -b .window-dragging
-%patch16 -p1 -b .format_security
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -338,6 +335,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul 22 2014 Matthias Clasen <mclasen@redhat.com> - 2.24.24-1
+- Update to 2.24.24
+
 * Tue Jul 22 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.23-3
 - Rebuilt for gobject-introspection 1.41.4
 

@@ -17,13 +17,13 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.22
-Release: 2%{?dist}
+Version: 2.24.24
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
-Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
+Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 Source4: update-gtk-immodules.1
@@ -35,7 +35,6 @@ Patch2: icon-padding.patch
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=973730
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -336,6 +335,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Mon Aug 25 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.24-1
+- Update to 2.24.24
+
 * Mon Nov 11 2013 Matthias Clasen <mclasen@redhat.com> - 2.24.22-2
 - Fix build on aarch64
 

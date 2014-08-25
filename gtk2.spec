@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.24
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -31,6 +31,8 @@ Source4: update-gtk-immodules.1
 Patch1: system-python.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
+# Revert a series of gtk-update-icon-cache changes for F20
+Patch3: gtk2-revert-gtk-update-icon-cache-changes.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
@@ -144,6 +146,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 
 %patch1 -p1 -b .system-python
 %patch2 -p1 -b .icon-padding
+%patch3 -p1 -b .icon-cache
 %patch8 -p1 -b .tooltip-positioning
 %patch15 -p1 -b .window-dragging
 
@@ -335,6 +338,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Mon Aug 25 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.24-2
+- Revert a series of gtk-update-icon-cache changes for F20
+
 * Mon Aug 25 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.24-1
 - Update to 2.24.24
 

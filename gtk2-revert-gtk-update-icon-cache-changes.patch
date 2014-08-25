@@ -1,0 +1,88 @@
+From b457055e724ce9e8bec81cdbf9fbc3ceebbc97cd Mon Sep 17 00:00:00 2001
+From: Kalev Lember <kalevlember@gmail.com>
+Date: Mon, 25 Aug 2014 21:12:56 +0200
+Subject: [PATCH] Revert a series of gtk-update-icon-cache changes for F20
+
+This reverts a series of commits that changed gtk-update-icon-cache to
+not include image data in the generated image cache. It is safer to keep
+this out of F20 to avoid introducing non-bugfix changes that might cause
+a fallout in other packages. In particular, the gtk3 version in F20 is
+not tested to work with this.
+
+This reverts the following commits:
+72c472287bd2454f7c1837c54a4d9234df5a94cf,
+30f24286717a64dac3d0938ebb1d01a5b18254c2, and
+85fe78ed219487069a0ed7c7933bdd09c9bb5fc3.
+---
+ docs/reference/gtk/gtk-update-icon-cache.xml | 13 ++-----------
+ gtk/Makefile.am                              |  1 -
+ gtk/updateiconcache.c                        |  3 +--
+ 3 files changed, 3 insertions(+), 14 deletions(-)
+
+diff --git a/docs/reference/gtk/gtk-update-icon-cache.xml b/docs/reference/gtk/gtk-update-icon-cache.xml
+index 31ecd6d..4d3f4a8 100644
+--- a/docs/reference/gtk/gtk-update-icon-cache.xml
++++ b/docs/reference/gtk/gtk-update-icon-cache.xml
+@@ -19,11 +19,8 @@
+ <command>gtk-update-icon-cache</command>
+ <arg choice="opt">--force</arg>
+ <arg choice="opt">--ignore-theme-index</arg>
+-<group>
+-  <arg choice="plain">--index-only</arg>
+-  <arg choice="plain">--include-image-data</arg>
+-</group>
+-<arg choice="opt">--source <arg choice="plain"><replaceable>NAME</replaceable></arg></arg>
++<arg choice="opt">--index-only</arg>
++<arg choice="opt">--source<arg>name</arg></arg>
+ <arg choice="opt">--quiet</arg>
+ <arg choice="opt">--validate</arg>
+ <arg choice="req">iconpath</arg>
+@@ -75,12 +72,6 @@ multiple applications, the overall memory consumption is reduced as well.
+   </varlistentry>
+ 
+   <varlistentry>
+-    <term>--include-image-data</term>
+-    <listitem><para>Include image data in the cache.
+-    </para></listitem>
+-  </varlistentry>
+-
+-  <varlistentry>
+     <term>--source</term>
+     <term>-c</term>
+     <listitem><para>Output a C header file declaring a constant 
+diff --git a/gtk/Makefile.am b/gtk/Makefile.am
+index 785512f..7fbe429 100644
+--- a/gtk/Makefile.am
++++ b/gtk/Makefile.am
+@@ -1394,7 +1394,6 @@ endif
+ gtkbuiltincache.h: @REBUILD@ stamp-icons
+ 	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT) $(GTK_UPDATE_ICON_CACHE_MANIFEST)
+ 	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
+-	   --include-image-data							\
+ 	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
+ 	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+ 
+diff --git a/gtk/updateiconcache.c b/gtk/updateiconcache.c
+index 3ed3253..cc6d5f1 100644
+--- a/gtk/updateiconcache.c
++++ b/gtk/updateiconcache.c
+@@ -46,7 +46,7 @@
+ static gboolean force_update = FALSE;
+ static gboolean ignore_theme_index = FALSE;
+ static gboolean quiet = FALSE;
+-static gboolean index_only = TRUE;
++static gboolean index_only = FALSE;
+ static gboolean validate = FALSE;
+ static gchar *var_name = "-";
+ 
+@@ -1659,7 +1659,6 @@ static GOptionEntry args[] = {
+   { "force", 'f', 0, G_OPTION_ARG_NONE, &force_update, N_("Overwrite an existing cache, even if up to date"), NULL },
+   { "ignore-theme-index", 't', 0, G_OPTION_ARG_NONE, &ignore_theme_index, N_("Don't check for the existence of index.theme"), NULL },
+   { "index-only", 'i', 0, G_OPTION_ARG_NONE, &index_only, N_("Don't include image data in the cache"), NULL },
+-  { "include-image-data", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &index_only, N_("Include image data in the cache"), NULL },
+   { "source", 'c', 0, G_OPTION_ARG_STRING, &var_name, N_("Output a C header file"), "NAME" },
+   { "quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet, N_("Turn off verbose output"), NULL },
+   { "validate", 'v', 0, G_OPTION_ARG_NONE, &validate, N_("Validate existing icon cache"), NULL },
+-- 
+2.1.0
+

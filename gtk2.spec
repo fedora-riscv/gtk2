@@ -18,7 +18,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.25
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -72,6 +72,8 @@ Obsoletes: gail < 2.13.0-1
 
 # required for icon theme apis to work
 Requires: hicolor-icon-theme
+# built as a subpackage of gtk3
+Requires: gtk-update-icon-cache
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
 Requires(post): glib2 >= %{glib2_version}
@@ -240,6 +242,8 @@ cp %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xinit/xinput.d
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/*/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/*/*.la
+rm $RPM_BUILD_ROOT%{_bindir}/gtk-update-icon-cache
+rm $RPM_BUILD_ROOT%{_mandir}/man1/gtk-update-icon-cache.1*
 
 touch $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/immodules.cache
 
@@ -274,7 +278,6 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc AUTHORS COPYING NEWS README
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gtk-immodules
-%{_bindir}/gtk-update-icon-cache
 %{_libdir}/libgtk-x11-2.0.so.*
 %{_libdir}/libgdk-x11-2.0.so.*
 %{_libdir}/libgailutil.so.*
@@ -294,7 +297,6 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %{_libdir}/girepository-1.0
 %{_mandir}/man1/gtk-query-immodules-2.0*
 %{_mandir}/man1/update-gtk-immodules.1.gz
-%{_mandir}/man1/gtk-update-icon-cache.1.gz
 
 %files immodules
 %{_libdir}/gtk-2.0/%{bin_version}/immodules/im-am-et.so
@@ -335,6 +337,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Wed Dec 17 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.25-2
+- Use gtk-update-icon-cache that's built as gtk3 subpackage
+
 * Sat Oct 11 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.25-1
 - Update to 2.24.25
 

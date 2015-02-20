@@ -17,13 +17,13 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.25
-Release: 2%{?dist}
+Version: 2.24.26
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
-Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
+Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.bz2
 Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 Source4: update-gtk-immodules.1
@@ -35,7 +35,6 @@ Patch2: icon-padding.patch
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-Patch16: 0001-Ignore-gdk-pixbuf-deprecations.patch
 
 BuildRequires: atk-devel >= %{atk_version}
 BuildRequires: glib2-devel >= %{glib2_version}
@@ -149,7 +148,6 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch2 -p1 -b .icon-padding
 %patch8 -p1 -b .tooltip-positioning
 %patch15 -p1 -b .window-dragging
-%patch16 -p1 -b .gdk-pixbuf-deprecations
 
 %build
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
@@ -339,6 +337,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Thu Feb 19 2015 Matthias Clasen <mclasen@redhat.com> - 2.24.26-1
+- Update to 2.24.26
+
 * Wed Dec 17 2014 Kalev Lember <kalevlember@gmail.com> - 2.24.25-2
 - Use gtk-update-icon-cache that's built as gtk3 subpackage
 - Fix the build with latest gdk-pixbuf2

@@ -8,7 +8,6 @@
 %define atk_version %{atk_base_version}-2
 %define cairo_base_version 1.6.0
 %define cairo_version %{cairo_base_version}-1
-%define libpng_version 2:1.2.2-16
 %define xrandr_version 1.2.99.4-2
 %define gobject_introspection_version 0.9.3
 %define gir_repository_version 0.6.5-5
@@ -36,30 +35,28 @@ Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
 
-BuildRequires: atk-devel >= %{atk_version}
-BuildRequires: glib2-devel >= %{glib2_version}
-BuildRequires: cairo-devel
-BuildRequires: gdk-pixbuf2-devel
-BuildRequires: pango-devel >= %{pango_version}
-BuildRequires: libtiff-devel
-BuildRequires: libjpeg-devel
-BuildRequires: jasper-devel
-BuildRequires: libXi-devel
-BuildRequires: libpng-devel >= %{libpng_version}
+BuildRequires: pkgconfig(atk) >= %{atk_version}
+BuildRequires: pkgconfig(glib-2.0) >= %{glib2_version}
+BuildRequires: pkgconfig(gobject-introspection-1.0) >= %{gobject_introspection_version}
+BuildRequires: pkgconfig(cairo)
+BuildRequires: pkgconfig(gdk-pixbuf-2.0)
+BuildRequires: pkgconfig(pango-1.0) >= %{pango_version}
+BuildRequires: pkgconfig(xi)
+BuildRequires: pkgconfig(xrandr)
+BuildRequires: pkgconfig(xrender)
+BuildRequires: pkgconfig(xcursor)
+BuildRequires: pkgconfig(xfixes)
+BuildRequires: pkgconfig(xinerama)
+BuildRequires: pkgconfig(xcomposite)
+BuildRequires: pkgconfig(xdamage)
 BuildRequires: gettext
 BuildRequires: cups-devel
-BuildRequires: cairo-devel >= %{cairo_version}
-BuildRequires: libXrandr-devel >= %{xrandr_version}
-BuildRequires: libXrender-devel
-BuildRequires: libXcursor-devel
-BuildRequires: libXfixes-devel
-BuildRequires: libXinerama-devel
-BuildRequires: libXcomposite-devel
-BuildRequires: libXdamage-devel
-BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
 # Bootstrap requirements
 BuildRequires: gtk-doc
-BuildRequires: automake autoconf libtool pkgconfig
+BuildRequires: automake
+BuildRequires: autoconf
+BuildRequires: libtool
+BuildRequires: pkgconfig
 
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI
@@ -120,7 +117,6 @@ Requires: cairo-devel >= %{cairo_version}
 Requires: libX11-devel, libXcursor-devel, libXinerama-devel
 Requires: libXext-devel, libXi-devel, libXrandr-devel
 Requires: libXfixes-devel, libXcomposite-devel
-Requires: libpng-devel
 Requires: pkgconfig
 
 Provides: gail-devel = %{version}-%{release}
@@ -275,7 +271,8 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %files -f gtk20.lang
-%doc AUTHORS COPYING NEWS README
+%license COPYING
+%doc AUTHORS NEWS README
 %{_bindir}/gtk-query-immodules-2.0*
 %{_bindir}/update-gtk-immodules
 %{_libdir}/libgtk-x11-2.0.so.*

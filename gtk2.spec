@@ -16,7 +16,7 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.26
+Version: 2.24.27
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
@@ -40,7 +40,7 @@ BuildRequires: pkgconfig(glib-2.0) >= %{glib2_version}
 BuildRequires: pkgconfig(gobject-introspection-1.0) >= %{gobject_introspection_version}
 BuildRequires: pkgconfig(cairo)
 BuildRequires: pkgconfig(gdk-pixbuf-2.0)
-BuildRequires: pkgconfig(pango-1.0) >= %{pango_version}
+BuildRequires: pkgconfig(pango) >= %{pango_version}
 BuildRequires: pkgconfig(xi)
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xrender)
@@ -334,6 +334,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Mar  3 2015 Matthias Clasen <mclasen@redhat.com> - 2.24.27-1
+- Update to 2.24.27
+
 * Thu Feb 19 2015 Matthias Clasen <mclasen@redhat.com> - 2.24.26-1
 - Update to 2.24.26
 

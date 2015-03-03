@@ -40,7 +40,7 @@ BuildRequires: pkgconfig(glib-2.0) >= %{glib2_version}
 BuildRequires: pkgconfig(gobject-introspection-1.0) >= %{gobject_introspection_version}
 BuildRequires: pkgconfig(cairo)
 BuildRequires: pkgconfig(gdk-pixbuf-2.0)
-BuildRequires: pkgconfig(pango-1.0) >= %{pango_version}
+BuildRequires: pkgconfig(pango) >= %{pango_version}
 BuildRequires: pkgconfig(xi)
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xrender)

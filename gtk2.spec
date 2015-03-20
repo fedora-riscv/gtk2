@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.27
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -71,6 +71,9 @@ Obsoletes: gail < 2.13.0-1
 Requires: hicolor-icon-theme
 # built as a subpackage of gtk3
 Requires: gtk-update-icon-cache
+
+# required to support all the different image formats
+Requires: gdk-pixbuf2-modules%{?_isa}
 
 # We need to prereq these so we can run gtk-query-immodules-2.0
 Requires(post): glib2 >= %{glib2_version}
@@ -334,6 +337,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Fri Mar 20 2015 Richard Hughes <rhughes@redhat.com> - 2.24.27-2
+- Depend on gdk-pixbuf2-modules as this is now an optional subpackage
+
 * Tue Mar  3 2015 Matthias Clasen <mclasen@redhat.com> - 2.24.27-1
 - Update to 2.24.27
 

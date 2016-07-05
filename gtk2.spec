@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.30
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -75,11 +75,10 @@ Requires: gtk-update-icon-cache
 # required to support all the different image formats
 Requires: gdk-pixbuf2-modules%{?_isa}
 
-# We need to prereq these so we can run gtk-query-immodules-2.0
-Requires(post): glib2 >= %{glib2_version}
-Requires(post): atk >= %{atk_version}
-Requires(post): pango >= %{pango_version}
-# and these for gdk-pixbuf-query-loaders
+Requires: glib2 >= %{glib2_version}
+Requires: atk >= %{atk_version}
+Requires: pango >= %{pango_version}
+# We need to prereq these so we can run gdk-pixbuf-query-loaders
 Requires(post): libtiff >= 3.6.1
 Requires: libXrandr >= %{xrandr_version}
 
@@ -251,27 +250,15 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/immodules
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/%{bin_version}/filesystems
 
 
-%post
-/sbin/ldconfig
+%transfiletriggerin -- %{_libdir}/gtk-2.0/immodules/ %{_libdir}/gtk-2.0/%{bin_version}/immodules/
 gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
-%post immodules
+%transfiletriggerpostun -- %{_libdir}/gtk-2.0/immodules/ %{_libdir}/gtk-2.0/%{bin_version}/immodules/
 gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
-%post immodule-xim
-gtk-query-immodules-2.0-%{__isa_bits} --update-cache
+%post -p /sbin/ldconfig
 
-%postun
-/sbin/ldconfig
-if [ $1 -gt 0 ]; then
-  gtk-query-immodules-2.0-%{__isa_bits} --update-cache
-fi
-
-%postun immodules
-gtk-query-immodules-2.0-%{__isa_bits} --update-cache
-
-%postun immodule-xim
-gtk-query-immodules-2.0-%{__isa_bits} --update-cache
+%postun -p /sbin/ldconfig
 
 %files -f gtk20.lang
 %license COPYING
@@ -337,6 +324,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jul  5 2016 Ville Skyttä <ville.skytta@iki.fi> - 2.24.30-2
+- Add gtk-query-immodules-2.0 file triggers
+
 * Mon Mar 07 2016 Kalev Lember <klember@redhat.com> - 2.24.30-1
 - Update to 2.24.30
 

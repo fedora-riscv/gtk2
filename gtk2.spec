@@ -17,7 +17,7 @@
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.31
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -221,7 +221,7 @@ done
 # for places where we have two copies of the GTK+ package installed.
 # (we might have x86_64 and i686 packages on the same system, for example.)
 case "$host" in
-  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*|aarch64*)
+  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*|aarch64*|mips64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    ;;
   *)
@@ -324,6 +324,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Thu Sep 15 2016 Michal Toman <mtoman@fedoraproject.org> - 2.24.31-2
+- Use gtk-query-immodules-2.0-64 on 64-bit MIPS
+
 * Sun Sep 11 2016 Kalev Lember <klember@redhat.com> - 2.24.31-1
 - Update to 2.24.31
 

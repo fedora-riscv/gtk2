@@ -16,8 +16,8 @@
 
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
-Version: 2.24.30
-Release: 2%{?dist}
+Version: 2.24.31
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -324,6 +324,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Sun Sep 11 2016 Kalev Lember <klember@redhat.com> - 2.24.31-1
+- Update to 2.24.31
+
 * Tue Jul  5 2016 Ville Skyttä <ville.skytta@iki.fi> - 2.24.30-2
 - Add gtk-query-immodules-2.0 file triggers
 

@@ -148,6 +148,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 %patch15 -p1 -b .window-dragging
 
 %build
+export CFLAGS='-fno-strict-aliasing %optflags'
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
         --enable-man            \

@@ -151,7 +151,7 @@ This package contains developer documentation for the GTK+ widget toolkit.
 export CFLAGS='-fno-strict-aliasing %optflags'
 (if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; CONFIGFLAGS=--enable-gtk-doc; fi;
  %configure $CONFIGFLAGS \
-        --enable-man            \
+	--enable-man		\
 	--with-xinput=xfree	\
 	--enable-debug		\
 )
@@ -318,8 +318,6 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
 %files devel-docs
 %{_datadir}/gtk-doc
-# oops, man pages went missing
-# %{_mandir}/man1/*
 %doc tmpdocs/tutorial
 %doc tmpdocs/faq
 %doc tmpdocs/examples

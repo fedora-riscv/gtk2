@@ -17,7 +17,7 @@
 # Filter provides for private modules
 %global __provides_exclude_from ^%{_libdir}/gtk-2.0
 
-Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
+Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.31
 Release: 4%{?dist}
@@ -328,6 +328,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %changelog
 * Wed Jun 21 2017 Kalev Lember <klember@redhat.com> - 2.24.31-4
 - Filter provides for private modules
+- Update package summary
 
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.31-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild

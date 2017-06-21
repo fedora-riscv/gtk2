@@ -14,10 +14,13 @@
 
 %define bin_version 2.10.0
 
+# Filter provides for private modules
+%global __provides_exclude_from ^%{_libdir}/gtk-2.0
+
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X
 Name: gtk2
 Version: 2.24.31
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -323,6 +326,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jun 21 2017 Kalev Lember <klember@redhat.com> - 2.24.31-4
+- Filter provides for private modules
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.31-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

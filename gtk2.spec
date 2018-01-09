@@ -19,8 +19,8 @@
 
 Summary: GTK+ graphical user interface library
 Name: gtk2
-Version: 2.24.31
-Release: 6%{?dist}
+Version: 2.24.32
+Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -326,6 +326,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jan 09 2018 Kalev Lember <klember@redhat.com> - 2.24.32-1
+- Update to 2.24.32
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.31-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 

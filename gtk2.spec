@@ -260,9 +260,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %transfiletriggerpostun -- %{_libdir}/gtk-2.0/immodules/ %{_libdir}/gtk-2.0/%{bin_version}/immodules/
 gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 %files -f gtk20.lang
 %license COPYING

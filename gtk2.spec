@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.32
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gtk.org
@@ -37,6 +37,10 @@ Patch2: icon-padding.patch
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
+
+# Backported from upstream:
+Patch20: 0001-calendar-Use-the-new-OB-format-if-supported.patch
+Patch21: 0001-Fix-compiler-warnings-with-GCC-8.1.patch
 
 BuildRequires: pkgconfig(atk) >= %{atk_version}
 BuildRequires: pkgconfig(glib-2.0) >= %{glib2_version}
@@ -143,12 +147,7 @@ Requires: gtk2 = %{version}-%{release}
 This package contains developer documentation for the GTK+ widget toolkit.
 
 %prep
-%setup -q -n gtk+-%{version}
-
-%patch1 -p1 -b .system-python
-%patch2 -p1 -b .icon-padding
-%patch8 -p1 -b .tooltip-positioning
-%patch15 -p1 -b .window-dragging
+%autosetup -n gtk+-%{version} -p1
 
 %build
 export CFLAGS='-fno-strict-aliasing %optflags'
@@ -324,6 +323,11 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Sun Jan 27 2019 Kalev Lember <klember@redhat.com> - 2.24.32-4
+- Backport two fixes from upstream (#1669768)
+- calendar: Use the new "%OB" format if supported
+- Fix compiler warnings with GCC 8.1
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.32-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

@@ -22,7 +22,6 @@ Name: gtk2
 Version: 2.24.32
 Release: 4%{?dist}
 License: LGPLv2+
-Group: System Environment/Libraries
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
 Source: http://download.gnome.org/sources/gtk+/2.24/gtk+-%{version}.tar.xz
@@ -97,7 +96,6 @@ suites.
 
 %package immodules
 Summary: Input methods for GTK+
-Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
 # for /etc/X11/xinit/xinput.d
 Requires: imsettings
@@ -108,7 +106,6 @@ as part of GTK+.
 
 %package immodule-xim
 Summary: XIM support for GTK+
-Group: System Environment/Libraries
 Requires: gtk2 = %{version}-%{release}
 
 %description immodule-xim
@@ -116,7 +113,6 @@ The gtk2-immodule-xim package contains XIM support for GTK+.
 
 %package devel
 Summary: Development files for GTK+
-Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 Requires: pango-devel >= %{pango_version}
 Requires: atk-devel >= %{atk_version}
@@ -139,7 +135,6 @@ package.
 
 %package devel-docs
 Summary: Developer documentation for GTK+
-Group: Development/Libraries
 Requires: gtk2 = %{version}-%{release}
 #BuildArch: noarch
 

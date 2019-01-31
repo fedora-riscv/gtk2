@@ -234,6 +234,9 @@ cp %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/update-gtk-immodules
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/X11/xinit/xinput.d
 cp %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xinit/xinput.d
 
+# Explicitly use python2 shebang instead of ambiguous python
+sed -i -e '/^#!\// s/python$/python2/' $RPM_BUILD_ROOT%{_bindir}/gtk-builder-convert
+
 # Remove unpackaged files
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/*/*.la

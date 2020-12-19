@@ -67,6 +67,7 @@ BuildRequires: automake
 BuildRequires: autoconf
 BuildRequires: libtool
 BuildRequires: pkgconfig
+BuildRequires: make
 
 # Conflicts with packages containing theme engines
 # built against the 2.4.0 ABI

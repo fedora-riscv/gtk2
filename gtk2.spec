@@ -19,7 +19,7 @@
 
 Summary: GTK+ graphical user interface library
 Name: gtk2
-Version: 2.24.32
+Version: 2.24.33
 Release: 8%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
@@ -29,19 +29,12 @@ Source2: update-gtk-immodules
 Source3: im-cedilla.conf
 Source4: update-gtk-immodules.1
 
-# Use Python 3 in gtk-builder-convert
-# Accepted upstream: https://gitlab.gnome.org/GNOME/gtk/merge_requests/1080
-Patch1: python3.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=583273
 Patch2: icon-padding.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=599618
 Patch8: tooltip-positioning.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=611313
 Patch15: window-dragging.patch
-
-# Backported from upstream:
-Patch20: 0001-calendar-Use-the-new-OB-format-if-supported.patch
-Patch21: 0001-Fix-compiler-warnings-with-GCC-8.1.patch
 
 BuildRequires: pkgconfig(atk) >= %{atk_version}
 BuildRequires: pkgconfig(glib-2.0) >= %{glib2_version}
@@ -326,6 +319,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Jan 05 2021 Kalev Lember <klember@redhat.com> - 2.24.33-8
+- Update to 2.24.33
+
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.32-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 

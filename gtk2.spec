@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 8%{?dist}
+Release: 1%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -319,7 +319,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
-* Tue Jan 05 2021 Kalev Lember <klember@redhat.com> - 2.24.33-8
+* Tue Jan 05 2021 Kalev Lember <klember@redhat.com> - 2.24.33-1
 - Update to 2.24.33
 
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.32-8

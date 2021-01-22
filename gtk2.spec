@@ -86,6 +86,9 @@ Requires: pango >= %{pango_version}
 Requires(post): libtiff >= 3.6.1
 Requires: libXrandr >= %{xrandr_version}
 
+# For sound theme events in gtk2 apps
+Recommends: libcanberra-gtk2%{?_isa}
+
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
 interfaces. Offering a complete set of widgets, GTK+ is suitable for
@@ -319,6 +322,7 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %changelog
 * Fri Jan 22 2021 Kalev Lember <klember@redhat.com> - 2.24.33-3
 - Drop imsettings dependency on Fedora as well
+- Recommend libcanberra-gtk2 for sound theme events in gtk2 apps
 
 * Fri Jan 08 2021 Tomas Popela <tpopela@redhat.com> - 2.24.33-2
 - Only require the imsettings dependency on Fedora (upstreaming a RHEL only change)

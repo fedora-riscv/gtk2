@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -95,10 +95,6 @@ suites.
 %package immodules
 Summary: Input methods for GTK+
 Requires: gtk2 = %{version}-%{release}
-%if 0%{?fedora}
-# for /etc/X11/xinit/xinput.d
-Requires: imsettings
-%endif
 
 %description immodules
 The gtk2-immodules package contains standalone input methods that are shipped
@@ -321,6 +317,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Fri Jan 22 2021 Kalev Lember <klember@redhat.com> - 2.24.33-3
+- Drop imsettings dependency on Fedora as well
+
 * Fri Jan 08 2021 Tomas Popela <tpopela@redhat.com> - 2.24.33-2
 - Only require the imsettings dependency on Fedora (upstreaming a RHEL only change)
 

@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -85,6 +85,8 @@ Requires: pango >= %{pango_version}
 # We need to prereq these so we can run gdk-pixbuf-query-loaders
 Requires(post): libtiff >= 3.6.1
 Requires: libXrandr >= %{xrandr_version}
+
+Recommends: (adwaita-gtk2-theme if gnome-shell)
 
 # For sound theme events in gtk2 apps
 Recommends: libcanberra-gtk2%{?_isa}
@@ -320,6 +322,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Tue Feb 08 2022 Debarshi Ray <rishi@fedoraproject.org> - 2.24.33-7
+- Recommend adwaita-gtk2-theme so that gtk2 apps have a decent theme
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.33-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 

@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -90,6 +90,8 @@ Recommends: (adwaita-gtk2-theme if gnome-shell)
 
 # For sound theme events in gtk2 apps
 Recommends: libcanberra-gtk2%{?_isa}
+
+Recommends: (ibus-gtk2 if ibus)
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -322,6 +324,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Mon Mar 21 2022 Jens Petersen <petersen@redhat.com> - 2.24.33-8
+- Recommend ibus-gtk2 when ibus is installed
+
 * Tue Feb 08 2022 Debarshi Ray <rishi@fedoraproject.org> - 2.24.33-7
 - Recommend adwaita-gtk2-theme so that gtk2 apps have a decent theme
 

@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -180,8 +180,6 @@ esac
 
 # autoconf uses powerpc not ppc
 host=`echo $host | sed "s/^ppc/powerpc/"`
-# autoconf uses ibm-linux not redhat-linux (s390x)
-host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 
 # Make sure that the host value that is passed to the compile
 # is the same as the host that we're using in the spec file
@@ -324,6 +322,10 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Wed Jul 27 2022 Tomas Popela <tpopela@redhat.com> - 2.24.33-10
+- Fix FTBFS on F37/rawhide as apparently autoconf is not using ibm, but
+  redhat in the host triplet
+
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.24.33-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 

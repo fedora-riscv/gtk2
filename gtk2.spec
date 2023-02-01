@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -111,6 +111,7 @@ as part of GTK+.
 %package -n gtk-immodules-imsettings
 Summary: IMSettings config files for GTK+ input methods
 Conflicts: gtk2 < 2.24.33-12
+BuildArch: noarch
 
 %description -n gtk-immodules-imsettings
 The gtk-immodules-imsettings package contains IMSettings configuration for the
@@ -333,6 +334,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Wed Feb 01 2023 Yaakov Selkowitz <yselkowi@redhat.com> - 2.24.33-13
+- Make the gtk-immodules-imsettings subpackage noarch
+
 * Wed Feb 01 2023 Yaakov Selkowitz <yselkowi@redhat.com> - 2.24.33-12
 - Split out gtk-immodules-imsettings subpackage
 

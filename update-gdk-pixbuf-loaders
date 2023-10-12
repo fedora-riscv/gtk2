@@ -39,7 +39,7 @@ fi
 FILE=/etc/gtk-2.0/$host/gdk-pixbuf.loaders
 
 case "$host" in
-  alpha*|ia64*|powerpc64*|s390x*|x86_64*|aarch64*)
+  alpha*|ia64*|powerpc64*|s390x*|x86_64*|aarch64*|riscv64*)
    /usr/bin/gdk-pixbuf-query-loaders-64 > $FILE
    ;;
   *)

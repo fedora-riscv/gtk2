@@ -20,7 +20,7 @@
 Summary: GTK+ graphical user interface library
 Name: gtk2
 Version: 2.24.33
-Release: 14%{?dist}
+Release: 14.rv64%{?dist}
 License: LGPLv2+
 URL: http://www.gtk.org
 #VCS: git:git://git.gnome.org/gtk+#gtk-2-24
@@ -231,7 +231,7 @@ done
 # for places where we have two copies of the GTK+ package installed.
 # (we might have x86_64 and i686 packages on the same system, for example.)
 case "$host" in
-  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*|aarch64*|mips64*)
+  alpha*|ia64*|ppc64*|powerpc64*|s390x*|x86_64*|aarch64*|mips64*|riscv64*)
    mv $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0 $RPM_BUILD_ROOT%{_bindir}/gtk-query-immodules-2.0-64
    ;;
   *)
@@ -335,6 +335,9 @@ gtk-query-immodules-2.0-%{__isa_bits} --update-cache
 %doc tmpdocs/examples
 
 %changelog
+* Thu Oct 12 2023 Zhengyu He <hezhy472013@gmail.com> - 2.24.33.14.rv64
+- Add support for riscv64
+
 * Tue Apr 11 2023 Florian Weimer <fweimer@redhat.com> - 2.24.33-14
 - Backport upstream patch to fix C99 compatibility issue
 
